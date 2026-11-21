@@ -1,1 +1,0 @@
-# gunun-rotasi
