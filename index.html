@@ -1,341 +1,209 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <!-- Temel sayfa kodlaması, mobil görünüm ve başlık -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Günün Rotası — Editoryal Şehir Seçkisi & Date Planlayıcı</title>
 
-<!-- ... existing code ... -->
-            fontFamily: {
-                serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-                sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                mono: ['"JetBrains Mono"', 'monospace']
+    <!-- Kinfolk & Cereal esintili editoryal yazı tipleri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN (yapılandırma ayrı script bloğunda tanımlanır) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind renk ve yazı tipi tasarım belirteçleri
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FAF8F5',
+                        sand: '#F2EFE9',
+                        charcoal: '#1E1E1E',
+                        muted: '#6B6862',
+                        terracotta: '#A85A3A',
+                        terracottaLight: '#F4EAE4',
+                        sage: '#5A6B58',
+                        sageLight: '#EBF0EA',
+                        borderWarm: '#E5E0D8'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    }
+                }
             }
-<!-- ... existing code ... -->
-            .stop-completed .stop-title {
-                text-decoration: line-through;
-                color: #6B6862;
+        };
+    </script>
+
+    <!-- Saf CSS animasyonları ve tamamlanan durak stilleri -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
             }
-
-            /* Onay kutusu geçiş animasyonu */
-            .custom-checkbox {
-                transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
 
-            /* Sekme geçiş yumuşaklığı */
-            .tab-panel {
-                transition: opacity 0.25s ease;
-            }
-<!-- ... existing code ... -->
-    <header class="text-center max-w-4xl mx-auto mb-10 sm:mb-14">
-        <div class="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
-            <span class="text-xs uppercase tracking-[0.25em] text-terracotta font-medium">
-                Editoryal Şehir Seçkisi & Date Planlayıcı
-            </span>
-            <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-sageLight text-sage font-medium">
-                VIP Küratör & Gelir Modülü Aktif
-            </span>
-        </div>
-        <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl font-normal tracking-tight text-charcoal mb-3">
-            Günün Rotası
-        </h1>
-        <p class="font-serif italic text-xl sm:text-2xl text-muted mb-7">
-            “Şehri keşfetmenin en sakin, en planlı veya en spontane hali”
-        </p>
+        .animate-fade-up {
+            animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
 
-        <!-- Ana Görünüm Sekmeleri -->
-        <nav aria-label="Ana Bölümler" class="inline-flex flex-wrap justify-center gap-2 bg-white p-2 rounded-2xl border border-borderWarm shadow-sm mb-7">
-            <button type="button" data-view="planner" class="view-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-charcoal text-cream transition-colors cursor-pointer">
-                Rota & Program Planlayıcı
-            </button>
-            <button type="button" data-view="spontaneous" class="view-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-charcoal hover:bg-sand transition-colors cursor-pointer">
-                Plansız Date Modu
-            </button>
-            <button type="button" data-view="catalog" class="view-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-charcoal hover:bg-sand transition-colors cursor-pointer">
-                İstanbul Kataloğu
-            </button>
-            <button type="button" data-view="monetization" class="view-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-terracotta hover:bg-terracottaLight transition-colors cursor-pointer">
-                Ücretli Vasıf & Gelir Alanı
-            </button>
-        </nav>
+        .stop-completed .stop-title {
+            text-decoration: line-through;
+            color: #6B6862;
+        }
 
-        <!-- Hazır Rota Seçim Kutusu -->
-        <div class="inline-flex flex-col sm:flex-row items-center gap-3 bg-white p-2.5 sm:pl-5 rounded-2xl border border-borderWarm shadow-sm w-full sm:w-auto">
-<!-- ... existing code ... -->
-                    <option value="erzurum">Erzurum — Tarihi Palandöken Hattı</option>
-                    <option value="sultanahmet">İstanbul — Sultanahmet & Tarihi Yarımada</option>
-                    <option value="beyoglu">İstanbul — Beyoğlu & İstiklal Sahne</option>
-                    <option value="uskudar">İstanbul — Üsküdar & Kuzguncuk</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-charcoal">
-<!-- ... existing code ... -->
-    </header>
+        .custom-checkbox {
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    <!-- ========================================================= -->
-    <!-- 1. PLANSIZ DATE & HIZLI SEÇENEKLER MODÜLÜ                  -->
-    <!-- ========================================================= -->
-    <section id="spontaneous-section" aria-labelledby="spontaneous-heading" class="mb-12 bg-white rounded-3xl border border-borderWarm p-6 sm:p-10 shadow-sm animate-fade-up">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-5 border-b border-borderWarm">
-            <div>
-                <span class="text-[11px] uppercase tracking-[0.22em] text-terracotta font-semibold">Spontane Buluşmalar İçin</span>
-                <h2 id="spontaneous-heading" class="font-serif text-3xl sm:text-4xl font-medium text-charcoal mt-1">
-                    Bugün Ne Yapalım? — Plansız Date Modu
-                </h2>
-                <p class="text-sm text-muted mt-1 max-w-2xl">
-                    Önceden plan yapmadığınız anlarda ruh halinize ve bütçenize göre saniyeler içinde hazır zaman dilimli bir date rotası üretin ve tek tıkla programlarınıza kaydedin.
-                </p>
-            </div>
-            <button type="button" id="generate-random-date-btn" class="bg-terracotta hover:bg-charcoal text-cream text-sm font-medium px-6 py-3.5 rounded-2xl transition-colors duration-300 flex items-center justify-center gap-2 shrink-0 cursor-pointer shadow-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                </svg>
-                <span>Rastgele Date Çıkar</span>
-            </button>
-        </div>
+        /* Özel ince kaydırma çubuğu */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
 
-        <!-- Ruh Hali / Atmosfer Filtreleri -->
-        <div class="flex flex-wrap items-center gap-2 mb-6" id="date-mood-filters">
-            <button type="button" data-mood="all" class="date-mood-btn px-3.5 py-2 rounded-xl text-xs font-medium bg-charcoal text-cream cursor-pointer">Tümü</button>
-            <button type="button" data-mood="Uygun Fiyatlı" class="date-mood-btn px-3.5 py-2 rounded-xl text-xs font-medium bg-sand text-charcoal hover:bg-terracottaLight cursor-pointer">Uygun Fiyatlı</button>
-            <button type="button" data-mood="Tarihi & Kültür" class="date-mood-btn px-3.5 py-2 rounded-xl text-xs font-medium bg-sand text-charcoal hover:bg-terracottaLight cursor-pointer">Tarihi & Kültür</button>
-            <button type="button" data-mood="Eğlence & Sahne" class="date-mood-btn px-3.5 py-2 rounded-xl text-xs font-medium bg-sand text-charcoal hover:bg-terracottaLight cursor-pointer">Eğlence & Sahne</button>
-            <button type="button" data-mood="Sakin Sohbet" class="date-mood-btn px-3.5 py-2 rounded-xl text-xs font-medium bg-sand text-charcoal hover:bg-terracottaLight cursor-pointer">Sakin Sohbet</button>
-            <button type="button" data-mood="Açık Hava" class="date-mood-btn px-3.5 py-2 rounded-xl text-xs font-medium bg-sand text-charcoal hover:bg-terracottaLight cursor-pointer">Açık Hava</button>
-        </div>
+        ::-webkit-scrollbar-track {
+            background: #FAF8F5;
+        }
 
-        <!-- Üretilen Hazır Date Önerisi Kartı -->
-        <div id="spontaneous-result-card" class="bg-cream rounded-2xl border border-borderWarm p-5 sm:p-7">
-            <!-- JS ile doldurulur -->
-        </div>
-    </section>
+        ::-webkit-scrollbar-thumb {
+            background: #D6CFC4;
+            border-radius: 9999px;
+        }
 
-    <!-- ========================================================= -->
-    <!-- 2. İSTANBUL GENİŞ KATALOĞU (TARİHİ, EĞLENCE, UYGUN FİYAT)  -->
-    <!-- ========================================================= -->
-    <section id="catalog-section" aria-labelledby="catalog-heading" class="mb-12 bg-white rounded-3xl border border-borderWarm p-6 sm:p-10 shadow-sm">
-        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6 pb-5 border-b border-borderWarm">
-            <div>
-                <span class="text-[11px] uppercase tracking-[0.22em] text-sage font-semibold">Şehir Rehberi & Organizasyonlar</span>
-                <h2 id="catalog-heading" class="font-serif text-3xl sm:text-4xl font-medium text-charcoal mt-1">
-                    İstanbul Mekan & Organizasyon Kataloğu
-                </h2>
-                <p class="text-sm text-muted mt-1">
-                    Tarihi yapılar, sahne & eğlence mekanları, kültür noktaları ve bütçe dostu aktiviteleri semt ve fiyat seviyesine göre filtreleyin.
-                </p>
-            </div>
-            <span id="catalog-count-label" class="text-xs font-mono px-3.5 py-1.5 rounded-full bg-sand text-charcoal self-start lg:self-auto">
-                0 Mekan Listeleniyor
-            </span>
-        </div>
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A85A3A;
+        }
+    </style>
+</head>
+<body class="bg-cream text-charcoal font-sans antialiased selection:bg-terracotta/20 selection:text-charcoal min-h-screen flex flex-col overflow-x-hidden">
 
-        <!-- Filtre Kontrolleri -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-7">
-            <div>
-                <label for="catalog-district-filter" class="block text-xs font-medium text-muted mb-1">Semt / Hat</label>
-                <select id="catalog-district-filter" class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal focus:outline-none focus:border-terracotta">
-                    <option value="all">Tüm Semtler</option>
-                    <option value="Sultanahmet & Tarihi Yarımada">Sultanahmet & Tarihi Yarımada</option>
-                    <option value="Karaköy & Galata">Karaköy & Galata</option>
-                    <option value="Beyoğlu & İstiklal">Beyoğlu & İstiklal</option>
-                    <option value="Kadıköy & Moda">Kadıköy & Moda</option>
-                    <option value="Balat & Fener">Balat & Fener</option>
-                    <option value="Beşiktaş & Ortaköy">Beşiktaş & Ortaköy</option>
-                    <option value="Üsküdar & Kuzguncuk">Üsküdar & Kuzguncuk</option>
-                    <option value="Adalar & Sahil Hatları">Adalar & Sahil Hatları</option>
-                </select>
-            </div>
+    <!-- Bildirim Kutusu (Toast) -->
+    <div id="toast-notification" role="status" aria-live="polite" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 bg-charcoal text-cream px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 text-sm max-w-[90vw]">
+        <span class="w-2 h-2 rounded-full bg-terracotta shrink-0"></span>
+        <span id="toast-message">Güncellendi.</span>
+    </div>
 
-            <div>
-                <label for="catalog-category-filter" class="block text-xs font-medium text-muted mb-1">Kategori</label>
-                <select id="catalog-category-filter" class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal focus:outline-none focus:border-terracotta">
-                    <option value="all">Tüm Kategoriler</option>
-                    <option value="Tarihi & Miras">Tarihi & Miras</option>
-                    <option value="Eğlence & Sahne">Eğlence & Sahne</option>
-                    <option value="Uygun Fiyatlı & Sosyal">Uygun Fiyatlı & Sosyal</option>
-                    <option value="Kültür & Sanat">Kültür & Sanat</option>
-                    <option value="Açık Hava & Sahil">Açık Hava & Sahil</option>
-                </select>
-            </div>
+    <!-- Ana Kapsayıcı -->
+    <div class="w-full max-w-6xl mx-auto px-4 sm:px-8 lg:px-10 pt-8 sm:pt-12 pb-20 flex-grow">
 
-            <div>
-                <label for="catalog-budget-filter" class="block text-xs font-medium text-muted mb-1">Bütçe Seviyesi</label>
-                <select id="catalog-budget-filter" class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal focus:outline-none focus:border-terracotta">
-                    <option value="all">Tüm Bütçeler</option>
-                    <option value="Ücretsiz / Cüzi">Ücretsiz / Cüzi</option>
-                    <option value="Uygun Fiyatlı">Uygun Fiyatlı</option>
-                    <option value="Orta Segment">Orta Segment</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="catalog-search-input" class="block text-xs font-medium text-muted mb-1">Anahtar Kelime</label>
-                <input type="text" id="catalog-search-input" placeholder="Vapur, tiyatro, müze, sahil..." class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal placeholder:text-muted/60 focus:outline-none focus:border-terracotta">
-            </div>
-        </div>
-
-        <!-- Katalog Kartları Izgarası -->
-        <div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            <!-- JS ile oluşturulur -->
-        </div>
-    </section>
-
-    <!-- ========================================================= -->
-    <!-- 3. ÜCRETLİ VASIF & GELİR MODELİ ALANI                      -->
-    <!-- ========================================================= -->
-    <section id="monetization-section" aria-labelledby="monetization-heading" class="mb-12 bg-white rounded-3xl border border-borderWarm p-6 sm:p-10 shadow-sm">
-        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8 pb-5 border-b border-borderWarm">
-            <div>
-                <span class="text-[11px] uppercase tracking-[0.22em] text-terracotta font-semibold">Üretici, Küratör & Ev Sahibi Ekonomisi</span>
-                <h2 id="monetization-heading" class="font-serif text-3xl sm:text-4xl font-medium text-charcoal mt-1">
-                    Ücretli Vasıf & Gelir Modeli
-                </h2>
-                <p class="text-sm text-muted mt-1 max-w-2xl">
-                    Rota küratörlüğü, rehberlik/vasıf hizmetleri, sponsorlu mekan/etkinlik yerleşimleri ve VIP program arşivi üzerinden düzenli gelir elde edebileceğiniz yapı.
-                </p>
-            </div>
-            <div class="flex flex-wrap gap-2">
-                <span class="text-xs px-3 py-1.5 rounded-xl bg-terracottaLight text-terracotta font-medium">Rota Küratörü / Rehber</span>
-                <span class="text-xs px-3 py-1.5 rounded-xl bg-sageLight text-sage font-medium">Öne Çıkan Sponsorluk</span>
-                <span class="text-xs px-3 py-1.5 rounded-xl bg-sand text-charcoal font-medium">VIP Arşiv & Plan</span>
-            </div>
-        </div>
-
-        <!-- 3 Ücretli Vasıf & Gelir Kurgusu -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-            <div class="bg-cream rounded-2xl border border-borderWarm p-6 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs uppercase tracking-wider text-terracotta font-semibold">Vasıf 01</span>
-                        <span class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-terracottaLight text-terracotta">%85 Üretici Payı</span>
-                    </div>
-                    <h3 class="font-serif text-2xl font-medium text-charcoal mb-2">Rota Küratörü & Yerel Rehber</h3>
-                    <p class="text-xs sm:text-sm text-muted leading-relaxed mb-4">
-                        Kendi oluşturduğunuz özel İstanbul date, kültür veya bütçe rotalarını paketleyerek satışa sunabilir, canlı rehberlik/danışmanlık hizmeti verebilirsiniz.
-                    </p>
-                </div>
-                <ul class="text-xs text-charcoal/85 space-y-1.5 border-t border-borderWarm/70 pt-3">
-                    <li>• Kişiye özel 1-on-1 tarih & rota danışmanlığı</li>
-                    <li>• Satılan her dijital/canlı rota paketinden doğrudan gelir</li>
-                    <li>• Küratör rozeti ile profil ve rota önceliği</li>
-                </ul>
-            </div>
-
-            <div class="bg-cream rounded-2xl border border-borderWarm p-6 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs uppercase tracking-wider text-sage font-semibold">Vasıf 02</span>
-                        <span class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-sageLight text-sage">Sabit / Performans</span>
-                    </div>
-                    <h3 class="font-serif text-2xl font-medium text-charcoal mb-2">Öne Çıkan Mekan & Etkinlik Sponsorluğu</h3>
-                    <p class="text-xs sm:text-sm text-muted leading-relaxed mb-4">
-                        Kafe, sahne, atölye veya organizasyonlarınızı katalogda ve “Plansız Date” önerilerinde öncelikli durak olarak konumlandırın.
-                    </p>
-                </div>
-                <ul class="text-xs text-charcoal/85 space-y-1.5 border-t border-borderWarm/70 pt-3">
-                    <li>• “Küratör Seçimi / Sponsorlu Durak” etiketi</li>
-                    <li>• Haftalık veya aylık öne çıkarma paketleri</li>
-                    <li>• Rezervasyon / katılım yönlendirme komisyonu</li>
-                </ul>
-            </div>
-
-            <div class="bg-cream rounded-2xl border border-borderWarm p-6 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs uppercase tracking-wider text-charcoal font-semibold">Vasıf 03</span>
-                        <span class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-sand text-charcoal">Abonelik & Arşiv</span>
-                    </div>
-                    <h3 class="font-serif text-2xl font-medium text-charcoal mb-2">VIP Tarih & Program Arşivi</h3>
-                    <p class="text-xs sm:text-sm text-muted leading-relaxed mb-4">
-                        Sınırsız tarihli program oluşturma, özel indirimli organizasyon fırsatları ve küratörlerin gizli durak arşiviyle gelişmiş planlama deneyimi.
-                    </p>
-                </div>
-                <ul class="text-xs text-charcoal/85 space-y-1.5 border-t border-borderWarm/70 pt-3">
-                    <li>• Sınırsız tarihli program ve çoklu rota dışa aktarımı</li>
-                    <li>• Anlaşmalı mekanlarda özel davet & indirim kodu</li>
-                    <li>• Küratör gelir paylaşımı programına erken erişim</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Etkileşimli Gelir & Komisyon Simülatörü -->
-        <div class="bg-sand/60 rounded-2xl border border-borderWarm p-6 sm:p-8">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
-                <div>
-                    <h3 class="font-serif text-2xl font-medium text-charcoal">Aylık Gelir & Komisyon Simülatörü</h3>
-                    <p class="text-xs sm:text-sm text-muted">Küratörlük satışı, sponsorlu durak sayısı ve platform komisyon oranını ayarlayarak tahmini gelirinizi görün.</p>
-                </div>
-                <span class="text-xs font-mono bg-white px-3 py-1 rounded-full border border-borderWarm text-charcoal">
-                    Tahmini Aylık Kazanç Hesabı
+        <!-- Üst Başlık & Navigasyon -->
+        <header class="text-center max-w-4xl mx-auto mb-10 sm:mb-14">
+            <div class="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
+                <span class="text-[11px] sm:text-xs uppercase tracking-[0.22em] text-terracotta font-semibold">
+                    Editoryal Şehir Seçkisi & Date Planlayıcı
+                </span>
+                <span class="text-[11px] px-3 py-1 rounded-full bg-sageLight text-sage font-medium">
+                    VIP Küratör & Gelir Modülü Aktif
                 </span>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                <div class="lg:col-span-7 space-y-4">
-                    <div>
-                        <div class="flex justify-between text-xs font-medium text-charcoal mb-1">
-                            <span>Aylık Satılan Özel Rota / Rehber Paketi</span>
-                            <span id="sim-packages-val" class="font-mono text-terracotta">25 Adet</span>
-                        </div>
-                        <input type="range" id="sim-packages" min="0" max="150" value="25" class="w-full accent-terracotta cursor-pointer">
-                    </div>
+            <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl font-normal tracking-tight text-charcoal mb-3">
+                Günün Rotası
+            </h1>
 
-                    <div>
-                        <div class="flex justify-between text-xs font-medium text-charcoal mb-1">
-                            <span>Ortalama Rota / Danışmanlık Ücreti (TL)</span>
-                            <span id="sim-price-val" class="font-mono text-terracotta">450 ₺</span>
-                        </div>
-                        <input type="range" id="sim-price" min="100" max="2500" step="50" value="450" class="w-full accent-terracotta cursor-pointer">
-                    </div>
+            <p class="font-serif italic text-lg sm:text-2xl text-muted mb-7 px-2">
+                “Şehri keşfetmenin en sakin, en planlı veya en spontane hali”
+            </p>
 
-                    <div>
-                        <div class="flex justify-between text-xs font-medium text-charcoal mb-1">
-                            <span>Sponsorlu / Öne Çıkan Mekan İş Birliği (Adet)</span>
-                            <span id="sim-sponsors-val" class="font-mono text-sage">3 Mekan</span>
-                        </div>
-                        <input type="range" id="sim-sponsors" min="0" max="20" value="3" class="w-full accent-sage cursor-pointer">
-                    </div>
+            <!-- Ana Bölümler Navigasyonu -->
+            <nav aria-label="Ana Bölümler" class="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2.5 bg-white p-2.5 rounded-2xl border border-borderWarm shadow-sm mb-7 text-left sm:text-center">
+                <button type="button" data-view="planner" class="view-tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-charcoal text-cream transition-colors cursor-pointer">
+                    Rota & Program Planlayıcı
+                </button>
+                <button type="button" data-view="spontaneous" class="view-tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-charcoal hover:bg-sand transition-colors cursor-pointer">
+                    Plansız Date Modu
+                </button>
+                <button type="button" data-view="catalog" class="view-tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-charcoal hover:bg-sand transition-colors cursor-pointer">
+                    İstanbul Kataloğu
+                </button>
+                <button type="button" data-view="monetization" class="view-tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-terracotta hover:bg-terracottaLight transition-colors cursor-pointer">
+                    Ücretli Vasıf & Gelir Alanı
+                </button>
+            </nav>
 
-                    <div>
-                        <div class="flex justify-between text-xs font-medium text-charcoal mb-1">
-                            <span>Platform Hizmet / Komisyon Kesintisi (%)</span>
-                            <span id="sim-fee-val" class="font-mono text-charcoal">%15</span>
-                        </div>
-                        <input type="range" id="sim-fee" min="0" max="35" value="15" class="w-full accent-charcoal cursor-pointer">
-                    </div>
-                </div>
-
-                <div class="lg:col-span-5 bg-white rounded-2xl border border-borderWarm p-6 space-y-4">
-                    <div>
-                        <span class="text-xs uppercase tracking-wider text-muted">Tahmini Net Aylık Geliriniz</span>
-                        <div id="sim-net-income" class="font-serif text-4xl font-semibold text-terracotta mt-1">15.362 ₺</div>
-                    </div>
-                    <div class="space-y-2 text-xs border-t border-borderWarm pt-3 text-charcoal/85">
-                        <div class="flex justify-between">
-                            <span>Brüt Rota Satış Geliri:</span>
-                            <span id="sim-gross-sales" class="font-mono">11.250 ₺</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Sponsorluk Katkısı (2.500 ₺ / mekan):</span>
-                            <span id="sim-sponsor-total" class="font-mono text-sage">7.500 ₺</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Kesinti Tutarı:</span>
-                            <span id="sim-fee-total" class="font-mono text-muted">-3.388 ₺</span>
-                        </div>
-                    </div>
-                    <button type="button" id="apply-monetization-note-btn" class="w-full bg-charcoal hover:bg-terracotta text-cream text-xs font-medium py-3 rounded-xl transition-colors cursor-pointer">
-                        Gelir Hedefini Aktif Programa Not Olarak Ekle
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Rota Özet Kartı -->
-<!-- ... existing code ... -->
-                    <div class="bg-cream/80 p-4 rounded-2xl text-center border border-borderWarm/50">
-                        <span class="block text-[11px] uppercase tracking-wider text-muted mb-1">Tempo</span>
-                        <span id="route-difficulty" class="font-serif text-2xl sm:text-3xl font-semibold text-sage">Sakin</span>
+            <!-- Hazır Rota Seçim Kutusu -->
+            <div class="inline-flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 bg-white p-3 sm:py-2.5 sm:px-4 rounded-2xl border border-borderWarm shadow-sm w-full sm:w-auto">
+                <label for="route-selector" class="text-xs uppercase tracking-widest text-muted font-medium px-1">
+                    Rota Seçin:
+                </label>
+                <div class="relative flex-grow sm:min-w-[320px]">
+                    <select id="route-selector" class="w-full appearance-none bg-sand/70 hover:bg-sand text-charcoal font-medium text-sm rounded-xl py-2.5 pl-4 pr-10 border border-borderWarm/80 focus:outline-none focus:border-terracotta transition-colors cursor-pointer">
+                        <option value="karakoy">İstanbul — Karaköy & Galata</option>
+                        <option value="moda">İstanbul — Kadıköy & Moda</option>
+                        <option value="balat">İstanbul — Balat & Fener</option>
+                        <option value="sultanahmet">İstanbul — Sultanahmet & Tarihi Yarımada</option>
+                        <option value="beyoglu">İstanbul — Beyoğlu & İstiklal Sahne</option>
+                        <option value="uskudar">İstanbul — Üsküdar & Kuzguncuk</option>
+                        <option value="amasya">Amasya — Yeşilırmak Kıyısı</option>
+                        <option value="erzurum">Erzurum — Tarihi Palandöken Hattı</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-charcoal">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 9l-7 7-7-7"/>
+                        </svg>
                     </div>
                 </div>
             </div>
 
-            <!-- Seçili Rota Tarih, Başlangıç Saati, Kayıtlı Programlar & Google Haritalar Barı -->
-            <div class="mt-8 pt-7 border-t border-borderWarm grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
+            <!-- Bugünün Tarihi -->
+            <div class="mt-4 text-xs font-mono text-muted tracking-wide" id="current-date-display">
+                Bugün • Seçili Gün Rotası
+            </div>
+        </header>
+
+        <!-- Rota Özet Kartı & Tarihli Program Planlayıcı -->
+        <section id="route-summary-card" aria-labelledby="route-title" class="bg-white rounded-3xl border border-borderWarm p-6 sm:p-10 mb-10 sm:mb-12 shadow-[0_8px_30px_rgb(30,30,30,0.03)] animate-fade-up">
+            <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+                <div class="space-y-3 max-w-2xl">
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <span id="route-city-badge" class="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full bg-terracottaLight text-terracotta">
+                            İstanbul
+                        </span>
+                        <span id="route-mood-badge" class="text-xs font-medium px-3 py-1 rounded-full bg-sageLight text-sage">
+                            Sahil & Sanat Yürüyüşü
+                        </span>
+                    </div>
+                    <h2 id="route-title" class="font-serif text-3xl sm:text-4xl md:text-[2.65rem] font-medium leading-tight text-charcoal">
+                        Karaköy & Galata: Boğaz Esintisi ve Sokak Araları
+                    </h2>
+                    <p id="route-note" class="text-muted text-sm sm:text-base leading-relaxed">
+                        Sabahın erken saatlerinde rıhtımdaki sakinlikten başlayıp Galata’nın taş sokaklarına, bağımsız kafelere ve gün batımında Haliç manzarasına uzanan dengeli bir şehir yürüyüşü.
+                    </p>
+                </div>
+
+                <!-- Rota Metrikleri -->
+                <div class="grid grid-cols-3 gap-3 sm:gap-4 pt-2 lg:pt-0 shrink-0">
+                    <div class="bg-cream/90 p-3.5 sm:p-4 rounded-2xl text-center border border-borderWarm/60">
+                        <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-muted mb-1">Süre</span>
+                        <span id="route-duration" class="font-serif text-xl sm:text-3xl font-semibold text-charcoal">6 Saat</span>
+                    </div>
+                    <div class="bg-cream/90 p-3.5 sm:p-4 rounded-2xl text-center border border-borderWarm/60">
+                        <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-muted mb-1">Mesafe</span>
+                        <span id="route-distance" class="font-serif text-xl sm:text-3xl font-semibold text-terracotta">4.8 km</span>
+                    </div>
+                    <div class="bg-cream/90 p-3.5 sm:p-4 rounded-2xl text-center border border-borderWarm/60">
+                        <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-muted mb-1">Tempo</span>
+                        <span id="route-difficulty" class="font-serif text-xl sm:text-3xl font-semibold text-sage">Sakin</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarih, Saat, Program Başlığı & Aksiyon Butonları -->
+            <div class="mt-8 pt-7 border-t border-borderWarm grid grid-cols-1 lg:grid-cols-12 gap-5 items-end">
                 <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <label for="program-date-input" class="block text-xs font-medium text-charcoal mb-1.5">Program Tarihi</label>
@@ -364,14 +232,14 @@
                 </div>
             </div>
 
-            <!-- Program Notu & Kayıtlı Tarihli Programlar Listesi -->
+            <!-- Özel Not & Kaydedilen Tarihli Programlar -->
             <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div class="lg:col-span-5">
                     <label for="program-custom-note" class="block text-xs font-medium text-charcoal mb-1.5">Özel Program & Date Notu</label>
                     <textarea id="program-custom-note" rows="3" placeholder="Rezervasyon notları, buluşma noktası, bütçe veya sürpriz detaylar..." class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal placeholder:text-muted/60 focus:outline-none focus:border-terracotta resize-none"></textarea>
                 </div>
 
-                <div class="lg:col-span-7 bg-cream/70 rounded-2xl border border-borderWarm p-4 sm:p-5">
+                <div class="lg:col-span-7 bg-cream/80 rounded-2xl border border-borderWarm p-4 sm:p-5">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs uppercase tracking-wider text-charcoal font-semibold">Kaydedilen Tarihli Programlarım</span>
                         <span id="saved-programs-count" class="text-xs font-mono text-muted">0 Kayıt</span>
@@ -384,1974 +252,71 @@
         </section>
 
         <!-- Ana 2 Kolonlu Düzen: Sol (Zaman Çizelgesi + Durak Ekleme) / Sağ (İlerleme + Atmosfer + Harita + İpuçları) -->
-<!-- ... existing code ... -->
-                    <div id="timeline-container" class="relative pl-6 sm:pl-8 border-l border-borderWarm space-y-6">
-                        <!-- Duraklar JavaScript ile oluşturulur -->
-                    </div>
-                </section>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start mb-14">
 
-                <!-- Özel Durak Ekleme Modülü -->
-<!-- ... existing code ... -->
-                    </form>
-                </section>
-            </div>
+            <!-- Sol Sütun: Günlük Zaman Çizelgesi ve Özel Durak Ekleme -->
+            <div class="lg:col-span-7 space-y-8">
 
-            <!-- Sağ Sütun -->
-            <aside class="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
-<!-- ... existing code ... -->
-                <!-- Atmosfer Kartı -->
-                <div class="bg-sageLight/60 rounded-3xl border border-sage/20 p-6 sm:p-7">
-<!-- ... existing code ... -->
-                </div>
-
-                <!-- Google Haritalar Rota & Konum Paneli -->
-                <div class="bg-white rounded-3xl border border-borderWarm p-6 sm:p-7 shadow-sm">
-                    <div class="flex items-center justify-between gap-2 mb-3">
+                <!-- Zaman Çizelgesi -->
+                <section aria-labelledby="timeline-heading">
+                    <div class="flex items-baseline justify-between mb-6">
                         <div>
-                            <span class="text-[11px] uppercase tracking-widest text-terracotta font-semibold">Konum & Navigasyon</span>
-                            <h4 class="font-serif text-2xl font-medium text-charcoal">Google Haritalar Görünümü</h4>
+                            <span class="text-xs uppercase tracking-[0.2em] text-muted">Günlük Akış</span>
+                            <h3 id="timeline-heading" class="font-serif text-3xl font-medium text-charcoal mt-0.5">
+                                Rota Zaman Çizelgesi
+                            </h3>
                         </div>
-                        <a id="gmaps-direct-link" href="https://www.google.com/maps/search/?api=1&query=Karakoy+Istanbul" target="_blank" rel="noopener noreferrer" class="text-xs font-medium px-3 py-1.5 rounded-xl bg-terracottaLight text-terracotta hover:bg-terracotta hover:text-cream transition-colors">
-                            Haritada Aç ↗
-                        </a>
-                    </div>
-
-                    <p id="gmaps-active-stop-label" class="text-xs text-muted mb-3">
-                        Seçili durak: Tüm rota akışı
-                    </p>
-
-                    <div class="rounded-2xl overflow-hidden border border-borderWarm bg-sand/60 h-56 relative">
-                        <iframe id="gmaps-embed-frame" title="Google Haritalar Rota Önizleme" class="w-full h-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Karakoy%2C%20Istanbul&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
-                    </div>
-
-                    <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
-                        <span id="gmaps-query-preview" class="font-mono truncate max-w-[65%]">Karaköy, İstanbul</span>
-                        <button type="button" id="gmaps-focus-route-btn" class="text-charcoal underline underline-offset-4 hover:text-terracotta cursor-pointer">
-                            Tüm Rotaya Odaklan
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Küçük İpuçları Kartı -->
-                <div class="bg-white rounded-3xl border border-borderWarm p-6 sm:p-8">
-<!-- ... existing code ... -->
-    <!-- Uygulama Mantığı ve Veri Seti -->
-    <script>
-        (function () {
-            'use strict';
-
-            const STORAGE_KEY_PROGRAMS = 'gunun_rotasi_saved_programs_v1';
-            const STORAGE_KEY_DRAFT = 'gunun_rotasi_active_draft_v1';
-
-            // Küratörlü Şehir ve İstanbul Rotaları Verisi
-            const routesData = {
-<!-- ... existing code ... -->
-                    ]
-                },
-                sultanahmet: {
-                    city: 'İstanbul',
-                    mood: 'Tarihi Yarımada & Klasik Miras',
-                    title: 'Sultanahmet & Tarihi Yarımada: İmparatorluk İzi',
-                    note: 'Ayasofya meydanından Gülhane\'nin ağaçlı patikalarına ve Sirkeci\'nin tarihi sokaklarına uzanan köklü kültür yürüyüşü.',
-                    duration: '6 Saat',
-                    distance: '4.1 km',
-                    difficulty: 'Sakin',
-                    atmosphereTitle: '15°C — Açık & Hafif Esintili',
-                    atmosphereDesc: 'Tarihi meydanlar gün içinde güneş alır; Gülhane parkında kısa bir nefes molası günün temposunu dengeler.',
-                    atmosphereTags: ['Tarihi Miras', 'Kültür Rotası', 'Altın Saat: 17:35'],
-                    tips: [
-                        'Tarihi meydan ve avlularda sabah erken saatler daha sakin bir atmosfer sunar.',
-                        'Sirkeci ve Hocapaşa ara sokaklarında geleneksel lokantalar ve çay ocakları bulunur.',
-                        'Gülhane Parkı\'nın Boğaz\'a bakan kıyısında kısa bir yürüyüşle günü yumuşatın.'
-                    ],
-                    stops: [
-                        {
-                            id: 'sa-1',
-                            time: '09:30',
-                            category: 'Kahve & Başlangıç',
-                            name: 'Sultanahmet Meydanı & Tarihi Kahve Durağı',
-                            duration: '50 dk',
-                            desc: 'Sabah ışığında tarihi yarımada meydanında Türk kahvesi ve simit ile güne başlayın.',
-                            completed: false
-                        },
-                        {
-                            id: 'sa-2',
-                            time: '12:00',
-                            category: 'Kültür & Keşif',
-                            name: 'Ayasofya Çevresi & Gülhane Parkı',
-                            duration: '1.5 Saat',
-                            desc: 'Anıtsal mimariyi gördükten sonra Gülhane\'nin gölgeli yürüyüş yollarında ilerleyin.',
-                            completed: false
-                        },
-                        {
-                            id: 'sa-3',
-                            time: '14:30',
-                            category: 'Yerel Lezzet & Mola',
-                            name: 'Hocapaşa Esnaf Lokantası',
-                            duration: '1 Saat',
-                            desc: 'Sirkeci yakınındaki geleneksel esnaf lokantasında klasik ev yemekleri molası.',
-                            completed: false
-                        },
-                        {
-                            id: 'sa-4',
-                            time: '17:30',
-                            category: 'Gün Batımı & Manzara',
-                            name: 'Eminönü & Sirkeci Sahil Hattı',
-                            duration: '1 Saat',
-                            desc: 'Vapur iskeleleri ve Galata Köprüsü manzarası eşliğinde akşamüstü yürüyüşü.',
-                            completed: false
-                        }
-                    ]
-                },
-                beyoglu: {
-                    city: 'İstanbul',
-                    mood: 'Sahne, Pasajlar & Akşam Eğlencesi',
-                    title: 'Beyoğlu & İstiklal: Pasajlar, Sahne ve Akşam Işıkları',
-                    note: 'Tarihi pasajların içinden geçip bağımsız tiyatro, caz/akustik sahne ve samimi mekanlarla akşamı canlandıran hareketli bir rota.',
-                    duration: '7 Saat',
-                    distance: '4.6 km',
-                    difficulty: 'Orta',
-                    atmosphereTitle: '14°C — Akşamüstü Serin',
-                    atmosphereDesc: 'Akşam saatlerinde pasaj içi ve sahne mekanları için hafif bir ceket veya triko idealdir.',
-                    atmosphereTags: ['Sahne & Eğlence', 'Pasajlar', 'Akşam Programı'],
-                    tips: [
-                        'Hafta sonu sahne ve canlı müzik durakları için erken saatte pasaj içi yürüyüşe başlayın.',
-                        'Çiçek Pasajı ve yan sokaklarındaki küçük kitapçı/plakçı duraklarını atlamayın.',
-                        'Akşam programını Karaköy veya Tophane hattına bağlayarak dönüşü kolaylaştırın.'
-                    ],
-                    stops: [
-                        {
-                            id: 'bg-1',
-                            time: '11:30',
-                            category: 'Kahve & Başlangıç',
-                            name: 'İstiklal Ara Sokak Kahve & Tatlı Durağı',
-                            duration: '50 dk',
-                            desc: 'Kalabalık ana caddeden bir sokak içeride sakin bir kahve ve tatlı molası.',
-                            completed: false
-                        },
-                        {
-                            id: 'bg-2',
-                            time: '14:00',
-                            category: 'Kültür & Keşif',
-                            name: 'Atlas Pasajı & Tarihi Sinema/Sanat Hattı',
-                            duration: '1.5 Saat',
-                            desc: 'Pasaj içi sergiler, bağımsız dükkanlar ve tarihi mimari detaylar.',
-                            completed: false
-                        },
-                        {
-                            id: 'bg-3',
-                            time: '17:00',
-                            category: 'Yerel Lezzet & Mola',
-                            name: 'Nevizade & Asmalımescit Akşamüstü Atıştırmalık',
-                            duration: '1.5 Saat',
-                            desc: 'Günün yorgunluğunu atmak için meze, atıştırmalık ve sıcak içecek molası.',
-                            completed: false
-                        },
-                        {
-                            id: 'bg-4',
-                            time: '20:00',
-                            category: 'Gün Batımı & Manzara',
-                            name: 'Beyoğlu Bağımsız Sahne & Akustik/Stand-up Mekanı',
-                            duration: '1.5 Saat',
-                            desc: 'Sahne performansı veya canlı müzik ile keyifli bir akşam eğlencesi.',
-                            completed: false
-                        }
-                    ]
-                },
-                uskudar: {
-                    city: 'İstanbul',
-                    mood: 'Boğaz Karşısı, Ahşap Evler & Huzur',
-                    title: 'Üsküdar & Kuzguncuk: Bostanlar ve Boğaz Esintisi',
-                    note: 'Kuzguncuk\'un komşuluk sıcaklığı ve mahalle bostanından Üsküdar sahilinin Kız Kulesi manzarasına uzanan samimi rota.',
-                    duration: '5.5 Saat',
-                    distance: '3.9 km',
-                    difficulty: 'Sakin',
-                    atmosphereTitle: '15°C — Dingin & Işıklı',
-                    atmosphereDesc: 'Kuzguncuk bostanı ve sahil yürüyüşü için yumuşak bir gün ışığı ve hafif rüzgar bekleniyor.',
-                    atmosphereTags: ['Boğaz Manzarası', 'Mahalle Ruhu', 'Bütçe Dostu'],
-                    tips: [
-                        'Kuzguncuk bostanı ve ara sokaklarında sessiz ve saygılı bir yürüyüş temposu koruyun.',
-                        'Üsküdar sahilinde vapur beklerken veya gün batımında kıyıda oturmak çok keyiflidir.',
-                        'Uygun fiyatlı fırın ve pastane duraklarıyla bütçeyi zorlamadan dolu bir gün geçirebilirsiniz.'
-                    ],
-                    stops: [
-                        {
-                            id: 'uk-1',
-                            time: '10:00',
-                            category: 'Kahve & Başlangıç',
-                            name: 'Kuzguncuk İcadiye Caddesi Fırını',
-                            duration: '50 dk',
-                            desc: 'Mahalle fırınından taze açma/poğaça ve çay ile samimi bir sabah.',
-                            completed: false
-                        },
-                        {
-                            id: 'uk-2',
-                            time: '12:30',
-                            category: 'Kültür & Keşif',
-                            name: 'Kuzguncuk Bostanı & Ahşap Ev Sokakları',
-                            duration: '1.5 Saat',
-                            desc: 'Yeşil bostan dokusu ve renkli ahşap evler arasında dingin bir keşif.',
-                            completed: false
-                        },
-                        {
-                            id: 'uk-3',
-                            time: '15:00',
-                            category: 'Yerel Lezzet & Mola',
-                            name: 'Üsküdar Sahil Çay Bahçesi & Kokoreç/Aperatif',
-                            duration: '1 Saat',
-                            desc: 'Boğaz\'a karşı uygun fiyatlı atıştırmalık ve sıcak çay molası.',
-                            completed: false
-                        },
-                        {
-                            id: 'uk-4',
-                            time: '17:30',
-                            category: 'Gün Batımı & Manzara',
-                            name: 'Üsküdar Sahil & Kız Kulesi Karşısı',
-                            duration: '1 Saat',
-                            desc: 'Karşı kıyıdaki Tarihi Yarımada ve Boğaz ışıkları eşliğinde gün sonu.',
-                            completed: false
-                        }
-                    ]
-                }
-            };
-
-            // İstanbul Geniş Katalog Verisi (Tarihi, Eğlence, Kültür, Uygun Fiyatlı, Açık Hava)
-            const istanbulCatalog = [
-                {
-                    id: 'cat-1',
-                    name: 'Emirgan Korusu Sabah Yürüyüşü',
-                    district: 'Adalar & Sahil Hatları',
-                    category: 'Açık Hava & Sahil',
-                    budget: 'Ücretsiz / Cüzi',
-                    priceNote: 'Ücretsiz giriş',
-                    vibe: 'Açık Hava',
-                    timeSlot: '09:30',
-                    duration: '1.5 Saat',
-                    desc: 'Asırlık ağaçlar, göletler ve Boğaz manzaralı patikalarda sakin ve bütçe dostu yürüyüş.',
-                    mapsQuery: 'Emirgan Korusu Sariyer Istanbul'
-                },
-                {
-                    id: 'cat-2',
-                    name: 'Kadıköy Haldun Taner / Bağımsız Sahne',
-                    district: 'Kadıköy & Moda',
-                    category: 'Eğlence & Sahne',
-                    budget: 'Uygun Fiyatlı',
-                    priceNote: 'Öğrenci / uygun bilet seçenekleri',
-                    vibe: 'Eğlence & Sahne',
-                    timeSlot: '20:00',
-                    duration: '2 Saat',
-                    desc: 'Tiyatro, doğaçlama veya bağımsız sahne gösterisi ile keyifli bir akşam buluşması.',
-                    mapsQuery: 'Kadikoy Moda Sahne Istanbul'
-                },
-                {
-                    id: 'cat-3',
-                    name: 'Karaköy - Kadıköy / Eminönü Vapur Turu',
-                    district: 'Adalar & Sahil Hatları',
-                    category: 'Uygun Fiyatlı & Sosyal',
-                    budget: 'Ücretsiz / Cüzi',
-                    priceNote: 'Şehir Hatları standart bilet',
-                    vibe: 'Uygun Fiyatlı',
-                    timeSlot: '17:30',
-                    duration: '45 dk',
-                    desc: 'Simit ve çay eşliğinde Boğaz rüzgarı ve martılarla en keyifli uygun fiyatlı deneyim.',
-                    mapsQuery: 'Karakoy Vapur Iskelesi Istanbul'
-                },
-                {
-                    id: 'cat-4',
-                    name: 'Yerebatan & Sultanahmet Tarihi Hattı',
-                    district: 'Sultanahmet & Tarihi Yarımada',
-                    category: 'Tarihi & Miras',
-                    budget: 'Orta Segment',
-                    priceNote: 'Müze / giriş ücreti uygulanır',
-                    vibe: 'Tarihi & Kültür',
-                    timeSlot: '11:00',
-                    duration: '1.5 Saat',
-                    desc: 'Tarihi yarımadanın mistik atmosferinde sütunlar, kubbeler ve taş işçiliği keşfi.',
-                    mapsQuery: 'Sultanahmet Meydani Fatih Istanbul'
-                },
-                {
-                    id: 'cat-5',
-                    name: 'Beyoğlu Caz & Akustik Kulüp Akşamı',
-                    district: 'Beyoğlu & İstiklal',
-                    category: 'Eğlence & Sahne',
-                    budget: 'Orta Segment',
-                    priceNote: 'Sahne giriş / minimum harcama',
-                    vibe: 'Eğlence & Sahne',
-                    timeSlot: '21:00',
-                    duration: '2 Saat',
-                    desc: 'Loş ışıkta canlı caz veya akustik performans dinleyerek samimi bir akşam geçirme fırsatı.',
-                    mapsQuery: 'Asmalimescit Beyoglu Istanbul'
-                },
-                {
-                    id: 'cat-6',
-                    name: 'Maçka Demokrasi Parkı & Teleferik Hattı',
-                    district: 'Beşiktaş & Ortaköy',
-                    category: 'Açık Hava & Sahil',
-                    budget: 'Uygun Fiyatlı',
-                    priceNote: 'Park ücretsiz, hat cüzi',
-                    vibe: 'Açık Hava',
-                    timeSlot: '15:30',
-                    duration: '1 Saat',
-                    desc: 'Şehrin merkezinde yeşillik arasında yürüyüş ve vadi manzaralı kısa geçiş.',
-                    mapsQuery: 'Macka Demokrasi Parki Sisli Istanbul'
-                },
-                {
-                    id: 'cat-7',
-                    name: 'Balat Antikacı & Sanat Sokakları',
-                    district: 'Balat & Fener',
-                    category: 'Kültür & Sanat',
-                    budget: 'Ücretsiz / Cüzi',
-                    priceNote: 'Gezmesi ücretsiz',
-                    vibe: 'Tarihi & Kültür',
-                    timeSlot: '13:00',
-                    duration: '1.5 Saat',
-                    desc: 'Eski plaklar, gravürler, seramik atölyeleri ve cumbalı sokaklarda ilham verici tur.',
-                    mapsQuery: 'Balat Fatih Istanbul'
-                },
-                {
-                    id: 'cat-8',
-                    name: 'Kuzguncuk & Üsküdar Sahil Çay Molası',
-                    district: 'Üsküdar & Kuzguncuk',
-                    category: 'Uygun Fiyatlı & Sosyal',
-                    budget: 'Ücretsiz / Cüzi',
-                    priceNote: 'Bütçe dostu çay & atıştırmalık',
-                    vibe: 'Sakin Sohbet',
-                    timeSlot: '16:30',
-                    duration: '1 Saat',
-                    desc: 'Uzun ve keyifli sohbetler için gürültüden uzak, manzaralı ve ekonomik bir mola.',
-                    mapsQuery: 'Kuzguncuk Uskudar Istanbul'
-                },
-                {
-                    id: 'cat-9',
-                    name: 'Büyükada / Heybeliada Faytonsuz Ada Günü',
-                    district: 'Adalar & Sahil Hatları',
-                    category: 'Açık Hava & Sahil',
-                    budget: 'Uygun Fiyatlı',
-                    priceNote: 'Vapur + yürüyüş / bisiklet',
-                    vibe: 'Açık Hava',
-                    timeSlot: '10:30',
-                    duration: '4 Saat',
-                    desc: 'Motorlu taşıtsız adada çam kokusu, köşkler ve kıyı yürüyüşüyle tam gün kaçamağı.',
-                    mapsQuery: 'Buyukada Adalar Istanbul'
-                }
-            ];
-
-            // Plansız Date Modu Şablonları
-            const spontaneousTemplates = [
-                {
-                    id: 'sp-1',
-                    title: 'Bütçe Dostu Sahil & Sohbet Date’i',
-                    mood: 'Uygun Fiyatlı',
-                    budgetTag: 'Uygun Fiyatlı',
-                    vibeTag: 'Sakin Sohbet',
-                    routeKey: 'moda',
-                    summary: 'Moda’da kahve ve sahaf turunun ardından kayalıklarda gün batımı sohbeti.',
-                    stops: [
-                        { time: '16:00', category: 'Kahve & Başlangıç', name: 'Moda Kahve & Kitap Durağı', duration: '50 dk', desc: 'Sıcak kahve eşliğinde günün ilk sohbeti.' },
-                        { time: '17:15', category: 'Gün Batımı & Manzara', name: 'Moda Sahil Kayalıkları', duration: '1 Saat', desc: 'Denize karşı sakin yürüyüş ve gün batımı.' },
-                        { time: '18:30', category: 'Yerel Lezzet & Mola', name: 'Kadıköy Uygun Fiyatlı Esnaf / Atıştırmalık', duration: '1 Saat', desc: 'Bütçeyi yormayan samimi akşam atıştırmalığı.' }
-                    ]
-                },
-                {
-                    id: 'sp-2',
-                    title: 'Tarihi Sokaklar & Kahve Molası',
-                    mood: 'Tarihi & Kültür',
-                    budgetTag: 'Orta Segment',
-                    vibeTag: 'Tarihi & Kültür',
-                    routeKey: 'karakoy',
-                    summary: 'Kamondo Merdivenleri, SALT Galata çevresi ve rıhtımda akşam ışıkları.',
-                    stops: [
-                        { time: '14:30', category: 'Kültür & Keşif', name: 'Kamondo Merdivenleri & Galata Çevresi', duration: '1 Saat', desc: 'Taş sokaklar ve tarihi mimari keşfi.' },
-                        { time: '16:00', category: 'Kahve & Başlangıç', name: 'Karaköy Ara Sokak Kahvecisi', duration: '45 dk', desc: 'Tatlı ve filtre kahve ile kısa mola.' },
-                        { time: '17:30', category: 'Gün Batımı & Manzara', name: 'Karaköy Rıhtım', duration: '1 Saat', desc: 'Boğaz ve Tarihi Yarımada silüetine karşı yürüyüş.' }
-                    ]
-                },
-                {
-                    id: 'sp-3',
-                    title: 'Akşam Sahne, Eğlence & Pasaj Turu',
-                    mood: 'Eğlence & Sahne',
-                    budgetTag: 'Orta Segment',
-                    vibeTag: 'Eğlence & Sahne',
-                    routeKey: 'beyoglu',
-                    summary: 'Beyoğlu pasajlarında akşamüstü keşfi ve ardından sahne/canlı performans.',
-                    stops: [
-                        { time: '17:00', category: 'Kültür & Keşif', name: 'İstiklal & Tarihi Pasajlar', duration: '1 Saat', desc: 'Pasaj içi dükkanlar ve sanat durakları.' },
-                        { time: '18:30', category: 'Yerel Lezzet & Mola', name: 'Asmalımescit Atıştırmalık Durağı', duration: '1 Saat', desc: 'Sahne öncesi hafif akşam yemeği/atıştırmalık.' },
-                        { time: '20:00', category: 'Kültür & Keşif', name: 'Beyoğlu Bağımsız Sahne / Canlı Müzik', duration: '1.5 Saat', desc: 'Keyifli sahne performansı ile enerjik akşam.' }
-                    ]
-                },
-                {
-                    id: 'sp-4',
-                    title: 'Boğaz Karşısı Sakin Sohbet Rotası',
-                    mood: 'Sakin Sohbet',
-                    budgetTag: 'Ücretsiz / Cüzi',
-                    vibeTag: 'Sakin Sohbet',
-                    routeKey: 'uskudar',
-                    summary: 'Kuzguncuk sokaklarından Üsküdar sahiline uzanan huzurlu ve ekonomik buluşma.',
-                    stops: [
-                        { time: '15:30', category: 'Kültür & Keşif', name: 'Kuzguncuk Bostanı & Ara Sokaklar', duration: '1 Saat', desc: 'Sakin, yeşil ve samimi mahalle yürüyüşü.' },
-                        { time: '17:00', category: 'Gün Batımı & Manzara', name: 'Üsküdar Sahil Kıyısı', duration: '1 Saat', desc: 'Boğaz esintisi ve manzaraya karşı uzun sohbet.' }
-                    ]
-                },
-                {
-                    id: 'sp-5',
-                    title: 'Açık Hava & Rüzgarlı Sahil Kaçamağı',
-                    mood: 'Açık Hava',
-                    budgetTag: 'Ücretsiz / Cüzi',
-                    vibeTag: 'Açık Hava',
-                    routeKey: 'moda',
-                    summary: 'Açık havada tempolu ama keyifli yürüyüş ve deniz kenarı molası.',
-                    stops: [
-                        { time: '15:00', category: 'Kültür & Keşif', name: 'Yoğurtçu Parkı & Sahil Hattı', duration: '1 Saat', desc: 'Açık havada yürüyüş ve doğa molası.' },
-                        { time: '16:30', category: 'Kahve & Başlangıç', name: 'Sahil Kahve Noktası', duration: '45 dk', desc: 'Açık havada taze kahve molası.' }
-                    ]
-                }
-            ];
-
-            // XSS güvenliği için metin kaçış yardımcısı
-<!-- ... existing code ... -->
-            // Uygulama durumu
-            let currentRouteKey = 'karakoy';
-            let stateRoutes = JSON.parse(JSON.stringify(routesData));
-            let savedPrograms = [];
-            let currentSpontaneousMood = 'all';
-            let activeSpontaneousPlan = spontaneousTemplates[0];
-            let toastTimer = null;
-
-            // DOM referansları
-            const routeSelector = document.getElementById('route-selector');
-            const timelineContainer = document.getElementById('timeline-container');
-            const addStopForm = document.getElementById('add-stop-form');
-            const resetProgressBtn = document.getElementById('reset-progress-btn');
-            const toastEl = document.getElementById('toast-notification');
-            const toastMessageEl = document.getElementById('toast-message');
-
-            // Yeni özellik DOM referansları
-            const programDateInput = document.getElementById('program-date-input');
-            const programStartTimeInput = document.getElementById('program-start-time');
-            const programTitleInput = document.getElementById('program-title-input');
-            const programCustomNoteInput = document.getElementById('program-custom-note');
-            const saveDatedProgramBtn = document.getElementById('save-dated-program-btn');
-            const savedProgramsListEl = document.getElementById('saved-programs-list');
-            const savedProgramsCountEl = document.getElementById('saved-programs-count');
-            const shareProgramBtn = document.getElementById('share-program-btn');
-            const openFullGmapsRouteBtn = document.getElementById('open-full-gmaps-route-btn');
-
-            const gmapsEmbedFrame = document.getElementById('gmaps-embed-frame');
-            const gmapsDirectLink = document.getElementById('gmaps-direct-link');
-            const gmapsActiveStopLabel = document.getElementById('gmaps-active-stop-label');
-            const gmapsQueryPreview = document.getElementById('gmaps-query-preview');
-            const gmapsFocusRouteBtn = document.getElementById('gmaps-focus-route-btn');
-
-            const spontaneousResultCard = document.getElementById('spontaneous-result-card');
-            const generateRandomDateBtn = document.getElementById('generate-random-date-btn');
-
-            const catalogDistrictFilter = document.getElementById('catalog-district-filter');
-            const catalogCategoryFilter = document.getElementById('catalog-category-filter');
-            const catalogBudgetFilter = document.getElementById('catalog-budget-filter');
-            const catalogSearchInput = document.getElementById('catalog-search-input');
-            const catalogGridEl = document.getElementById('catalog-grid');
-            const catalogCountLabel = document.getElementById('catalog-count-label');
-
-            // Bildirim kutusunu gösterir
-<!-- ... existing code ... -->
-            // Kategoriye göre rozet rengi belirler
-<!-- ... existing code ... -->
-            // Google Haritalar panelini günceller
-            function updateMapsPanel(queryText, labelText) {
-                const cleanQuery = (queryText || `${stateRoutes[currentRouteKey].city} ${stateRoutes[currentRouteKey].title}`).trim();
-                const encoded = encodeURIComponent(cleanQuery);
-                gmapsEmbedFrame.src = `https://maps.google.com/maps?q=${encoded}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
-                gmapsDirectLink.href = `https://www.google.com/maps/search/?api=1&query=${encoded}`;
-                gmapsActiveStopLabel.textContent = labelText || `Seçili rota: ${stateRoutes[currentRouteKey].title}`;
-                gmapsQueryPreview.textContent = cleanQuery;
-            }
-
-            // Tüm rota için çok duraklı veya genel Google Maps rotası açar
-            function openFullRouteInGoogleMaps() {
-                const route = stateRoutes[currentRouteKey];
-                const stops = route.stops || [];
-                if (stops.length >= 2) {
-                    const origin = encodeURIComponent(`${stops[0].name} ${route.city}`);
-                    const destination = encodeURIComponent(`${stops[stops.length - 1].name} ${route.city}`);
-                    const waypoints = stops
-                        .slice(1, -1)
-                        .map((s) => encodeURIComponent(`${s.name} ${route.city}`))
-                        .join('|');
-                    const url = waypoints
-                        ? `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&waypoints=${waypoints}&travelmode=walking`
-                        : `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=walking`;
-                    window.open(url, '_blank', 'noopener,noreferrer');
-                } else {
-                    const fallbackQuery = encodeURIComponent(`${route.title} ${route.city}`);
-                    window.open(`https://www.google.com/maps/search/?api=1&query=${fallbackQuery}`, '_blank', 'noopener,noreferrer');
-                }
-            }
-
-            // İlerleme çubuğunu ve yüzdesini günceller
-<!-- ... existing code ... -->
-                                    <span class="text-xs font-medium ${isDone ? 'text-sage' : 'text-charcoal/80'}">
-                                        ${isDone ? 'Tamamlandı' : 'Tamamlandı olarak işaretle'}
-                                    </span>
-                                </button>
-
-                                <div class="flex items-center gap-3">
-                                    <button type="button" data-action="map" data-id="${escapeHTML(stop.id)}" class="text-xs font-medium text-sage hover:text-terracotta transition-colors cursor-pointer">
-                                        Haritada Gör
-                                    </button>
-                                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stop.name + ' ' + stateRoutes[currentRouteKey].city)}" target="_blank" rel="noopener noreferrer" class="text-xs text-muted hover:text-charcoal transition-colors">
-                                        Google Maps ↗
-                                    </a>
-                                    ${stop.isCustom ? `
-                                        <button type="button" data-action="remove" data-id="${escapeHTML(stop.id)}" class="text-xs text-muted hover:text-terracotta transition-colors cursor-pointer px-1">
-                                            Kaldır
-                                        </button>
-                                    ` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-
-                    timelineContainer.appendChild(item);
-                });
-
-                updateProgress();
-            }
-
-            // Seçili rotanın özet, atmosfer ve ipucu alanlarını günceller
-            function loadRoute(routeKey) {
-                if (!stateRoutes[routeKey]) return;
-                currentRouteKey = routeKey;
-                const route = stateRoutes[routeKey];
-
-                document.getElementById('route-city-badge').textContent = route.city;
-                document.getElementById('route-mood-badge').textContent = route.mood;
-                document.getElementById('route-title').textContent = route.title;
-                document.getElementById('route-note').textContent = route.note;
-                document.getElementById('route-duration').textContent = route.duration;
-                document.getElementById('route-distance').textContent = route.distance;
-                document.getElementById('route-difficulty').textContent = route.difficulty;
-
-                document.getElementById('atmosphere-title').textContent = route.atmosphereTitle;
-                document.getElementById('atmosphere-desc').textContent = route.atmosphereDesc;
-
-                const tagsEl = document.getElementById('atmosphere-tags');
-                tagsEl.innerHTML = route.atmosphereTags
-                    .map((tag) => `<span class="text-xs px-3 py-1 rounded-full bg-white/80 text-charcoal/80">${escapeHTML(tag)}</span>`)
-                    .join('');
-
-                const tipsEl = document.getElementById('tips-list');
-                tipsEl.innerHTML = route.tips
-                    .map((tip, index) => `
-                        <li class="flex items-start gap-3 pb-3.5 ${index !== route.tips.length - 1 ? 'border-b border-borderWarm/60' : ''}">
-                            <span class="font-serif italic text-terracotta font-semibold text-base">0${index + 1}.</span>
-                            <span class="leading-relaxed">${escapeHTML(tip)}</span>
-                        </li>
-                    `)
-                    .join('');
-
-                if (!programTitleInput.value.trim()) {
-                    programTitleInput.placeholder = `${route.city} — ${route.mood}`;
-                }
-
-                const firstStopQuery = route.stops && route.stops.length > 0
-                    ? `${route.stops[0].name}, ${route.city}`
-                    : `${route.title}, ${route.city}`;
-                updateMapsPanel(firstStopQuery, `Rota başlangıcı: ${route.title}`);
-
-                renderTimeline();
-            }
-
-            // Plansız Date Modu kartını çizer
-            function renderSpontaneousCard() {
-                const plan = activeSpontaneousPlan || spontaneousTemplates[0];
-                const stopsHtml = plan.stops
-                    .map((s) => `
-                        <div class="bg-white rounded-xl border border-borderWarm/80 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <span class="font-mono text-xs font-semibold text-terracotta">${escapeHTML(s.time)}</span>
-                                    <span class="text-sm font-medium text-charcoal">${escapeHTML(s.name)}</span>
-                                </div>
-                                <p class="text-xs text-muted mt-0.5">${escapeHTML(s.desc)}</p>
-                            </div>
-                            <span class="text-[11px] font-mono text-muted shrink-0">${escapeHTML(s.duration)}</span>
-                        </div>
-                    `)
-                    .join('');
-
-                spontaneousResultCard.innerHTML = `
-                    <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4 mb-4">
-                        <div>
-                            <div class="flex flex-wrap items-center gap-2 mb-2">
-                                <span class="text-xs px-2.5 py-0.5 rounded-full bg-terracottaLight text-terracotta font-medium">${escapeHTML(plan.mood)}</span>
-                                <span class="text-xs px-2.5 py-0.5 rounded-full bg-sageLight text-sage font-medium">${escapeHTML(plan.budgetTag)}</span>
-                                <span class="text-xs px-2.5 py-0.5 rounded-full bg-sand text-charcoal">${escapeHTML(plan.vibeTag)}</span>
-                            </div>
-                            <h3 class="font-serif text-2xl sm:text-3xl font-medium text-charcoal">${escapeHTML(plan.title)}</h3>
-                            <p class="text-sm text-muted mt-1">${escapeHTML(plan.summary)}</p>
-                        </div>
-                        <div class="flex flex-wrap gap-2 shrink-0">
-                            <button type="button" id="apply-spontaneous-to-timeline-btn" class="bg-charcoal hover:bg-terracotta text-cream text-xs font-medium px-4 py-2.5 rounded-xl transition-colors cursor-pointer">
-                                Zaman Çizelgesine Aktar
-                            </button>
-                            <button type="button" id="save-spontaneous-dated-btn" class="bg-sage hover:bg-charcoal text-cream text-xs font-medium px-4 py-2.5 rounded-xl transition-colors cursor-pointer">
-                                Tarihli Programa Kaydet
-                            </button>
-                        </div>
-                    </div>
-                    <div class="space-y-2.5">
-                        ${stopsHtml}
-                    </div>
-                `;
-
-                document.getElementById('apply-spontaneous-to-timeline-btn').addEventListener('click', () => {
-                    const targetKey = stateRoutes[plan.routeKey] ? plan.routeKey : currentRouteKey;
-                    routeSelector.value = targetKey;
-                    loadRoute(targetKey);
-                    const mappedStops = plan.stops.map((st, idx) => ({
-                        id: `sp-${Date.now()}-${idx}`,
-                        time: st.time,
-                        category: st.category,
-                        name: st.name,
-                        duration: st.duration,
-                        desc: st.desc,
-                        completed: false,
-                        isCustom: true
-                    }));
-                    stateRoutes[targetKey].stops = [...stateRoutes[targetKey].stops, ...mappedStops].sort((a, b) => a.time.localeCompare(b.time));
-                    renderTimeline();
-                    showToast(`"${plan.title}" zaman çizelgesine eklendi.`);
-                });
-
-                document.getElementById('save-spontaneous-dated-btn').addEventListener('click', () => {
-                    const dateVal = programDateInput.value || new Date().toISOString().slice(0, 10);
-                    const newProg = {
-                        id: `prog-${Date.now()}`,
-                        date: dateVal,
-                        startTime: plan.stops[0]?.time || '15:00',
-                        title: plan.title,
-                        routeKey: stateRoutes[plan.routeKey] ? plan.routeKey : currentRouteKey,
-                        note: `Plansız Date Modu (${plan.mood}) — ${plan.summary}`,
-                        stops: plan.stops.map((st, idx) => ({
-                            id: `psp-${Date.now()}-${idx}`,
-                            time: st.time,
-                            category: st.category,
-                            name: st.name,
-                            duration: st.duration,
-                            desc: st.desc,
-                            completed: false,
-                            isCustom: true
-                        }))
-                    };
-                    savedPrograms.unshift(newProg);
-                    persistSavedPrograms();
-                    renderSavedProgramsList();
-                    showToast(`"${plan.title}" (${dateVal}) kaydedilen programlara eklendi.`);
-                });
-            }
-
-            // Rastgele veya seçili ruh haline göre date önerisi üretir
-            function generateSpontaneousDate() {
-                const pool = currentSpontaneousMood === 'all'
-                    ? spontaneousTemplates
-                    : spontaneousTemplates.filter((t) => t.mood === currentSpontaneousMood);
-                const list = pool.length > 0 ? pool : spontaneousTemplates;
-                const randomIndex = Math.floor(Math.random() * list.length);
-                activeSpontaneousPlan = list[randomIndex];
-                renderSpontaneousCard();
-                showToast(`Yeni date önerisi: "${activeSpontaneousPlan.title}"`);
-            }
-
-            // İstanbul Kataloğunu filtreler ve çizer
-            function renderCatalog() {
-                const district = catalogDistrictFilter.value;
-                const category = catalogCategoryFilter.value;
-                const budget = catalogBudgetFilter.value;
-                const search = catalogSearchInput.value.trim().toLowerCase();
-
-                const filtered = istanbulCatalog.filter((item) => {
-                    const matchDistrict = district === 'all' || item.district === district;
-                    const matchCategory = category === 'all' || item.category === category;
-                    const matchBudget = budget === 'all' || item.budget === budget;
-                    const matchSearch = !search
-                        || item.name.toLowerCase().includes(search)
-                        || item.desc.toLowerCase().includes(search)
-                        || item.district.toLowerCase().includes(search);
-                    return matchDistrict && matchCategory && matchBudget && matchSearch;
-                });
-
-                catalogCountLabel.textContent = `${filtered.length} Mekan / Etkinlik`;
-
-                if (filtered.length === 0) {
-                    catalogGridEl.innerHTML = `
-                        <div class="col-span-full bg-cream rounded-2xl border border-borderWarm p-8 text-center text-sm text-muted">
-                            Seçilen filtrelere uygun İstanbul mekanı bulunamadı. Filtreleri sıfırlamayı deneyin.
-                        </div>
-                    `;
-                    return;
-                }
-
-                catalogGridEl.innerHTML = filtered
-                    .map((item) => {
-                        const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.mapsQuery)}`;
-                        return `
-                            <article class="bg-cream rounded-2xl border border-borderWarm p-5 flex flex-col justify-between hover:border-terracotta/50 transition-colors">
-                                <div>
-                                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
-                                        <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white text-charcoal border border-borderWarm/70">
-                                            ${escapeHTML(item.district)}
-                                        </span>
-                                        <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full ${
-                                            item.budget === 'Ücretsiz / Cüzi'
-                                                ? 'bg-sageLight text-sage'
-                                                : item.budget === 'Uygun Fiyatlı'
-                                                    ? 'bg-terracottaLight text-terracotta'
-                                                    : 'bg-sand text-charcoal'
-                                        }">
-                                            ${escapeHTML(item.budget)}
-                                        </span>
-                                    </div>
-
-                                    <h3 class="font-serif text-xl font-medium text-charcoal mb-1">${escapeHTML(item.name)}</h3>
-                                    <p class="text-[11px] uppercase tracking-wider text-muted mb-2.5">${escapeHTML(item.category)} • ${escapeHTML(item.priceNote)}</p>
-                                    <p class="text-xs sm:text-sm text-charcoal/80 leading-relaxed mb-4">${escapeHTML(item.desc)}</p>
-                                </div>
-
-                                <div class="pt-3 border-t border-borderWarm/70 flex flex-wrap items-center justify-between gap-2">
-                                    <button type="button" data-catalog-add="${escapeHTML(item.id)}" class="text-xs font-medium bg-charcoal hover:bg-terracotta text-cream px-3.5 py-2 rounded-xl transition-colors cursor-pointer">
-                                        + Rotaya Ekle
-                                    </button>
-                                    <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-sage hover:text-terracotta transition-colors">
-                                        Google Haritalar ↗
-                                    </a>
-                                </div>
-                            </article>
-                        `;
-                    })
-                    .join('');
-            }
-
-            // Kaydedilen tarihli programları localStorage'a kaydeder ve yükler
-            function persistSavedPrograms() {
-                try {
-                    localStorage.setItem(STORAGE_KEY_PROGRAMS, JSON.stringify(savedPrograms));
-                } catch (_) {
-                    // Depolama kotası veya gizli modda sessizce geç
-                }
-            }
-
-            function loadSavedPrograms() {
-                try {
-                    const raw = localStorage.getItem(STORAGE_KEY_PROGRAMS);
-                    if (raw) {
-                        const parsed = JSON.parse(raw);
-                        if (Array.isArray(parsed)) {
-                            savedPrograms = parsed;
-                        }
-                    }
-                } catch (_) {
-                    savedPrograms = [];
-                }
-            }
-
-            function renderSavedProgramsList() {
-                savedProgramsCountEl.textContent = `${savedPrograms.length} Kayıt`;
-                if (savedPrograms.length === 0) {
-                    savedProgramsListEl.innerHTML = `
-                        <p class="text-xs text-muted py-3">Henüz tarihli program kaydetmediniz. Tarih seçip "Tarihli Programı Kaydet" butonuna basabilirsiniz.</p>
-                    `;
-                    return;
-                }
-
-                savedProgramsListEl.innerHTML = savedPrograms
-                    .map((prog) => `
-                        <div class="bg-white rounded-xl border border-borderWarm/80 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <span class="font-mono text-xs px-2 py-0.5 rounded bg-sand text-charcoal">${escapeHTML(prog.date)}</span>
-                                    <span class="text-xs font-medium text-charcoal">${escapeHTML(prog.title)}</span>
-                                </div>
-                                <p class="text-[11px] text-muted mt-0.5">${(prog.stops || []).length} durak • Başlangıç: ${escapeHTML(prog.startTime || '09:30')}</p>
-                            </div>
-                            <div class="flex items-center gap-2 shrink-0">
-                                <button type="button" data-prog-load="${escapeHTML(prog.id)}" class="text-xs font-medium text-terracotta hover:underline cursor-pointer">
-                                    Yükle
-                                </button>
-                                <button type="button" data-prog-dup="${escapeHTML(prog.id)}" class="text-xs font-medium text-sage hover:underline cursor-pointer">
-                                    Kopyala
-                                </button>
-                                <button type="button" data-prog-del="${escapeHTML(prog.id)}" class="text-xs text-muted hover:text-charcoal cursor-pointer">
-                                    Sil
-                                </button>
-                            </div>
-                        </div>
-                    `)
-                    .join('');
-            }
-
-            // Ücretli Vasıf & Gelir Simülatörü hesaplaması
-            function updateMonetizationSimulator() {
-                const packages = Number(document.getElementById('sim-packages').value);
-                const price = Number(document.getElementById('sim-price').value);
-                const sponsors = Number(document.getElementById('sim-sponsors').value);
-                const feePct = Number(document.getElementById('sim-fee').value);
-
-                const sponsorUnitIncome = 2500;
-                const grossSales = packages * price;
-                const sponsorTotal = sponsors * sponsorUnitIncome;
-                const grossTotal = grossSales + sponsorTotal;
-                const feeAmount = Math.round(grossTotal * (feePct / 100));
-                const netIncome = grossTotal - feeAmount;
-
-                const fmt = (n) => `${n.toLocaleString('tr-TR')} ₺`;
-
-                document.getElementById('sim-packages-val').textContent = `${packages} Adet`;
-                document.getElementById('sim-price-val').textContent = fmt(price);
-                document.getElementById('sim-sponsors-val').textContent = `${sponsors} Mekan`;
-                document.getElementById('sim-fee-val').textContent = `%${feePct}`;
-
-                document.getElementById('sim-net-income').textContent = fmt(netIncome);
-                document.getElementById('sim-gross-sales').textContent = fmt(grossSales);
-                document.getElementById('sim-sponsor-total').textContent = fmt(sponsorTotal);
-                document.getElementById('sim-fee-total').textContent = `-${fmt(feeAmount)}`;
-            }
-
-            // Zaman çizelgesi üzerindeki tamamlama, harita ve kaldırma aksiyonları
-            timelineContainer.addEventListener('click', (event) => {
-                const btn = event.target.closest('button[data-action]');
-                if (!btn) return;
-
-                const action = btn.getAttribute('data-action');
-                const stopId = btn.getAttribute('data-id');
-                const stops = stateRoutes[currentRouteKey].stops;
-
-                if (action === 'toggle') {
-                    const target = stops.find((s) => s.id === stopId);
-                    if (target) {
-                        target.completed = !target.completed;
-                        renderTimeline();
-                        if (target.completed) {
-                            showToast(`"${target.name}" tamamlandı olarak işaretlendi.`);
-                        }
-                    }
-                } else if (action === 'map') {
-                    const target = stops.find((s) => s.id === stopId);
-                    if (target) {
-                        updateMapsPanel(`${target.name}, ${stateRoutes[currentRouteKey].city}`, `Seçili durak: ${target.name} (${target.time})`);
-                        showToast(`Harita "${target.name}" konumuna odaklandı.`);
-                    }
-                } else if (action === 'remove') {
-                    const target = stops.find((s) => s.id === stopId);
-                    stateRoutes[currentRouteKey].stops = stops.filter((s) => s.id !== stopId);
-                    renderTimeline();
-                    showToast(target ? `"${target.name}" rotadan kaldırıldı.` : 'Durak kaldırıldı.');
-                }
-            });
-
-            // Katalogdan aktif zaman çizelgesine durak ekleme
-            catalogGridEl.addEventListener('click', (event) => {
-                const btn = event.target.closest('button[data-catalog-add]');
-                if (!btn) return;
-                const catId = btn.getAttribute('data-catalog-add');
-                const found = istanbulCatalog.find((c) => c.id === catId);
-                if (!found) return;
-
-                const newStop = {
-                    id: `catstop-${Date.now()}-${Math.random().toString(36).slice(2, 5)}`,
-                    time: found.timeSlot || '15:00',
-                    category: found.category,
-                    name: found.name,
-                    duration: found.duration,
-                    desc: `${found.desc} (${found.budget} — ${found.priceNote})`,
-                    completed: false,
-                    isCustom: true
-                };
-
-                const stops = stateRoutes[currentRouteKey].stops;
-                stops.push(newStop);
-                stops.sort((a, b) => a.time.localeCompare(b.time));
-                renderTimeline();
-                updateMapsPanel(`${found.mapsQuery}`, `Katalog durağı: ${found.name}`);
-                showToast(`"${found.name}" aktif zaman çizelgesine eklendi.`);
-            });
-
-            // Kayıtlı tarihli programları yükleme / kopyalama / silme
-            savedProgramsListEl.addEventListener('click', (event) => {
-                const loadBtn = event.target.closest('button[data-prog-load]');
-                const dupBtn = event.target.closest('button[data-prog-dup]');
-                const delBtn = event.target.closest('button[data-prog-del]');
-
-                if (loadBtn) {
-                    const id = loadBtn.getAttribute('data-prog-load');
-                    const prog = savedPrograms.find((p) => p.id === id);
-                    if (!prog) return;
-                    const rKey = stateRoutes[prog.routeKey] ? prog.routeKey : currentRouteKey;
-                    currentRouteKey = rKey;
-                    routeSelector.value = rKey;
-                    stateRoutes[rKey].stops = JSON.parse(JSON.stringify(prog.stops || []));
-                    programDateInput.value = prog.date || '';
-                    programStartTimeInput.value = prog.startTime || '09:30';
-                    programTitleInput.value = prog.title || '';
-                    programCustomNoteInput.value = prog.note || '';
-                    loadRoute(rKey);
-                    showToast(`"${prog.title}" (${prog.date}) programı yüklendi.`);
-                } else if (dupBtn) {
-                    const id = dupBtn.getAttribute('data-prog-dup');
-                    const prog = savedPrograms.find((p) => p.id === id);
-                    if (!prog) return;
-                    const copy = {
-                        ...JSON.parse(JSON.stringify(prog)),
-                        id: `prog-${Date.now()}`,
-                        title: `${prog.title} (Kopya)`
-                    };
-                    savedPrograms.unshift(copy);
-                    persistSavedPrograms();
-                    renderSavedProgramsList();
-                    showToast(`"${prog.title}" kopyalandı.`);
-                } else if (delBtn) {
-                    const id = delBtn.getAttribute('data-prog-del');
-                    savedPrograms = savedPrograms.filter((p) => p.id !== id);
-                    persistSavedPrograms();
-                    renderSavedProgramsList();
-                    showToast('Kayıtlı program silindi.');
-                }
-            });
-
-            // Tarihli program kaydetme
-            saveDatedProgramBtn.addEventListener('click', () => {
-                const dateVal = programDateInput.value || new Date().toISOString().slice(0, 10);
-                const startTime = programStartTimeInput.value || '09:30';
-                const route = stateRoutes[currentRouteKey];
-                const title = programTitleInput.value.trim() || `${route.city} — ${route.title}`;
-                const note = programCustomNoteInput.value.trim();
-
-                const record = {
-                    id: `prog-${Date.now()}`,
-                    date: dateVal,
-                    startTime,
-                    title,
-                    routeKey: currentRouteKey,
-                    note,
-                    stops: JSON.parse(JSON.stringify(route.stops))
-                };
-
-                savedPrograms.unshift(record);
-                persistSavedPrograms();
-                renderSavedProgramsList();
-                showToast(`"${title}" (${dateVal}) kaydedildi.`);
-            });
-
-            // Program özetini panoya kopyalama
-            shareProgramBtn.addEventListener('click', () => {
-                const route = stateRoutes[currentRouteKey];
-                const dateVal = programDateInput.value || 'Tarih belirtilmedi';
-                const title = programTitleInput.value.trim() || route.title;
-                const lines = [
-                    `GÜNÜN ROTASI — ${title}`,
-                    `Tarih: ${dateVal} | Başlangıç: ${programStartTimeInput.value || '09:30'}`,
-                    programCustomNoteInput.value.trim() ? `Not: ${programCustomNoteInput.value.trim()}` : '',
-                    '',
-                    'Duraklar:',
-                    ...route.stops.map((s) => `${s.time} — ${s.name} (${s.duration}) [${s.completed ? 'Tamamlandı' : 'Planlandı'}]`)
-                ].filter(Boolean).join('\n');
-
-                try {
-                    const tempArea = document.createElement('textarea');
-                    tempArea.value = lines;
-                    document.body.appendChild(tempArea);
-                    tempArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempArea);
-                    showToast('Program özeti panoya kopyalandı.');
-                } catch (_) {
-                    showToast('Özet hazırlandı.');
-                }
-            });
-
-            // Harita butonları
-            openFullGmapsRouteBtn.addEventListener('click', openFullRouteInGoogleMaps);
-            gmapsFocusRouteBtn.addEventListener('click', () => {
-                const route = stateRoutes[currentRouteKey];
-                updateMapsPanel(`${route.title}, ${route.city}`, `Tüm rota odağı: ${route.title}`);
-                showToast('Harita tüm rotaya odaklandı.');
-            });
-
-            // Plansız Date filtre ve rastgele üretici
-            document.getElementById('date-mood-filters').addEventListener('click', (event) => {
-                const btn = event.target.closest('button[data-mood]');
-                if (!btn) return;
-                currentSpontaneousMood = btn.getAttribute('data-mood');
-                document.querySelectorAll('.date-mood-btn').forEach((b) => {
-                    const active = b.getAttribute('data-mood') === currentSpontaneousMood;
-                    b.className = `date-mood-btn px-3.5 py-2 rounded-xl text-xs font-medium cursor-pointer ${
-                        active ? 'bg-charcoal text-cream' : 'bg-sand text-charcoal hover:bg-terracottaLight'
-                    }`;
-                });
-                generateSpontaneousDate();
-            });
-            generateRandomDateBtn.addEventListener('click', generateSpontaneousDate);
-
-            // Katalog filtre dinleyicileri
-            [catalogDistrictFilter, catalogCategoryFilter, catalogBudgetFilter].forEach((el) => {
-                el.addEventListener('change', renderCatalog);
-            });
-            catalogSearchInput.addEventListener('input', renderCatalog);
-
-            // Simülatör dinleyicileri
-            ['sim-packages', 'sim-price', 'sim-sponsors', 'sim-fee'].forEach((id) => {
-                document.getElementById(id).addEventListener('input', updateMonetizationSimulator);
-            });
-
-            document.getElementById('apply-monetization-note-btn').addEventListener('click', () => {
-                const netText = document.getElementById('sim-net-income').textContent;
-                const existing = programCustomNoteInput.value.trim();
-                const addition = `Hedef Küratör/Sponsor Geliri: ${netText}/ay`;
-                programCustomNoteInput.value = existing ? `${existing} | ${addition}` : addition;
-                showToast('Gelir hedefi aktif program notuna eklendi.');
-            });
-
-            // Üst sekme navigasyonu (bölüme kaydırır ve vurgular)
-            document.querySelectorAll('.view-tab-btn').forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    const view = btn.getAttribute('data-view');
-                    document.querySelectorAll('.view-tab-btn').forEach((b) => {
-                        const isSelected = b.getAttribute('data-view') === view;
-                        b.className = `view-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
-                            isSelected
-                                ? 'bg-charcoal text-cream'
-                                : b.getAttribute('data-view') === 'monetization'
-                                    ? 'text-terracotta hover:bg-terracottaLight'
-                                    : 'text-charcoal hover:bg-sand'
-                        }`;
-                    });
-
-                    const sectionMap = {
-                        planner: 'route-title',
-                        spontaneous: 'spontaneous-section',
-                        catalog: 'catalog-section',
-                        monetization: 'monetization-section'
-                    };
-                    const targetEl = document.getElementById(sectionMap[view]);
-                    if (targetEl) {
-                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                });
-            });
-
-            // Yeni durak ekleme ve saate göre kronolojik sıralama
-<!-- ... existing code ... -->
-            // Sayfa yüklendiğinde tarih ve varsayılan rotayı başlat
-            window.addEventListener('DOMContentLoaded', () => {
-                try {
-                    const now = new Date();
-                    const dateFormatter = new Intl.DateTimeFormat('tr-TR', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                        weekday: 'long'
-                    });
-                    document.getElementById('current-date-display').textContent = dateFormatter.format(now);
-                    if (programDateInput && !programDateInput.value) {
-                        programDateInput.value = now.toISOString().slice(0, 10);
-                    }
-                } catch (_) {
-                    // Tarih biçimlendirme desteklenmezse varsayılan metin korunur
-                }
-
-                loadSavedPrograms();
-                renderSavedProgramsList();
-                renderSpontaneousCard();
-                renderCatalog();
-                updateMonetizationSimulator();
-                loadRoute('karakoy');
-            });
-        })();
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Günün Rotası — Şehri Keşfetmenin En Sakin Hali</title>
-    
-    <!-- Google Fonts: Cormorant Garamond (Editoryal Serif) ve Plus Jakarta Sans (Modern Sans-Serif) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Tailwind Yapılandırması -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cream: '#FAF8F5',
-                        sand: '#F2EFE9',
-                        charcoal: '#1E1E1E',
-                        muted: '#6B6862',
-                        terracotta: '#C26D53',
-                        terracottaLight: '#F6EAE6',
-                        sage: '#6E7F72',
-                        sageLight: '#EBF0EC',
-                        borderWarm: '#E5E0D8'
-                    },
-                    fontFamily: {
-                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Özel İnce Dokunuşlar ve Animasyonlar -->
-    <style>
-        body {
-            background-color: #FAF8F5;
-            color: #1E1E1E;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Özel onay kutusu geçişi */
-        .custom-checkbox {
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Durak kartı tamamlandığında zarif soluklaşma */
-        .stop-completed .stop-title {
-            text-decoration: line-through;
-            color: #6B6862;
-        }
-
-        /* Akıcı fade-in animasyonu */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-fade-up {
-            animation: fadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        /* Özel kaydırma çubuğu */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #FAF8F5;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #D6D0C4;
-            border-radius: 9999px;
-        }
-    </style>
-</head>
-<body class="min-h-screen selection:bg-terracotta selection:text-white">
-
-    <!-- Bildirim Mesaj Kutusu (Alert yerine kullanılır) -->
-    <div id="toast-notification" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-        <div class="bg-charcoal text-cream px-5 py-3.5 rounded-xl shadow-lg border border-borderWarm/20 flex items-center gap-3 text-sm">
-            <span class="w-2 h-2 rounded-full bg-terracotta"></span>
-            <span id="toast-message">Durak rotaya eklendi.</span>
-        </div>
-    </div>
-
-    <!-- Üst Bilgilendirme Şeridi -->
-    <div class="border-b border-borderWarm bg-sand/50">
-        <div class="max-w-6xl mx-auto px-4 sm:px-8 py-2.5 flex flex-wrap justify-between items-center text-xs tracking-wider uppercase text-muted">
-            <span>Sayı 42 — Yavaş Seyahat Rehberi</span>
-            <span id="current-date-display">22 Kasım 2026, Pazar</span>
-        </div>
-    </div>
-
-    <!-- Ana Konteyner -->
-    <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-16">
-        
-        <!-- 1. HERO / HEADER BÖLÜMÜ -->
-        <header class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <p class="text-xs uppercase tracking-[0.25em] text-terracotta font-medium mb-3">Editoryal Şehir Seçkisi</p>
-            <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl font-normal tracking-tight text-charcoal mb-4">
-                Günün Rotası
-            </h1>
-            <p class="font-serif italic text-xl sm:text-2xl text-muted mb-8">
-                “Şehri keşfetmenin en sakin hali”
-            </p>
-
-            <!-- Rota Seçici -->
-            <div class="inline-flex flex-col sm:flex-row items-center gap-3 bg-white p-2 sm:pl-5 rounded-2xl border border-borderWarm shadow-sm w-full sm:w-auto">
-                <label for="route-selector" class="text-xs uppercase tracking-widest text-muted font-medium whitespace-nowrap">
-                    Günün Seçkisi:
-                </label>
-                <div class="relative w-full sm:w-80">
-                    <select id="route-selector" class="w-full appearance-none bg-sand/70 hover:bg-sand text-charcoal font-medium text-sm px-4 py-2.5 pr-10 rounded-xl border border-transparent focus:border-terracotta focus:outline-none transition-colors cursor-pointer">
-                        <option value="karakoy">İstanbul — Karaköy & Galata</option>
-                        <option value="moda">İstanbul — Kadıköy & Moda</option>
-                        <option value="balat">İstanbul — Balat & Fener</option>
-                        <option value="amasya">Amasya — Yeşilırmak Kıyısı</option>
-                        <option value="erzurum">Erzurum — Tarihi Palandöken Hattı</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-charcoal">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- 2. GÜNÜN ÖNE ÇIKAN ROTASI ÖZET KARTI -->
-        <section id="route-overview-card" class="bg-white rounded-3xl border border-borderWarm p-6 sm:p-10 mb-12 shadow-[0_2px_20px_rgba(30,30,30,0.02)] animate-fade-up">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                <!-- Sol Açıklama Alanı -->
-                <div class="lg:col-span-7 space-y-4">
-                    <div class="flex items-center gap-2.5">
-                        <span id="route-city-badge" class="px-3 py-1 rounded-full text-xs font-medium bg-sageLight text-sage tracking-wide">
-                            İstanbul
-                        </span>
-                        <span class="text-xs text-muted">•</span>
-                        <span id="route-mood-badge" class="text-xs uppercase tracking-widest text-muted">
-                            Mimari & Kahve Kültürü
-                        </span>
-                    </div>
-                    <h2 id="route-title" class="font-serif text-3xl sm:text-4xl font-semibold text-charcoal leading-tight">
-                        Karaköy & Galata: Taş Sokakların Sabah Sessizliği
-                    </h2>
-                    <div class="bg-cream rounded-2xl p-5 border border-borderWarm/70">
-                        <p class="text-xs uppercase tracking-widest text-terracotta font-semibold mb-1.5 flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                            </svg>
-                            Günün Notu
-                        </p>
-                        <p id="route-note" class="text-sm sm:text-base text-charcoal/85 leading-relaxed font-light">
-                            Levanten mirası taş binaların arasında, sabah güneşi henüz Arnavut kaldırımlarına vururken başlayan dingin bir keşif. Acele etmeden vitrinlere bakın ve ara sokakların sessizliğini dinleyin.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Sağ Metrikler Alanı -->
-                <div class="lg:col-span-5 grid grid-cols-3 gap-3 sm:gap-4 border-t lg:border-t-0 lg:border-l border-borderWarm pt-6 lg:pt-0 lg:pl-8">
-                    <div class="bg-cream/80 p-4 rounded-2xl text-center border border-borderWarm/50">
-                        <span class="block text-[11px] uppercase tracking-wider text-muted mb-1">Toplam Süre</span>
-                        <span id="route-duration" class="font-serif text-2xl sm:text-3xl font-semibold text-charcoal">6.5 Saat</span>
-                    </div>
-                    <div class="bg-cream/80 p-4 rounded-2xl text-center border border-borderWarm/50">
-                        <span class="block text-[11px] uppercase tracking-wider text-muted mb-1">Mesafe</span>
-                        <span id="route-distance" class="font-serif text-2xl sm:text-3xl font-semibold text-charcoal">4.2 km</span>
-                    </div>
-                    <div class="bg-cream/80 p-4 rounded-2xl text-center border border-borderWarm/50">
-                        <span class="block text-[11px] uppercase tracking-wider text-muted mb-1">Tempo</span>
-                        <span id="route-difficulty" class="font-serif text-2xl sm:text-3xl font-semibold text-sage">Sakin</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ANA İÇERİK IZGARASI: SOL (ZAMAN ÇİZELGESİ + EKLEME) & SAĞ (İPUÇLARI + İLERLEME) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-            
-            <!-- SOL KOLON (7 Sütun): Zaman Çizelgesi ve Yeni Durak Formu -->
-            <div class="lg:col-span-7 space-y-12">
-                
-                <!-- 3. ZAMAN ÇİZELGESİ (TIMELINE) -->
-                <div>
-                    <div class="flex items-center justify-between mb-6 pb-3 border-b border-borderWarm">
-                        <div>
-                            <h3 class="font-serif text-2xl sm:text-3xl font-medium text-charcoal">Zaman Çizelgesi</h3>
-                            <p class="text-xs text-muted mt-0.5">Adım adım günün akışı ve duraklar</p>
-                        </div>
-                        <span id="stops-count-badge" class="text-xs font-medium px-3 py-1 rounded-full bg-sand text-charcoal">
+                        <span id="stop-count-label" class="text-xs font-mono text-muted bg-sand px-3 py-1 rounded-full">
                             4 Durak
                         </span>
                     </div>
 
-                    <!-- Duraklar Konteyneri -->
                     <div id="timeline-container" class="relative pl-6 sm:pl-8 border-l border-borderWarm space-y-6">
-                        <!-- JavaScript ile dinamik doldurulacak -->
+                        <!-- Duraklar JS ile oluşturulur -->
                     </div>
-                </div>
+                </section>
 
-                <!-- 4. KENDİ ROTANI OLUŞTUR / DURAK EKLE MODÜLÜ -->
-                <div class="bg-white rounded-3xl border border-borderWarm p-6 sm:p-8 shadow-sm">
-                    <div class="mb-6">
-                        <span class="text-[11px] uppercase tracking-[0.2em] text-terracotta font-semibold">Kişiselleştir</span>
-                        <h3 class="font-serif text-2xl sm:text-3xl font-medium text-charcoal mt-1">Rotaya Yeni Durak Ekle</h3>
-                        <p class="text-sm text-muted mt-1">Kendi keşif noktanızı ekleyerek günün akışını zenginleştirin.</p>
+                <!-- Özel Durak Ekleme Formu -->
+                <section aria-labelledby="add-stop-heading" class="bg-white rounded-3xl border border-borderWarm p-6 sm:p-8 shadow-[0_8px_30px_rgb(30,30,30,0.03)]">
+                    <div class="mb-5">
+                        <span class="text-xs uppercase tracking-[0.2em] text-terracotta font-medium">Kişiselleştir</span>
+                        <h3 id="add-stop-heading" class="font-serif text-2xl sm:text-3xl font-medium text-charcoal mt-0.5">
+                            Kendi Durağını Ekle
+                        </h3>
+                        <p class="text-xs sm:text-sm text-muted mt-1">
+                            Rotana yeni bir kafe, sergi, sahne veya mola noktası ekle; saatine göre otomatik sıralansın.
+                        </p>
                     </div>
 
                     <form id="add-stop-form" class="space-y-4">
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <!-- Saat -->
                             <div>
                                 <label for="stop-time" class="block text-xs font-medium text-charcoal mb-1.5">Saat</label>
-                                <input type="time" id="stop-time" value="19:30" required
-                                    class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal focus:outline-none focus:border-terracotta transition-colors">
+                                <input type="time" id="stop-time" required value="15:30" class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal focus:outline-none focus:border-terracotta transition-colors">
                             </div>
-
-                            <!-- Kategori -->
                             <div class="sm:col-span-2">
                                 <label for="stop-category" class="block text-xs font-medium text-charcoal mb-1.5">Kategori</label>
-                                <select id="stop-category"
-                                    class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal focus:outline-none focus:border-terracotta transition-colors">
+                                <select id="stop-category" class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal focus:outline-none focus:border-terracotta transition-colors">
                                     <option value="Kahve & Başlangıç">Kahve & Başlangıç</option>
                                     <option value="Kültür & Keşif">Kültür & Keşif</option>
                                     <option value="Yerel Lezzet & Mola">Yerel Lezzet & Mola</option>
                                     <option value="Gün Batımı & Manzara">Gün Batımı & Manzara</option>
-                                    <option value="Akşam & Kitabevi">Akşam & Kitabevi</option>
+                                    <option value="Eğlence & Sahne">Eğlence & Sahne</option>
+                                    <option value="Uygun Fiyatlı & Sosyal">Uygun Fiyatlı & Sosyal</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <!-- Durak Adı -->
                             <div class="sm:col-span-2">
-                                <label for="stop-name" class="block text-xs font-medium text-charcoal mb-1.5">Durak / Mekan Adı</label>
-                                <input type="text" id="stop-name" placeholder="Örn: Sahaf Pasajı veya Gizli Avlu" required
-                                    class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal placeholder:text-muted/60 focus:outline-none focus:border-terracotta transition-colors">
+                                <label for="stop-name" class="block text-xs font-medium text-charcoal mb-1.5">Durak Adı</label>
+                                <input type="text" id="stop-name" required placeholder="Örn: Moda Sahil Kitapçısı" class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal placeholder:text-muted/60 focus:outline-none focus:border-terracotta transition-colors">
                             </div>
-
-                            <!-- Tahmini Süre -->
                             <div>
                                 <label for="stop-duration" class="block text-xs font-medium text-charcoal mb-1.5">Tahmini Süre</label>
-                                <input type="text" id="stop-duration" value="45 dk" placeholder="Örn: 45 dk" required
-                                    class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal placeholder:text-muted/60 focus:outline-none focus:border-terracotta transition-colors">
+                                <input type="text" id="stop-duration" value="45 dk" placeholder="45 dk" class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal placeholder:text-muted/60 focus:outline-none focus:border-terracotta transition-colors">
                             </div>
                         </div>
 
-                        <!-- Kısa Not -->
                         <div>
-                            <label for="stop-desc" class="block text-xs font-medium text-charcoal mb-1.5">Kısa Not</label>
-                            <textarea id="stop-desc" rows="2" placeholder="Bu durakta ne yapılmalı, neye dikkat edilmeli?" required
-                                class="w-full bg-cream border border-borderWarm rounded-xl px-3.5 py-2.5 text-sm text-charcoal placeholder:text-muted/60 focus:outline-none focus:border-terracotta transition-colors resize-none"></textarea>
-                        </div>
-
-                        <div class="pt-2 flex justify-end">
-                            <button type="submit"
-                                class="w-full sm:w-auto bg-charcoal hover:bg-terracotta text-cream text-sm font-medium px-6 py-3 rounded-xl transition-colors duration-300 flex items-center justify-center gap-2 cursor-pointer">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                </svg>
-                                <span>Durağı Zaman Çizelgesine Ekle</span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- SAĞ KOLON (5 Sütun): İlerleme Durumu, Atmosfer ve Editör İpuçları -->
-            <aside class="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
-                
-                <!-- ROTA İLERLEME KARTI -->
-                <div class="bg-white rounded-3xl border border-borderWarm p-6 sm:p-8 shadow-sm">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs uppercase tracking-widest text-muted font-medium">Yolculuk İlerlemesi</span>
-                        <span id="progress-percentage" class="font-serif text-2xl font-semibold text-terracotta">%0</span>
-                    </div>
-
-                    <!-- İlerleme Çubuğu -->
-                    <div class="w-full h-2.5 bg-sand rounded-full overflow-hidden mb-4">
-                        <div id="progress-bar-fill" class="h-full bg-sage rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
-                    </div>
-
-                    <div class="flex items-center justify-between text-xs text-muted">
-                        <span id="progress-text">0 / 4 durak tamamlandı</span>
-                        <button id="reset-progress-btn" class="text-charcoal underline underline-offset-4 hover:text-terracotta transition-colors cursor-pointer hidden">
-                            Sıfırla
-                        </button>
-                    </div>
-                </div>
-
-                <!-- HAVA & ATMOSFER KARTI -->
-                <div class="bg-sageLight/60 rounded-3xl border border-sage/20 p-6 sm:p-7">
-                    <div class="flex items-start justify-between mb-4">
-                        <div>
-                            <span class="text-[11px] uppercase tracking-widest text-sage font-semibold">Günün Atmosferi</span>
-                            <h4 id="atmosphere-title" class="font-serif text-2xl font-medium text-charcoal mt-0.5">Serin & Dingin Sabah</h4>
-                        </div>
-                        <div class="p-2.5 bg-white/80 rounded-2xl text-sage">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <p id="atmosphere-desc" class="text-sm text-charcoal/80 leading-relaxed mb-4">
-                        14°C parçalı bulutlu. İnce bir trençkot ve rahat yürüyüş ayakkabıları taş sokaklar için ideal.
-                    </p>
-                    <div class="flex flex-wrap gap-2" id="atmosphere-tags">
-                        <span class="text-xs px-3 py-1 rounded-full bg-white/80 text-charcoal/80">Yürüyüş Dostu</span>
-                        <span class="text-xs px-3 py-1 rounded-full bg-white/80 text-charcoal/80">Altın Saat: 17:45</span>
-                    </div>
-                </div>
-
-                <!-- EDİTÖRÜN KÜÇÜK İPUÇLARI KARTI -->
-                <div class="bg-white rounded-3xl border border-borderWarm p-6 sm:p-8">
-                    <div class="flex items-center gap-2 mb-5">
-                        <span class="w-2 h-2 rounded-full bg-terracotta"></span>
-                        <h4 class="font-serif text-2xl font-medium text-charcoal">Küçük İpuçları</h4>
-                    </div>
-                    <ul id="tips-list" class="space-y-4 text-sm text-charcoal/85">
-                        <!-- JavaScript ile dinamik doldurulacak -->
-                    </ul>
-                </div>
-
-            </aside>
-        </div>
-
-        <!-- ALT BİLGİ (FOOTER) -->
-        <footer class="mt-20 pt-8 border-t border-borderWarm flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
-            <p class="font-serif italic text-base text-charcoal">Günün Rotası — Yavaş keşifler için tasarlandı.</p>
-            <p>Her adım bir hikaye, her mola bir nefes.</p>
-        </footer>
-    </div>
-
-    <!-- UYGULAMA MANTIĞI (VANILLA JAVASCRIPT) -->
-    <script>
-        // Önceden tanımlanmış editoryal şehir rotaları veri seti
-        const routesData = {
-            karakoy: {
-                city: "İstanbul",
-                mood: "Mimari & Kahve Kültürü",
-                title: "Karaköy & Galata: Taş Sokakların Sabah Sessizliği",
-                note: "Levanten mirası taş binaların arasında, sabah güneşi henüz Arnavut kaldırımlarına vururken başlayan dingin bir keşif. Acele etmeden vitrinlere bakın ve ara sokakların sessizliğini dinleyin.",
-                duration: "6.5 Saat",
-                distance: "4.2 km",
-                difficulty: "Sakin",
-                atmosphereTitle: "14°C — Serin & Işıklı",
-                atmosphereDesc: "Hafif Boğaz esintisi eşliğinde berrak bir gökyüzü. Yokuşlu taş sokaklar için düz tabanlı rahat ayakkabılar tercih edin.",
-                atmosphereTags: ["Yürüyüş Dostu", "Fotoğraf Işığı", "Altın Saat: 17:40"],
-                tips: [
-                    "Sabah 09:30'dan önce Galata çevresinde olursanız sokakları neredeyse tamamen kendinize ayırabilirsiniz.",
-                    "Bankalar Caddesi üzerindeki tarihi hanların avlularına başınızı uzatmaktan çekinmeyin.",
-                    "Gün batımında Galata Kulesi meydanı yerine Kamondo Merdivenleri'nin üst basamakları daha sakin bir açı sunar."
-                ],
-                stops: [
-                    {
-                        id: "k-1",
-                        time: "09:30",
-                        category: "Kahve & Başlangıç",
-                        name: "Mumhane Caddesi Üçüncü Dalga Kahvecisi",
-                        duration: "45 dk",
-                        desc: "Taze kavrulmuş filtre kahve ve sıcak kruvasan eşliğinde günün ilk notlarını defterinize alın.",
-                        completed: false
-                    },
-                    {
-                        id: "k-2",
-                        time: "12:30",
-                        category: "Kültür & Keşif",
-                        name: "SALT Galata & Kamondo Merdivenleri",
-                        duration: "1.5 Saat",
-                        desc: "Neoklasik mimarinin zarafetini inceleyin, kütüphane katında kısa bir okuma molası verin.",
-                        completed: false
-                    },
-                    {
-                        id: "k-3",
-                        time: "15:00",
-                        category: "Yerel Lezzet & Mola",
-                        name: "Tarihi Karaköy Esnaf Lokantası & Baklavacı",
-                        duration: "1 Saat",
-                        desc: "Geleneksel zeytinyağlı tabakları sonrası ince katlı fıstıklı baklava ile öğleden sonra enerjisi.",
-                        completed: false
-                    },
-                    {
-                        id: "k-4",
-                        time: "18:00",
-                        category: "Gün Batımı & Manzara",
-                        name: "Karaköy Rıhtım & Tarihi Yarımada Silüeti",
-                        duration: "1 Saat",
-                        desc: "Vapur sesleri eşliğinde Süleymaniye ve Topkapı silüetinin kızıllığa bürünüşünü izleyin.",
-                        completed: false
-                    }
-                ]
-            },
-            moda: {
-                city: "İstanbul",
-                mood: "Sahil & Bohem Yaşam",
-                title: "Kadıköy & Moda: Ağaçlı Sokaklar ve Deniz Kokusu",
-                note: "Moda'nın asırlık çınarlarının gölgesinde, plak dükkanları, bağımsız kitabevleri ve sahil kayalıkları arasında uzanan huzurlu bir Pazar ritüeli.",
-                duration: "7 Saat",
-                distance: "5.0 km",
-                difficulty: "Çok Rahat",
-                atmosphereTitle: "16°C — Ilık & Esintili",
-                atmosphereDesc: "Marmara'dan gelen hafif iyot kokusu ve yumuşak sonbahar güneşi. Yanınıza ince bir hırka almanız yeterli.",
-                atmosphereTags: ["Sahil Yürüyüşü", "Kitap & Plak", "Altın Saat: 17:45"],
-                tips: [
-                    "Moda Sahili'nde gün batımı için yanınıza küçük bir termos veya katlanır minder alabilirsiniz.",
-                    "Bahariye'nin kalabalığından kaçmak için Dr. Esat Işık Caddesi'nin paralelindeki ara sokakları kullanın.",
-                    "Akşamüstü dondurma kuyruğuna girmeden önce eski ahşap köşklerin mimarisini fotoğraflayın."
-                ],
-                stops: [
-                    {
-                        id: "m-1",
-                        time: "09:30",
-                        category: "Kahve & Başlangıç",
-                        name: "Moda Caddesi Fırını & Bahçe Kahvesi",
-                        duration: "1 Saat",
-                        desc: "Ekşi mayalı ekmek üzeri avokado ve taze demlenmiş kahve ile yavaş bir sabah başlangıcı.",
-                        completed: false
-                    },
-                    {
-                        id: "m-2",
-                        time: "12:30",
-                        category: "Kültür & Keşif",
-                        name: "Barış Manço Evi & Bağımsız Kitabevleri",
-                        duration: "1.5 Saat",
-                        desc: "Müze evin nostaljik atmosferini gezdikten sonra sahaf ve plakçılarda nadir baskıları keşfedin.",
-                        completed: false
-                    },
-                    {
-                        id: "m-3",
-                        time: "15:00",
-                        category: "Yerel Lezzet & Mola",
-                        name: "Kadıköy Çarşısı Zeytinyağlı & Meze Durağı",
-                        duration: "1 Saat",
-                        desc: "Mevsim otlarıyla hazırlanmış Ege mezeleri ve taze demlenmiş ince belli bardakta çay.",
-                        completed: false
-                    },
-                    {
-                        id: "m-4",
-                        time: "18:00",
-                        category: "Gün Batımı & Manzara",
-                        name: "Moda Burnu Kayalıkları",
-                        duration: "1 Saat",
-                        desc: "Adalar manzarasına karşı denizin sesini dinleyerek günü dinginlikle uğurlayın.",
-                        completed: false
-                    }
-                ]
-            },
-            balat: {
-                city: "İstanbul",
-                mood: "Tarih & Renkli Cepheler",
-                title: "Balat & Fener: Zamanın Yavaş Aktığı Yokuşlar",
-                note: "Cumbalı evlerin, antikacı mezatlarının ve Haliç kıyısındaki tarihi kiliselerin arasında katman katman bir tarih yolculuğu.",
-                duration: "6 Saat",
-                distance: "3.8 km",
-                difficulty: "Orta (Yokuşlu)",
-                atmosphereTitle: "15°C — Parçalı Bulutlu",
-                atmosphereDesc: "Dik yokuşlar nedeniyle rahat spor ayakkabılar şart. Öğleden sonra ışığı renkli evlerin cephelerini harika aydınlatır.",
-                atmosphereTags: ["Tarihi Doku", "Antika & Sanat", "Altın Saat: 17:35"],
-                tips: [
-                    "Merdivenli Yokuş ve Kiremit Caddesi'ni sabah erken saatlerde gezmek fotoğraf çekimi için en sakin zamanı sunar.",
-                    "Ara sokaklardaki küçük antika dükkanlarında eski kartpostallara göz atmayı unutmayın.",
-                    "Haliç kıyısındaki park bandı dinlenmek için harika bir nefes alanıdır."
-                ],
-                stops: [
-                    {
-                        id: "b-1",
-                        time: "09:30",
-                        category: "Kahve & Başlangıç",
-                        name: "Vodina Caddesi Tarihi Kahvehanesi",
-                        duration: "45 dk",
-                        desc: "Közde Türk kahvesi ve tahinli çörek eşliğinde semtin uyanışını izleyin.",
-                        completed: false
-                    },
-                    {
-                        id: "b-2",
-                        time: "12:30",
-                        category: "Kültür & Keşif",
-                        name: "Fener Rum Lisesi & Sveti Stefan Kilisesi",
-                        duration: "1.5 Saat",
-                        desc: "Kırmızı tuğlalı görkemli yapıyı dışarıdan inceleyip Haliç kıyısındaki demir kiliseyi ziyaret edin.",
-                        completed: false
-                    },
-                    {
-                        id: "b-3",
-                        time: "15:00",
-                        category: "Yerel Lezzet & Mola",
-                        name: "Tarihi Balat Köftecisi & Turşucu",
-                        duration: "1 Saat",
-                        desc: "On yıllardır değişmeyen reçeteyle hazırlanan köfte ve geleneksel el yapımı turşu suyu.",
-                        completed: false
-                    },
-                    {
-                        id: "b-4",
-                        time: "18:00",
-                        category: "Gün Batımı & Manzara",
-                        name: "Haliç Sahil Parkı & Eski İskele",
-                        duration: "45 dk",
-                        desc: "Sakinleşen Haliç sularına yansıyan akşam ışıkları altında huzurlu bir kapanış.",
-                        completed: false
-                    }
-                ]
-            },
-            amasya: {
-                city: "Amasya",
-                mood: "Nehir Kıyısı & Kral Kaya Mezarları",
-                title: "Amasya: Yeşilırmak Kıyısında Şehzadeler İzinde",
-                note: "Suyun hemen üzerine eğilen Yalıboyu evleri ve sarp kayalara oyulmuş Pontus mezarlarının gölgesinde masalsı bir Anadolu rotası.",
-                duration: "6 Saat",
-                distance: "4.5 km",
-                difficulty: "Sakin",
-                atmosphereTitle: "12°C — Serin & Berrak",
-                atmosphereDesc: "Vadi boyunca esen temiz dağ havası. Akşamüstü kayalıkların ışıklandırılmasıyla şehir bambaşka bir atmosfere bürünür.",
-                atmosphereTags: ["Nehir Kıyısı", "Tarihi Miras", "Altın Saat: 17:15"],
-                tips: [
-                    "Alçak Köprü üzerinden Yalıboyu evlerinin suya yansımasını sabah durgunluğunda mutlaka görün.",
-                    "Amasya çöreği ve misket elması tatmadan şehirden ayrılmayın.",
-                    "Hava kararmaya başlarken Kral Kaya Mezarları'nın aydınlatılma anını nehir kenarından izleyin."
-                ],
-                stops: [
-                    {
-                        id: "a-1",
-                        time: "09:30",
-                        category: "Kahve & Başlangıç",
-                        name: "Yalıboyu Konak Avlusu",
-                        duration: "1 Saat",
-                        desc: "Yeşilırmak'ın akışına karşı cevizli Amasya çöreği ve semaver çayı ile dingin başlangıç.",
-                        completed: false
-                    },
-                    {
-                        id: "a-2",
-                        time: "12:30",
-                        category: "Kültür & Keşif",
-                        name: "Kral Kaya Mezarları & Harşena Kalesi Yolu",
-                        duration: "1.5 Saat",
-                        desc: "Tarihi taş basamaklardan tırmanarak tüm Amasya vadisini kuşbakışı seyredin.",
-                        completed: false
-                    },
-                    {
-                        id: "a-3",
-                        time: "15:00",
-                        category: "Yerel Lezzet & Mola",
-                        name: "Tarihi Çarşı Bakla Dolması & Keşkek Evi",
-                        duration: "1 Saat",
-                        desc: "Odun ateşinde ağır ağır pişen yöresel keşkek ve ince yaprak sarması molası.",
-                        completed: false
-                    },
-                    {
-                        id: "a-4",
-                        time: "18:00",
-                        category: "Gün Batımı & Manzara",
-                        name: "Alçak Köprü & Nehir Boyu Gezinti Yolu",
-                        duration: "1 Saat",
-                        desc: "Kaya mezarlarının altın ışıkları yanarken nehir kıyısında yavaş bir akşam yürüyüşü.",
-                        completed: false
-                    }
-                ]
-            },
-            erzurum: {
-                city: "Erzurum",
-                mood: "Selçuklu Taş İşçiliği & Yayla Havası",
-                title: "Erzurum: Taş Medreselerden Palandöken Eteklerine",
-                note: "Kesme taşların soğuk ama vakur ihtişamı, sıcak semaver çayı ve yüksek rakımın tertemiz havasıyla zihni tazeleyen bir keşif.",
-                duration: "6.5 Saat",
-                distance: "4.8 km",
-                difficulty: "Orta",
-                atmosphereTitle: "6°C — Keskin & Güneşli",
-                atmosphereDesc: "Yüksek rakım nedeniyle hava kuru ve serindir. Katmanlı giyinmek ve güneş gözlüğü bulundurmak konfor sağlar.",
-                atmosphereTags: ["Selçuklu Mimarisi", "Yüksek Rakım", "Altın Saat: 17:00"],
-                tips: [
-                    "Çifte Minareli Medrese'nin taş oymalarındaki hayat ağacı motiflerini yakından inceleyin.",
-                    "Kıtlama şekerle içilen Erzurum çayının ritüelini tarihi kahvehanelerde deneyimleyin.",
-                    "Gün batımında Palandöken yamaçlarından şehrin ışıklarını izlemek eşsiz bir manzara sunar."
-                ],
-                stops: [
-                    {
-                        id: "e-1",
-                        time: "09:30",
-                        category: "Kahve & Başlangıç",
-                        name: "Tarihi Erzurum Evleri Kahvaltı Salonu",
-                        duration: "1 Saat",
-                        desc: "Göğermiş peynir, karakovan balı ve sıcak lavaş eşliğinde doyurucu ve sakin bir sabah.",
-                        completed: false
-                    },
-                    {
-                        id: "e-2",
-                        time: "12:30",
-                        category: "Kültür & Keşif",
-                        name: "Çifte Minareli Medrese & Üç Kümbetler",
-                        duration: "1.5 Saat",
-                        desc: "Anadolu Selçuklu taş işçiliğinin başyapıtları arasında sessiz bir tarih yürüyüşü.",
-                        completed: false
-                    },
-                    {
-                        id: "e-3",
-                        time: "15:00",
-                        category: "Yerel Lezzet & Mola",
-                        name: "Tarihi Taşhan & Cağ Kebabı Durağı",
-                        duration: "1 Saat",
-                        desc: "Oltu taşı ustalarının atölyelerini gezdikten sonra odun ateşinde pişen geleneksel lezzet molası.",
-                        completed: false
-                    },
-                    {
-                        id: "e-4",
-                        time: "18:00",
-                        category: "Gün Batımı & Manzara",
-                        name: "Palandöken Seyir Terası",
-                        duration: "1 Saat",
-                        desc: "Karlı zirvelerin mor ve turuncu tonlara büründüğü anlarda sıcak salep eşliğinde gün batımı.",
-                        completed: false
-                    }
-                ]
-            }
-        };
-
-        // Aktif durum değişkenleri
-        let currentRouteKey = 'karakoy';
-        // Kullanıcının eklediği durakları ve tamamlanma durumlarını korumak için derin kopya
-        let stateRoutes = JSON.parse(JSON.stringify(routesData));
-
-        // DOM Elemanları
-        const routeSelector = document.getElementById('route-selector');
-        const timelineContainer = document.getElementById('timeline-container');
-        const addStopForm = document.getElementById('add-stop-form');
-        const resetProgressBtn = document.getElementById('reset-progress-btn');
-        const toastEl = document.getElementById('toast-notification');
-        const toastMsgEl = document.getElementById('toast-message');
-
-        // Bildirim Gösterme Fonksiyonu
-        let toastTimeout;
-        function showToast(message) {
-            toastMsgEl.textContent = message;
-            toastEl.classList.remove('translate-y-20', 'opacity-0');
-            toastEl.classList.add('translate-y-0', 'opacity-100');
-            
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toastEl.classList.add('translate-y-20', 'opacity-0');
-                toastEl.classList.remove('translate-y-0', 'opacity-100');
-            }, 3000);
-        }
-
-        // Kategoriye göre rozet stili döndür
-        function getCategoryStyle(category) {
-            if (category.includes('Kahve')) return 'bg-terracottaLight text-terracotta';
-            if (category.includes('Kültür')) return 'bg-sageLight text-sage';
-            if (category.includes('Lezzet')) return 'bg-sand text-charcoal';
-            return 'bg-charcoal/5 text-charcoal';
-        }
-
-        // İlerleme Çubuğunu Güncelle
-        function updateProgress() {
-            const stops = stateRoutes[currentRouteKey].stops;
-            const total = stops.length;
-            const completedCount = stops.filter(s => s.completed).length;
-            const percentage = total === 0 ? 0 : Math.round((completedCount / total) * 100);
-
-            document.getElementById('progress-percentage').textContent = `%${percentage}`;
-            document.getElementById('progress-bar-fill').style.width = `${percentage}%`;
-            document.getElementById('progress-text').textContent = `${completedCount} / ${total} durak tamamlandı`;
-            document.getElementById('stops-count-badge').textContent = `${total} Durak`;
-
-            if (completedCount > 0) {
-                resetProgressBtn.classList.remove('hidden');
-            } else {
-                resetProgressBtn.classList.add('hidden');
-            }
-        }
-
-        // Zaman Çizelgesini Render Et
-        function renderTimeline() {
-            const stops = stateRoutes[currentRouteKey].stops;
-            timelineContainer.innerHTML = '';
-
-            stops.forEach((stop, index) => {
-                const isCompleted = stop.completed;
-                const badgeClass = getCategoryStyle(stop.category);
-
-                const stopElement = document.createElement('div');
-                stopElement.className = `relative group animate-fade-up ${isCompleted ? 'stop-completed' : ''}`;
-                stopElement.style.animationDelay = `${index * 60}ms`;
-
-                stopElement.innerHTML = `
-                    <!-- Zaman Çizgisi Noktası -->
-                    <span class="absolute -left-[31px] sm:-left-[39px] top-6 w-3.5 h-3.5 rounded-full border-2 transition-colors duration-300 ${
-                        isCompleted 
-                        ? 'bg-sage border-sage' 
-                        : 'bg-cream border-terracotta group-hover:bg-terracotta'
-                    }"></span>
-
-                    <!-- Durak Kartı -->
-                    <div class="bg-white rounded-2xl border ${
-                        isCompleted ? 'border-sage/30 bg-white/60' : 'border-borderWarm hover:border-terracotta/50'
-                    } p-5 sm:p-6 transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.015)]">
-                        
-                        <!-- Üst Satır: Saat, Kategori ve Süre -->
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                            <div class="flex items-center gap-2.5">
-                                <span class="font-serif text-xl font-semibold text-charcoal">${stop.time}</span>
-                                <span class="text-xs px-2.5 py-0.5 rounded-full font-medium ${badgeClass}">
-                                    ${stop.category}
-                                </span>
-                            </div>
-                            <span class="text-xs text-muted flex items-center gap-1 bg-cream px-2.5 py-1 rounded-lg border border-borderWarm/60">
-                                <svg class="w-3.5 h-3.5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                ${stop.duration}
-                            </span>
-                        </div>
-
-                        <!-- Başlık ve Açıklama -->
-                        <h4 class="stop-title font-serif text-2xl font-medium text-charcoal mb-2 transition-colors">
-                            ${stop.name}
-                        </h4>
-                        <p class="text-sm text-muted leading-relaxed mb-4">
-                            ${stop.desc}
-                        </p>
-
-                        <!-- Alt Satır: Tamamlandı Onay Kutusu ve Silme Butonu -->
-                        <div class="pt-3 border-t border-borderWarm/60 flex items-center justify-between">
-                            <label class="inline-flex items-center gap-2.5 cursor-pointer select-none">
-                                <input type="checkbox" 
-                                    class="sr-only" 
-                                    ${isCompleted ? 'checked' : ''} 
-                                    onchange="toggleStopCompletion('${stop.id}')">
-                                <div class="custom-checkbox w-5 h-5 rounded-md border flex items-center justify-center ${
-                                    isCompleted 
-                                    ? 'bg-sage border-sage text-white' 
-                                    : 'border-charcoal/30 bg-cream hover:border-terracotta'
-                                }">
-                                    ${isCompleted ? `
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-                                        </svg>
-                                    ` : ''}
-                                </div>
-                                <span class="text-xs font-medium ${isCompleted ? 'text-sage' : 'text-charcoal/80'}">
-                                    ${isCompleted ? 'Tamamlandı' : 'Tamamlandı olarak işaretle'}
-                                </span>
-                            </label>
-
-                            ${stop.isCustom ? `
-                                <button onclick="deleteCustomStop('${stop.id}')" title="Durağı Kaldır"
-                                    class="text-xs text-muted hover:text-terracotta transition-colors cursor-pointer px-2 py-1">
-                                    Kaldır
-                                </button>
-                            ` : ''}
-                        </div>
-                    </div>
-                `;
-
-                timelineContainer.appendChild(stopElement);
-            });
-
-            updateProgress();
-        }
-
-        // Seçili Rotanın Tüm Bilgilerini Ekrana Yansıt
-        function loadRoute(routeKey) {
-            currentRouteKey = routeKey;
-            const route = stateRoutes[routeKey];
-
-            // Özet Kartını Güncelle
-            document.getElementById('route-city-badge').textContent = route.city;
-            document.getElementById('route-mood-badge').textContent = route.mood;
-            document.getElementById('route-title').textContent = route.title;
-            document.getElementById('route-note').textContent = route.note;
-            document.getElementById('route-duration').textContent = route.duration;
-            document.getElementById('route-distance').textContent = route.distance;
-            document.getElementById('route-difficulty').textContent = route.difficulty;
-
-            // Atmosfer Kartını Güncelle
-            document.getElementById('atmosphere-title').textContent = route.atmosphereTitle;
-            document.getElementById('atmosphere-desc').textContent = route.atmosphereDesc;
-            
-            const tagsContainer = document.getElementById('atmosphere-tags');
-            tagsContainer.innerHTML = route.atmosphereTags.map(tag => 
-                `<span class="text-xs px-3 py-1 rounded-full bg-white/80 text-charcoal/80">${tag}</span>`
-            ).join('');
-
-            // İpuçları Listesini Güncelle
-            const tipsList = document.getElementById('tips-list');
-            tipsList.innerHTML = route.tips.map((tip, i) => `
-                <li class="flex items-start gap-3 pb-3.5 ${i !== route.tips.length - 1 ? 'border-b border-borderWarm/60' : ''}">
-                    <span class="font-serif italic text-terracotta font-semibold text-base">0${i + 1}.</span>
-                    <span class="leading-relaxed">${tip}</span>
-                </li>
-            `).join('');
-
-            renderTimeline();
-        }
-
-        // Durak Tamamlanma Durumunu Değiştir
-        window.toggleStopCompletion = function(stopId) {
-            const stops = stateRoutes[currentRouteKey].stops;
-            const targetStop = stops.find(s => s.id === stopId);
-            if (targetStop) {
-                targetStop.completed = !targetStop.completed;
-                renderTimeline();
-                if (targetStop.completed) {
-                    showToast(`"${targetStop.name}" tamamlandı olarak işaretlendi.`);
-                }
-            }
-        };
-
-        // Kullanıcının Eklediği Durağı Sil
-        window.deleteCustomStop = function(stopId) {
-            stateRoutes[currentRouteKey].stops = stateRoutes[currentRouteKey].stops.filter(s => s.id !== stopId);
-            renderTimeline();
-            showToast("Özel durak rotadan kaldırıldı.");
-        };
-
-        // Yeni Durak Ekleme Formu Gönderimi
-        addStopForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const timeVal = document.getElementById('stop-time').value;
-            const categoryVal = document.getElementById('stop-category').value;
-            const nameVal = document.getElementById('stop-name').value.trim();
-            const durationVal = document.getElementById('stop-duration').value.trim();
-            const descVal = document.getElementById('stop-desc').value.trim();
-
-            if (!nameVal || !descVal) return;
-
-            const newStop = {
-                id: 'custom-' + Date.now(),
-                time: timeVal,
-                category: categoryVal,
-                name: nameVal,
-                duration: durationVal || '45 dk',
-                desc: descVal,
-                completed: false,
-                isCustom: true
-            };
-
-            // Yeni durağı ekle ve saate göre kronolojik sırala
-            stateRoutes[currentRouteKey].stops.push(newStop);
-            stateRoutes[currentRouteKey].stops.sort((a, b) => a.time.localeCompare(b.time));
-
-            // Formu temizle
-            document.getElementById('stop-name').value = '';
-            document.getElementById('stop-desc').value = '';
-
-            renderTimeline();
-            showToast(`"${nameVal}" zaman çizelgesine eklendi.`);
-        });
-
-        // İlerlemeyi Sıfırla Butonu
-        resetProgressBtn.addEventListener('click', function() {
-            stateRoutes[currentRouteKey].stops.forEach(s => s.completed = false);
-            renderTimeline();
-            showToast("Rota ilerlemesi sıfırlandı.");
-        });
-
-        // Şehir / Rota Değişimi Dinleyicisi
-        routeSelector.addEventListener('change', function(e) {
-            loadRoute(e.target.value);
-        });
-
-        // Sayfa Yüklendiğinde Başlat
-        window.addEventListener('DOMContentLoaded', () => {
-            // Güncel Türkçe tarih gösterimi
-            const options = { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' };
-            const todayStr = new Date().toLocaleDateString('tr-TR', options);
-            document.getElementById('current-date-display').textContent = todayStr;
-
-            loadRoute('karakoy');
-        });
-    </script>
-</body>
-</html>
+                            <label for="stop-desc" class="block text-xs font-medium text
