@@ -10,10 +10,12 @@
       --bg-card: #FFFFFF;
       --bg-soft: #EFECE6;
       --bg-tip: #FDF4EE;
+      --bg-night: #EFEFF7;
       --bg-promo: #FBF6EE;
       --text-main: #23211E;
       --text-muted: #706B63;
       --accent: #B86538;
+      --accent-night: #38446E;
       --accent-dark: #23211E;
       --border: #E4DFD5;
       --shadow: 0 6px 20px rgba(35, 33, 30, 0.05);
@@ -24,9 +26,7 @@
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -38,9 +38,9 @@
     }
 
     .sayfa-kapsayici {
-      max-width: 680px;
+      max-width: 700px;
       margin: 0 auto;
-      padding: 20px 14px 48px;
+      padding: 20px 14px 56px;
     }
 
     .ust-header {
@@ -71,7 +71,7 @@
       font-size: 15px;
       color: var(--text-muted);
       margin: 0 auto;
-      max-width: 500px;
+      max-width: 540px;
     }
 
     .kart {
@@ -121,9 +121,7 @@
       scrollbar-width: none;
     }
 
-    .zaman-filtreleri::-webkit-scrollbar {
-      display: none;
-    }
+    .zaman-filtreleri::-webkit-scrollbar { display: none; }
 
     .zaman-chip {
       border: 1px solid var(--border);
@@ -194,21 +192,59 @@
       border-radius: var(--radius-pill);
     }
 
+    .rozet-gece {
+      background: var(--bg-night);
+      color: var(--accent-night);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+    }
+
     .rota-baslik {
       font-family: var(--font-serif);
       font-size: 24px;
-      margin: 0 0 8px;
+      margin: 0 0 10px;
       color: var(--text-main);
     }
 
-    .ulasim-satir {
+    .ulasim-detay-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
       font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 14px;
     }
 
-    .ulasim-satir strong {
+    .ulasim-satir-kutu {
+      background: var(--bg-soft);
+      border-radius: 12px;
+      padding: 10px 12px;
       color: var(--text-main);
+    }
+
+    .ulasim-satir-kutu strong {
+      color: var(--accent-dark);
+    }
+
+    .gece-ulasim-kutu {
+      background: var(--bg-night);
+      border: 1px solid #D6D9EC;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #242B47;
+    }
+
+    .gece-ulasim-baslik {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent-night);
+      display: block;
+      margin-bottom: 3px;
     }
 
     .kutu-oneri {
@@ -230,9 +266,35 @@
     }
 
     .kutu-oneri-metin {
-      margin: 0;
+      margin: 0 0 8px;
       font-size: 14px;
       color: var(--text-main);
+    }
+
+    .mekan-karsilastirma {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 560px) {
+      .mekan-karsilastirma { grid-template-columns: 1fr; }
+    }
+
+    .mekan-kutu {
+      background: #FFFFFF;
+      border: 1px solid #EAD8CA;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+    }
+
+    .mekan-kutu-baslik {
+      font-weight: 700;
+      color: var(--accent-dark);
+      display: block;
+      margin-bottom: 3px;
     }
 
     .kutu-sponsor {
@@ -311,8 +373,50 @@
     .butce-baslik {
       font-family: var(--font-serif);
       font-size: 22px;
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       color: var(--text-main);
+    }
+
+    .ikili-kontrol-satiri {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .ikili-kontrol-satiri { grid-template-columns: 1fr; }
+    }
+
+    .seg-grup {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      background: var(--bg-soft);
+      padding: 4px;
+      border-radius: var(--radius-md);
+    }
+
+    .seg-btn {
+      border: none;
+      background: transparent;
+      padding: 8px 6px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .seg-btn.aktif {
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+
+    .seg-btn.gece-aktif {
+      background: var(--accent-night);
+      color: #FFFFFF;
     }
 
     .tarz-secici {
@@ -367,6 +471,11 @@
       background: var(--bg-tip);
     }
 
+    .kalem-item.gece-kalem.secili {
+      border-color: var(--accent-night);
+      background: var(--bg-night);
+    }
+
     .kalem-sol {
       display: flex;
       align-items: center;
@@ -390,6 +499,7 @@
     .kalem-detay {
       font-size: 12px;
       color: var(--text-muted);
+      display: block;
     }
 
     .kalem-fiyat {
@@ -461,9 +571,7 @@
       transition: background 0.15s ease;
     }
 
-    .wp-gonder-btn:hover {
-      background: #1EBE5D;
-    }
+    .wp-gonder-btn:hover { background: #1EBE5D; }
 
     .harita-kutu {
       border-radius: var(--radius-md);
@@ -483,15 +591,15 @@
 <body>
   <div class="sayfa-kapsayici">
     <header class="ust-header">
-      <div class="ust-kicker">İSTANBUL 39 İLÇE • ŞEHİR, ULAŞIM &amp; DATE REHBERİ</div>
+      <div class="ust-kicker">İSTANBUL 39 İLÇE • METRO, METROBÜS, VAPUR &amp; GECE REHBERİ</div>
       <h1 class="ana-baslik">Günün Rotası</h1>
-      <p class="alt-aciklama">“Sabah kahvaltısından gece lezzetlerine, 39 ilçede rota, ulaşım durağı ve date planlayıcı”</p>
+      <p class="alt-aciklama">“Sabah kahvaltısından 00:00 sonrası gece rotalarına; öğrenci ve yetişkin tarifeleriyle hat bazlı ulaşım &amp; mekan rehberi”</p>
     </header>
 
     <nav class="mod-sekmeler" aria-label="Rehber Modları">
       <button type="button" class="mod-sekme aktif" data-mod="rota" onclick="modSec(this)">Kürasyon Rotalar</button>
       <button type="button" class="mod-sekme" data-mod="date" onclick="modSec(this)">Date Planlayıcı</button>
-      <button type="button" class="mod-sekme" data-mod="harita" onclick="modSec(this)">Harita &amp; Durak</button>
+      <button type="button" class="mod-sekme" data-mod="harita" onclick="modSec(this)">Hatlar &amp; Harita</button>
     </nav>
 
     <div class="zaman-filtreleri" id="zamanFiltreleri">
@@ -499,6 +607,7 @@
       <button type="button" class="zaman-chip" data-zaman="Sabah Kahvaltısı" onclick="zamanSec(this)">Sabah Kahvaltısı</button>
       <button type="button" class="zaman-chip" data-zaman="Öğle &amp; Kahve" onclick="zamanSec(this)">Öğle &amp; Kahve</button>
       <button type="button" class="zaman-chip" data-zaman="Gece Yemeği" onclick="zamanSec(this)">Gece Yemeği</button>
+      <button type="button" class="zaman-chip" data-zaman="00:00 Sonrası" onclick="zamanSec(this)">00:00 Sonrası</button>
     </div>
 
     <div class="kart">
@@ -510,15 +619,34 @@
       <div class="rozet-satir">
         <span class="rozet-yaka" id="rotaYakaRozet">ANADOLU YAKASI</span>
         <span class="rozet-zaman" id="rotaZamanRozet">Tüm Gün</span>
+        <span class="rozet-gece" id="rotaGeceRozet">🌙 00:00 Sonrası Hat Bilgisi</span>
       </div>
       <h2 class="rota-baslik" id="rotaBaslik">Üsküdar: Salacak Sahil &amp; Kuzguncuk</h2>
-      <div class="ulasim-satir" id="rotaUlasimSatir">
-        <strong>Toplu Taşıma:</strong> Marmaray &amp; Şehir Hatları Vapur | <strong>Taksi:</strong> Üsküdar Meydan Taksi
+
+      <div class="ulasim-detay-grid">
+        <div class="ulasim-satir-kutu"><strong>🚇 Metro / Raylı / Metrobüs:</strong> <span id="detayRayliMetin"></span></div>
+        <div class="ulasim-satir-kutu"><strong>⛴️ Vapur Hatları &amp; Sefer Bilgisi:</strong> <span id="detayVapurMetin"></span></div>
+        <div class="ulasim-satir-kutu"><strong>🚌 İETT &amp; Taksi:</strong> <span id="detayIettMetin"></span></div>
+      </div>
+
+      <div class="gece-ulasim-kutu" id="geceUlasimKutu">
+        <span class="gece-ulasim-baslik">🌙 00:00 SONRASI GECE ULAŞIMI</span>
+        <span id="geceUlasimMetin"></span>
       </div>
 
       <div class="kutu-oneri">
-        <span class="kutu-oneri-baslik" id="oneriKutuBaslik">ROTA &amp; DURAK ÖNERİSİ</span>
+        <span class="kutu-oneri-baslik" id="oneriKutuBaslik">ÖĞRENCİ &amp; YETİŞKİN ROTA / MEKAN ÖNERİSİ</span>
         <p class="kutu-oneri-metin" id="oneriKutuMetin"></p>
+        <div class="mekan-karsilastirma">
+          <div class="mekan-kutu">
+            <span class="mekan-kutu-baslik">🎓 Öğrenci &amp; Bütçe Dostu Mekan</span>
+            <span id="ogrenciMekanMetin"></span>
+          </div>
+          <div class="mekan-kutu">
+            <span class="mekan-kutu-baslik">🥂 Yetişkin &amp; Sosyal / Şık Mekan</span>
+            <span id="yetiskinMekanMetin"></span>
+          </div>
+        </div>
       </div>
 
       <div class="kutu-sponsor">
@@ -530,7 +658,7 @@
 
     <section class="kart" id="rotaButceModulu" aria-label="Rota Bütçe Hesaplayıcı">
       <div class="butce-ust">
-        <span class="butce-etiket">ROTA BÜTÇE HESAPLAYICI</span>
+        <span class="butce-etiket">HAT &amp; ROTA BÜTÇE HESAPLAYICI</span>
         <div class="kisi-secici">
           <button type="button" onclick="kisiDegistir(-1)" aria-label="Kişi azalt">−</button>
           <span id="kisiSayisiGosterge">2 Kişi</span>
@@ -539,6 +667,17 @@
       </div>
 
       <h3 class="butce-baslik" id="butceIlceBaslik">Üsküdar: Rota Bütçesi</h3>
+
+      <div class="ikili-kontrol-satiri">
+        <div class="seg-grup" role="group" aria-label="Yolcu Tarifesi">
+          <button type="button" class="seg-btn aktif" id="btnOgrenci" onclick="tarifeSec('ogrenci')">🎓 Öğrenci (22,55 ₺)</button>
+          <button type="button" class="seg-btn" id="btnTam" onclick="tarifeSec('tam')">💳 Tam Bilet (46,20 ₺)</button>
+        </div>
+        <div class="seg-grup" role="group" aria-label="Saat Dilimi">
+          <button type="button" class="seg-btn aktif" id="btnGunduz" onclick="saatModuSec('gunduz')">☀️ Gündüz / Akşam</button>
+          <button type="button" class="seg-btn" id="btnGece" onclick="saatModuSec('gece')">🌙 00:00 Sonrası</button>
+        </div>
+      </div>
 
       <div class="tarz-secici" role="group" aria-label="Mekan Tarzı">
         <button type="button" class="tarz-btn" data-carpan="0.65" onclick="tarzSec(this)">Öğrenci / İBB Tesis</button>
@@ -549,7 +688,7 @@
       <div class="kalem-listesi" id="butceKalemListesi"></div>
 
       <div class="tasarruf-kutusu">
-        <span class="tasarruf-baslik">💡 YEREL TASARRUF İPUCU</span>
+        <span class="tasarruf-baslik">💡 YEREL TASARRUF &amp; ULAŞIM İPUCU</span>
         <p class="tasarruf-metin" id="tasarrufMetni"></p>
       </div>
 
@@ -573,117 +712,214 @@
   </div>
 
   <script>
+    // 2026 Güncel Referans Tarifeler (TL)
+    const TARIFE_2026 = {
+      ogrenci: {
+        tekBinis: 22.55,
+        aktarma1: 11.21,
+        vapurMerkezOgrenci: 28.44,
+        vapurBogazOgrenci: 37.61,
+        vapurAdalarOgrenci: 75.64,
+        metrobusKisa: 22.55,
+        metrobusUzun: 34.0
+      },
+      tam: {
+        tekBinis: 46.20,
+        aktarma1: 34.40,
+        vapurMerkezTam: 65.21,
+        vapurBogazTam: 76.90,
+        vapurAdalarTam: 151.23,
+        metrobusKisa: 33.08,
+        metrobusUzun: 68.59
+      }
+    };
+
     const ISTANBUL_ILCELERI = [
-      { ad: "Üsküdar", yaka: "Anadolu Yakası", rota: "Salacak Sahil & Kuzguncuk", ulasim: "Marmaray, M5 Metro & Şehir Hatları Vapur", taksi: "Üsküdar Meydan Taksi", oneri: "Salacak'ta simit-çay ve Marmaray ile güne başlayıp Kuzguncuk'ta kahve ve akşam yemeği molası verebilirsiniz.", sponsor: "Kuzguncuk ve Salacak hattında öne çıkan sahil kafeleri ile keyifli buluşma noktaları." },
-      { ad: "Kadıköy", yaka: "Anadolu Yakası", rota: "Moda Sahil, Çarşı & Bahariye", ulasim: "M4 Metro, Marmaray & Kadıköy-Karaköy/Beşiktaş Vapuru", taksi: "Kadıköy Rıhtım Taksi", oneri: "Moda sahil yürüyüşünün ardından Kadıköy Çarşı'da esnaf lokantaları veya butik kahvecilerde mola verebilirsiniz.", sponsor: "Moda ve Caferağa bölgesindeki öne çıkan mekan ve rezervasyon önerileri." },
-      { ad: "Ataşehir", yaka: "Anadolu Yakası", rota: "Batı Ataşehir & Küçükbakkalköy", ulasim: "M8 Metro & 19F İETT", taksi: "Ataşehir Meydan Taksi", oneri: "Ataşehir merkezde kahve veya yemek molası verip en yakın duraktan dönüş rotası planlayabilirsiniz.", sponsor: "Ataşehir bölgesindeki öne çıkan mekan veya rezervasyon bağlantısı." },
-      { ad: "Beşiktaş", yaka: "Avrupa Yakası", rota: "Çarşı, Kahvaltıcılar Sokağı & Ortaköy", ulasim: "M2 Metro, Şehir Hatları Vapur & Sahil İETT Hatları", taksi: "Beşiktaş İskele Taksi", oneri: "Kahvaltıcılar Sokağı'nda güne başlayıp Akaretler ve Ortaköy sahil hattında yürüyüş rotası oluşturabilirsiniz.", sponsor: "Beşiktaş ve Akaretler çevresindeki öne çıkan kafe ve akşam mekanları." },
-      { ad: "Fatih", yaka: "Avrupa Yakası", rota: "Süleymaniye, Eminönü & Balat", ulasim: "T1 Tramvay, Marmaray & Haliç Hatları", taksi: "Sirkeci / Beyazıt Taksi", oneri: "Tarihi Yarımada sokaklarında yürüyüş yapıp Eminönü ve Süleymaniye hattında geleneksel lezzetleri deneyebilirsiniz.", sponsor: "Tarihi Yarımada ve Balat çevresindeki öne çıkan duraklar." },
-      { ad: "Beyoğlu", yaka: "Avrupa Yakası", rota: "Karaköy, Galata & Cihangir", ulasim: "T1 Tramvay, F2 Tünel & M2 Metro", taksi: "Karaköy Rıhtım Taksi", oneri: "Karaköy sahilden Galata ve Cihangir yokuşlarına uzanan keyifli bir kahve ve akşam rotası çizebilirsiniz.", sponsor: "Karaköy ve Cihangir bölgesindeki öne çıkan mekan önerileri." },
-      { ad: "Adalar", yaka: "Anadolu Yakası", rota: "Büyükada & Heybeliada Sahil Turu", ulasim: "Kabataş / Bostancı / Eminönü Vapurları", taksi: "Ada Fayton / Elektrikli Araç Durakları", oneri: "Vapur yolculuğu ile adaya geçip sahil hattında yürüyüş ve deniz manzaralı molalar verebilirsiniz." },
-      { ad: "Arnavutköy", yaka: "Avrupa Yakası", rota: "Arnavutköy Merkez & Durusu Çevresi", ulasim: "İETT Bölge Hatları & Havalimanı Bağlantıları", taksi: "Arnavutköy Merkez Taksi", oneri: "Bölge merkezinde kahvaltı veya yemek molası verip çevre rotalarını keşfedebilirsiniz." },
-      { ad: "Avcılar", yaka: "Avrupa Yakası", rota: "Sahil Yürüyüş Yolu & Merkez", ulasim: "Metrobüs & İETT Sahil Hatları", taksi: "Avcılar Merkez Taksi", oneri: "Avcılar sahil bandında gün batımı yürüyüşü ve merkezde sıcak içecek molası planlayabilirsiniz." },
-      { ad: "Bağcılar", yaka: "Avrupa Yakası", rota: "Kirazlı & Merkez Çarşı Hattı", ulasim: "M1B Metro, M3 Metro & İETT Hatları", taksi: "Bağcılar Meydan Taksi", oneri: "Metro hattı üzerindeki duraklarda pratik yemek ve kahve molaları verebilirsiniz." },
-      { ad: "Bahçelievler", yaka: "Avrupa Yakası", rota: "Bakırköy Sınırı, Haznedar & Talatpaşa", ulasim: "M1A Metro, Metrobüs & İETT Hatları", taksi: "Bahçelievler Merkez Taksi", oneri: "Metrobüs ve metro duraklarına yakın kafe ve restoranlarda kısa molalar verebilirsiniz." },
-      { ad: "Bakırköy", yaka: "Avrupa Yakası", rota: "Sahil Yolu, Ataköy & Merkez", ulasim: "Marmaray, M1A Metro & İDO/İETT", taksi: "Bakırköy Meydan Taksi", oneri: "Bakırköy sahil hattında yürüyüş yapıp çarşı içinde keyifli bir yemek molası verebilirsiniz." },
-      { ad: "Başakşehir", yaka: "Avrupa Yakası", rota: "Sular Vadisi & Kayaşehir Merkez", ulasim: "M3 Metro, M9 Metro & İETT Hatları", taksi: "Başakşehir Merkez Taksi", oneri: "Sular Vadisi çevresinde yürüyüş yapıp merkezdeki kafelerde mola verebilirsiniz." },
-      { ad: "Bayrampaşa", yaka: "Avrupa Yakası", rota: "Merkez, Sağmalcılar & Forum Çevresi", ulasim: "M1A Metro, T4 Tramvay & İETT Hatları", taksi: "Bayrampaşa Merkez Taksi", oneri: "Raylı sistem duraklarına yakın noktalarda buluşma ve yemek planı yapabilirsiniz." },
-      { ad: "Beykoz", yaka: "Anadolu Yakası", rota: "Anadolu Kavağı, Kanlıca & Sahil", ulasim: "Boğaz Hattı Vapurları & 15/14M İETT", taksi: "Beykoz Merkez Taksi", oneri: "Boğaz hattı boyunca sahil yürüyüşü yapıp Kanlıca veya Anadolu Kavağı'nda mola verebilirsiniz." },
-      { ad: "Beylikdüzü", yaka: "Avrupa Yakası", rota: "Yaşam Vadisi & Sahil Hattı", ulasim: "Metrobüs & İETT Bölge Hatları", taksi: "Beylikdüzü Merkez Taksi", oneri: "Yaşam Vadisi park alanında yürüyüş yapıp çevredeki mekanlarda dinlenebilirsiniz." },
-      { ad: "Büyükçekmece", yaka: "Avrupa Yakası", rota: "Büyükçekmece Sahil & Mimar Sinan Köprüsü", ulasim: "Metrobüs Bağlantılı İETT Hatları", taksi: "Büyükçekmece Sahil Taksi", oneri: "Sahil boyunca yürüyüş yapıp deniz kenarında kahve molası verebilirsiniz." },
-      { ad: "Çatalca", yaka: "Avrupa Yakası", rota: "Çatalca Merkez & Doğa Rotaları", ulasim: "İETT Bölge Hatları", taksi: "Çatalca Merkez Taksi", oneri: "Şehir kalabalığından uzak sakin bir gün için doğa ve kır lokantası rotası oluşturabilirsiniz." },
-      { ad: "Çekmeköy", yaka: "Anadolu Yakası", rota: "Taşdelen, Alemdağ & Madenler", ulasim: "M5 Metro & İETT Hatları", taksi: "Çekmeköy Merkez Taksi", oneri: "Orman havası eşliğinde yürüyüş yapıp merkezdeki mekanlarda mola verebilirsiniz." },
-      { ad: "Esenler", yaka: "Avrupa Yakası", rota: "Dörtyol Meydan & Davutpaşa Çevresi", ulasim: "M1B Metro & İETT Hatları", taksi: "Esenler Dörtyol Taksi", oneri: "Merkez çevresinde pratik yemek ve kahve durakları seçebilirsiniz." },
-      { ad: "Esenyurt", yaka: "Avrupa Yakası", rota: "Merkez Meydan & Cumhuriyet Hattı", ulasim: "Metrobüs Bağlantılı İETT Hatları", taksi: "Esenyurt Merkez Taksi", oneri: "Ana arterler üzerindeki kafe ve restoranlarda gün içi molalar verebilirsiniz." },
-      { ad: "Eyüpsultan", yaka: "Avrupa Yakası", rota: "Eyüp Merkez, Pierre Loti & Feshane", ulasim: "T5 Tramvay, Haliç Hattı & İETT", taksi: "Eyüp Merkez Taksi", oneri: "Haliç kıyısında yürüyüş yapıp Eyüp merkez ve çevresinde mola verebilirsiniz." },
-      { ad: "Gaziosmanpaşa", yaka: "Avrupa Yakası", rota: "Meydan & Küçükköy Hattı", ulasim: "T4 Tramvay, M7 Metro & İETT", taksi: "Gaziosmanpaşa Meydan Taksi", oneri: "Tramvay ve metro duraklarına yakın noktalarda buluşma planlayabilirsiniz." },
-      { ad: "Güngören", yaka: "Avrupa Yakası", rota: "Merter, Haznedar & Merkez", ulasim: "M1A Metro, T1 Tramvay & İETT", taksi: "Güngören Merkez Taksi", oneri: "Ulaşım hatlarına yakın kafe ve çarşı duraklarında vakit geçirebilirsiniz." },
-      { ad: "Kağıthane", yaka: "Avrupa Yakası", rota: "Cendere Vadisi & Merkez", ulasim: "M7 Metro, M11 Metro Bağlantısı & İETT", taksi: "Kağıthane Merkez Taksi", oneri: "Cendere hattındaki kafelerde mola verip metro ile kolayca geçiş yapabilirsiniz." },
-      { ad: "Kartal", yaka: "Anadolu Yakası", rota: "Kartal Sahil & Yakacık", ulasim: "M4 Metro, Marmaray & İETT", taksi: "Kartal Meydan Taksi", oneri: "Kartal sahil parkında yürüyüş yapıp deniz manzaralı noktalarda mola verebilirsiniz." },
-      { ad: "Küçükçekmece", yaka: "Avrupa Yakası", rota: "Sefaköy, Florya Sınırı & Göl Kenarı", ulasim: "Marmaray, Metrobüs & İETT", taksi: "Sefaköy / Küçükçekmece Taksi", oneri: "Göl kenarı veya Marmaray duraklarına yakın noktalarda kısa bir mola verebilirsiniz." },
-      { ad: "Maltepe", yaka: "Anadolu Yakası", rota: "Maltepe Sahil Parkı & Bağdat Caddesi Hattı", ulasim: "M4 Metro, Marmaray & İETT", taksi: "Maltepe Merkez Taksi", oneri: "Sahil yürüyüş yolunda vakit geçirip merkezdeki kafelerde dinlenebilirsiniz." },
-      
-  { ad: "Pendik", yaka: "Anadolu Yakası", rota: "Pendik Sahil, Marina & Merkez", ulasim: "Marmaray, M4 Metro & İDO/İETT", taksi: "Pendik Sahil Taksi", oneri: "Sahil hattında yürüyüş yapıp marina çevresinde kahve veya yemek molası verebilirsiniz." },
-      { ad: "Sancaktepe", yaka: "Anadolu Yakası", rota: "Sarıgazi & Samandıra Hattı", ulasim: "M5 Metro & İETT Hatları", taksi: "Sancaktepe Merkez Taksi", oneri: "Metro hattı çevresindeki park ve kafe alanlarında keyifli bir rota oluşturabilirsiniz." },
-      { ad: "Sarıyer", yaka: "Avrupa Yakası", rota: "Emirgan, Bebek Sınırı, Tarabya & Rumeli Kavağı", ulasim: "M2 Metro & Sahil İETT Hatları", taksi: "Sarıyer / Emirgan Taksi", oneri: "Emirgan veya sahil hattında yürüyüş yapıp Boğaz manzaralı duraklarda mola verebilirsiniz." },
-      { ad: "Silivri", yaka: "Avrupa Yakası", rota: "Silivri Sahil & Merkez", ulasim: "İETT Bölge Hatları", taksi: "Silivri Merkez Taksi", oneri: "Sahil boyunca yürüyüş yapıp deniz kenarında balık veya kahve molası verebilirsiniz." },
-      { ad: "Sultanbeyli", yaka: "Avrupa Yakası", rota: "Gölet Çevresi & Merkez", ulasim: "İETT Hatları & TEM Bağlantısı", taksi: "Sultanbeyli Merkez Taksi", oneri: "Gölet çevresinde yürüyüş yapıp merkezdeki mekanlarda dinlenebilirsiniz." },
-      { ad: "Sultangazi", yaka: "Avrupa Yakası", rota: "Hacı Şükrü & Cebeci Hattı", ulasim: "T4 Tramvay, M7 Metro & İETT", taksi: "Sultangazi Merkez Taksi", oneri: "Tramvay hattı üzerindeki duraklarda buluşma ve yemek planı yapabilirsiniz." },
-      { ad: "Şile", yaka: "Anadolu Yakası", rota: "Şile Feneri, Sahil & Ağva Hattı", ulasim: "139 / 139A İETT Hatları", taksi: "Şile Merkez Taksi", oneri: "Karadeniz kıyısında yürüyüş yapıp sahil boyunca kahve ve yemek molası verebilirsiniz." },
-      { ad: "Şişli", yaka: "Avrupa Yakası", rota: "Nişantaşı, Teşvikiye & Osmanbey", ulasim: "M2 Metro & İETT Hatları", taksi: "Nişantaşı / Osmanbey Taksi", oneri: "Teşvikiye ve Nişantaşı sokaklarında yürüyüş yapıp butik kafelerde mola verebilirsiniz." },
-      { ad: "Tuzla", yaka: "Anadolu Yakası", rota: "Tuzla Sahil & Viaport Marina", ulasim: "Marmaray & İETT Hatları", taksi: "Tuzla Sahil Taksi", oneri: "Sahil hattında yürüyüş yapıp deniz kenarında keyifli bir mola verebilirsiniz." },
-      { ad: "Ümraniye", yaka: "Anadolu Yakası", rota: "Çarşı, Santral & Finans Merkezi Hattı", ulasim: "M5 Metro, M8 Metro & İETT", taksi: "Ümraniye Çarşı Taksi", oneri: "Metro hatları üzerindeki duraklarda kolayca ulaşabileceğiniz kafe ve restoranları seçebilirsiniz." },
-      { ad: "Zeytinburnu", yaka: "Avrupa Yakası", rota: "Kazlıçeşme Sahil & Merkez", ulasim: "Marmaray, T1 Tramvay & Metrobüs", taksi: "Zeytinburnu Merkez Taksi", oneri: "Sahil hattı veya tramvay/Marmaray duraklarına yakın noktalarda buluşabilirsiniz." }
+      {
+        ad: "Üsküdar", yaka: "Anadolu Yakası", rota: "Salacak Sahil & Kuzguncuk",
+        rayli: "Marmaray & M5 (Üsküdar–Çekmeköy) Metrosu",
+        vapur: "Üsküdar–Eminönü (Öğrenci ~28,44 ₺ / Tam ~58,52 ₺), Karaköy/Beşiktaş vapurları; gündüz-akşam sık sefer, akşam 21sonrası seyrelen seferler.",
+        iett: "15 / 15F / 12A İETT | Taksi: Üsküdar Meydan Taksi",
+        geceHat: "Cuma-Cumartesi 24 saat M5 Gece Metrosu + 15F / 11ÜS Gece İETT hatları. Vapur seferleri gece geç saatte çalışmaz; dönüşte Marmaray/metro/gece İETT kullanın.",
+        ogrenciMekan: "Fethi Paşa Korusu İBB Sosyal Tesisleri, Salacak sahilde simit-çay ve Nevçarşı içi uygun esnaf lokantaları.",
+        yetiskinMekan: "Kuzguncuk İcadiye Caddesi butik kahvecileri ve Boğaz manzaralı akşam yemeği mekanları.",
+        sponsor: "Salacak ve Kuzguncuk hattında öne çıkan kafe ve akşam buluşma noktaları."
+      },
+      {
+        ad: "Kadıköy", yaka: "Anadolu Yakası", rota: "Moda Sahil, Çarşı & Bahariye",
+        rayli: "M4 (Kadıköy–Sabiha Gökçen) Metrosu, Marmaray (Söğütlüçeşme) & T3 Moda Tramvayı",
+        vapur: "Kadıköy–Karaköy / Eminönü / Beşiktaş (Öğrenci ~31,76 ₺ / Tam ~65,21 ₺); gündüz-akşam düzenli seferler, geç saatte son vapur saatine dikkat edin.",
+        iett: "4 / 17 / 19S İETT & Söğütlüçeşme Metrobüs | Taksi: Kadıköy Rıhtım Taksi",
+        geceHat: "Cuma-Cumartesi 24 saat M4 Gece Metrosu + 24 saat Metrobüs (Söğütlüçeşme) + 11ÜS / 15F / 19S Gece İETT hatları.",
+        ogrenciMekan: "Moda İBB Kafe, Kadıköy Çarşı esnaf lokantaları ve Moda sahil yürüyüş rotası.",
+        yetiskinMekan: "Caferağa / Moda butik restoranları, kokteyl/şarap mekanları ve kahve durakları.",
+        sponsor: "Moda ve Kadıköy Çarşı bölgesindeki öne çıkan mekan ve rezervasyon önerileri."
+      },
+      {
+        ad: "Beşiktaş", yaka: "Avrupa Yakası", rota: "Çarşı, Kahvaltıcılar Sokağı & Ortaköy",
+        rayli: "M2 Metro (Gayrettepe/Taksim) + sahil bağlantısı",
+        vapur: "Beşiktaş–Kadıköy (Öğrenci ~31,76 ₺ / Tam ~65,21 ₺) & Üsküdar vapurları; gündüz-akşam sık seferler.",
+        iett: "28 / 30M / DT1 / 40 İETT | Taksi: Beşiktaş İskele Taksi",
+        geceHat: "Cuma-Cumartesi 24 saat M2 Gece Metrosu (Taksim/Gayrettepe) + 40 / 25G / 55G Gece İETT hatları.",
+        ogrenciMekan: "Beşiktaş Çarşı içi uygun kahvaltı/esnaf lokantaları ve Yıldız Parkı çevresi.",
+        yetiskinMekan: "Akaretler ve Ortaköy sahil hattındaki şık kafeler ve akşam yemeği mekanları.",
+        sponsor: "Beşiktaş, Akaretler ve Ortaköy çevresindeki öne çıkan mekanlar."
+      },
+      {
+        ad: "Fatih", yaka: "Avrupa Yakası", rota: "Süleymaniye, Eminönü & Balat",
+        rayli: "T1 (Kabataş–Bağcılar) Tramvayı, Marmaray (Sirkeci/Yenikapı) & M1A/M1B/M2 (Yenikapı/Vezneciler)",
+        vapur: "Eminönü–Üsküdar (Öğrenci ~28,44 ₺ / Tam ~58,52 ₺), Kadıköy & Haliç vapur hatları.",
+        iett: "BN1 / 38 / 92T İETT | Taksi: Sirkeci / Beyazıt Taksi",
+        geceHat: "Cuma-Cumartesi 24 saat M1A, M1B ve M2 Gece Metrosu (Yenikapı/Vezneciler) + gece İETT/Metrobüs bağlantıları.",
+        ogrenciMekan: "Hocapaşa esnaf lokantaları, Gülhane/Cankurtaran İBB tesisleri ve Balat sokak kafeleri.",
+        yetiskinMekan: "Süleymaniye teras mekanları, tarihi restoranlar ve Karaköy/Eminönü akşam rotaları.",
+        sponsor: "Tarihi Yarımada ve Balat çevresindeki öne çıkan duraklar."
+      },
+      {
+        ad: "Beyoğlu", yaka: "Avrupa Yakası", rota: "Karaköy, Galata & Cihangir",
+        rayli: "M2 Metro (Taksim/Şişhane), T1 Tramvay (Karaköy/Tophane) & F2 Tünel",
+        vapur: "Karaköy–Kadıköy (Öğrenci ~31,76 ₺ / Tam ~65,21 ₺) & Üsküdar vapurları.",
+        iett: "30D / 74A / 55T İETT | Taksi: Karaköy Rıhtım Taksi",
+        geceHat: "Cuma-Cumartesi 24 saat M2 Gece Metrosu (Taksim-Hacıosman / Yenikapı) + 25G, 40 ve 50G Gece İETT hatları.",
+        ogrenciMekan: "Cihangir/Karaköy ara sokaklarındaki uygun kafeler ve yürüyüş rotaları.",
+        yetiskinMekan: "Galata/Karaköy/Cihangir gastronomi durakları ve akşam buluşma mekanları.",
+        sponsor: "Karaköy, Galata ve Cihangir bölgesindeki öne çıkan mekanlar."
+      },
+      {
+        ad: "Adalar", yaka: "Anadolu Yakası", rota: "Büyükada & Heybeliada Sahil Turu",
+        rayli: "Bostancı / Kadıköy (M4/Marmaray) veya Kabataş (F1/T1) bağlantılı",
+        vapur: "Bostancı/Kadıköy/Beşiktaş/Kabataş–Adalar (Öğrenci ~75,64 ₺ / Tam ~151,23 ₺); seferler gün içi belirli saatlerde düzenlenir.",
+        iett: "Ada içi elektrikli araçlar | Taksi: Ada Elektrikli Araç Durakları",
+        geceHat: "00:00 sonrası düzenli vapur seferi bulunmaz; son vapur saatini kaçırmayın veya ana karadan gece metrosu/İETT planlayın.",
+        ogrenciMekan: "Sahil kenarı sandviç/çay molaları, ada yürüyüş rotaları ve iskele çevresi.",
+        yetiskinMekan: "Ada sahil restoranları, manzaralı kahve durakları ve gün batımı buluşmaları.",
+        sponsor: "Büyükada ve Heybeliada hattındaki öne çıkan duraklar."
+      },
+      {
+        ad: "Ataşehir", yaka: "Anadolu Yakası", rota: "Batı Ataşehir & Küçükbakkalköy",
+        rayli: "M8 (Bostancı–Parseller) Metrosu; M4 ve M5 hatlarına aktarma imkanı",
+        vapur: "Bostancı veya Kadıköy iskelelerinden aktarmalı",
+        iett: "19F / 8A / 13 İETT | Taksi: Ataşehir Meydan Taksi",
+        geceHat: "Cuma-Cumartesi M4 Gece Metrosu aktarması + gece/erken saat İETT ve taksi bağlantıları.",
+        ogrenciMekan: "Küçükbakkalköy butik kafeleri ve park yürüyüş rotaları.",
+        yetiskinMekan: "Batı Ataşehir restoranları ve akşam buluşma noktaları.",
+        sponsor: "Ataşehir bölgesindeki öne çıkan mekan veya rezervasyon bağlantısı."
+      },
+      {
+        ad: "Sarıyer", yaka: "Avrupa Yakası", rota: "Emirgan, Tarabya & Rumeli Kavağı",
+        rayli: "M2 Metro (Hacıosman / İTÜ Ayazağa) + sahil otobüsü/vapur bağlantısı",
+        vapur: "Boğaz Hattı (Öğrenci ~37,61 ₺ / Tam ~76,90 ₺) & Sarıyer/İstinye hatları.",
+        iett: "25E / 40B / 29Ş İETT | Taksi: Sarıyer / Emirgan Taksi",
+        geceHat: "Cuma-Cumartesi 24 saat M2 Gece Metrosu (Hacıosman'a kadar) + 25G ve 40 Gece İETT hatları.",
+        ogrenciMekan: "Emirgan Korusu yürüyüşü, termosta kahve/sandviç ve sahil molaları.",
+        yetiskinMekan: "Tarabya ve Sarıyer sahilindeki balık/kahve ve akşam yemeği mekanları.",
+        sponsor: "Emirgan, Tarabya ve Sarıyer hattındaki öne çıkan mekanlar."
+      },
+      {
+        ad: "Şişli", yaka: "Avrupa Yakası", rota: "Nişantaşı, Teşvikiye & Osmanbey",
+        rayli: "M2 Metro (Osmanbey / Şişli-Mecidiyeköy) & M7 Metro (Mecidiyeköy)",
+        vapur: "Beşiktaş / Kabataş iskelelerine kısa aktarma",
+        iett: "30A / 46T / 54E İETT & Mecidiyeköy Metrobüs | Taksi: Nişantaşı / Osmanbey Taksi",
+        geceHat: "Cuma-Cumartesi 24 saat M2 ve M7 Gece Metrosu + 24 saat Metrobüs hattı.",
+        ogrenciMekan: "Teşvikiye/Osmanbey uygun pastane/kahve durakları ve yürüyüş rotaları.",
+        yetiskinMekan: "Nişantaşı butik restoranları, kahve durakları ve akşam mekanları.",
+        sponsor: "Nişantaşı, Osmanbey ve Mecidiyeköy çevresi önerileri."
+      },
+      {
+        ad: "Eyüpsultan", yaka: "Avrupa Yakası", rota: "Eyüp Merkez, Pierre Loti & Feshane",
+        rayli: "T5 Tramvay & M7 Metro (Alibeyköy / Yeşilpınar)",
+        vapur: "Haliç Şehir Hatları Vapuru (Öğrenci ~37,61 ₺ / Tam ~76,90 ₺).",
+        iett: "48 / 39 / 99A İETT | Taksi: Eyüp Merkez Taksi",
+        geceHat: "Cuma-Cumartesi 24 saat M7 Gece Metrosu + 55G Gece İETT hattı bağlantıları.",
+        ogrenciMekan: "Haliç kıyısı yürüyüşü, Feshane/çevre alanları ve uygun kahve/çay durakları.",
+        yetiskinMekan: "Haliç manzaralı restoranlar ve akşam yemeği noktaları.",
+        sponsor: "Eyüpsultan ve Haliç hattındaki öne çıkan mekanlar."
+      }
     ];
 
-    const OZEL_BUTCE_SENARYOLARI = {
+    function varsayilanIlceDetay(ad, yaka) {
+      return {
+        ad, yaka,
+        rota: `${ad} Merkez & Çevre Rotaları`,
+        rayli: "Bölge metro / Marmaray / tramvay veya Metrobüs hatları",
+        vapur: "Doğrudan iskele yoksa yakın sahil/Marmaray/metro aktarmasıyla vapur hatlarına bağlanabilirsiniz.",
+        iett: `${ad} İETT bölge hatları | Taksi: ${ad} Merkez Taksi`,
+        geceHat: "Cuma-Cumartesi gece metrosu hatlarına (M1A, M1B, M2, M4, M5, M6, M7), 24 saat Metrobüs'e veya gece İETT/taksi hatlarına aktarma yapın.",
+        ogrenciMekan: `${ad} çevresinde İBB tesisleri, esnaf lokantaları ve park/sahil yürüyüş rotaları.`,
+        yetiskinMekan: `${ad} merkezdeki butik kafeler, restoranlar ve akşam buluşma mekanları.`,
+        sponsor: `${ad} bölgesindeki öne çıkan mekan veya rezervasyon bağlantısı.`
+      };
+    }
+
+    const DIGER_29_ILCE = [
+      ["Arnavutköy", "Avrupa Yakası"], ["Avcılar", "Avrupa Yakası"], ["Bağcılar", "Avrupa Yakası"],
+      ["Bahçelievler", "Avrupa Yakası"], ["Bakırköy", "Avrupa Yakası"], ["Başakşehir", "Avrupa Yakası"],
+      ["Bayrampaşa", "Avrupa Yakası"], ["Beykoz", "Anadolu Yakası"], ["Beylikdüzü", "Avrupa Yakası"],
+      ["Büyükçekmece", "Avrupa Yakası"], ["Çatalca", "Avrupa Yakası"], ["Çekmeköy", "Anadolu Yakası"],
+      ["Esenler", "Avrupa Yakası"], ["Esenyurt", "Avrupa Yakası"], ["Gaziosmanpaşa", "Avrupa Yakası"],
+      ["Güngören", "Avrupa Yakası"], ["Kağıthane", "Avrupa Yakası"], ["Kartal", "Anadolu Yakası"],
+      ["Küçükçekmece", "Avrupa Yakası"], ["Maltepe", "Anadolu Yakası"], ["Pendik", "Anadolu Yakası"],
+      ["Sancaktepe", "Anadolu Yakası"], ["Silivri", "Avrupa Yakası"], ["Sultanbeyli", "Anadolu Yakası"],
+      ["Sultangazi", "Avrupa Yakası"], ["Şile", "Anadolu Yakası"], ["Tuzla", "Anadolu Yakası"],
+      ["Ümraniye", "Anadolu Yakası"], ["Zeytinburnu", "Avrupa Yakası"]
+    ];
+
+    const TUM_39_ILCE = [
+      ...ISTANBUL_ILCELERI,
+      ...DIGER_29_ILCE.map(([ad, yaka]) => varsayilanIlceDetay(ad, yaka))
+    ];
+
+    const OZEL_MEKAN_BUTCELERI = {
       "Üsküdar": {
-        ipucu: "Salacak sahilindeki özel kafeler yerine Fethi Paşa Korusu İBB Sosyal Tesisleri'ni veya Nevçarşı çevresindeki esnaf lokantalarını seçerek bütçeyi %40'a yakın koruyabilirsiniz.",
-        kalemler: [
-          { id: "ulasim", ad: "Marmaray / Şehir Hatları Vapur", detay: "Gidiş-dönüş toplu taşıma", fiyat: 55, sabit: true, secili: true },
-          { id: "simit", ad: "Salacak'ta Simit & Çay", detay: "Kız Kulesi karşısı sahil keyfi", fiyat: 95, sabit: false, secili: true },
-          { id: "kahve", ad: "Kuzguncuk'ta Kahve & Tatlı", detay: "İcadiye Caddesi kafe molası", fiyat: 340, sabit: false, secili: false },
-          { id: "yemek", ad: "Kuzguncuk / Çengelköy Akşam Yemeği", detay: "Ana yemek + meze/içecek", fiyat: 780, sabit: false, secili: false }
-        ]
-      },
-      "Beşiktaş": {
-        ipucu: "Ortaköy meydanındaki yüksek fiyatlı mekanlar yerine Beşiktaş Çarşı içi esnaf lokantalarını veya Yıldız Parkı İBB tesislerini tercih ederek bütçeyi rahatlatabilirsiniz.",
-        kalemler: [
-          { id: "ulasim", ad: "Vapur / Metro / Sahil İETT", detay: "Gidiş-dönüş ulaşım", fiyat: 55, sabit: true, secili: true },
-          { id: "kahvalti", ad: "Kahvaltıcılar Sokağı Kahvaltı", detay: "Kişi başı kahvaltı & çay", fiyat: 420, sabit: false, secili: true },
-          { id: "kahve", ad: "Akaretler Kahve Molası", detay: "Kahve + atıştırmalık", fiyat: 320, sabit: false, secili: false },
-          { id: "yemek", ad: "Çarşı / Ortaköy Akşam Yemeği", detay: "Akşam yemeği menüsü", fiyat: 660, sabit: false, secili: false }
-        ]
-      },
-      "Fatih": {
-        ipucu: "Sultanahmet meydanındaki turistik noktalar yerine Hocapaşa esnaf lokantalarını veya Gülhane / Cankurtaran İBB Sosyal Tesisleri'ni tercih edebilirsiniz.",
-        kalemler: [
-          { id: "ulasim", ad: "T1 Tramvay / Marmaray", detay: "Gidiş-dönüş raylı sistem", fiyat: 55, sabit: true, secili: true },
-          { id: "sokak", ad: "Eminönü Sahil Lezzeti", detay: "Klasik sahil atıştırmalığı", fiyat: 220, sabit: false, secili: true },
-          { id: "kahve", ad: "Süleymaniye Türk Kahvesi", detay: "Haliç manzaralı kahve molası", fiyat: 240, sabit: false, secili: false },
-          { id: "yemek", ad: "Tarihi Yarımada Akşam Yemeği", detay: "Köfte / esnaf menüsü", fiyat: 540, sabit: false, secili: false }
-        ]
-      },
-      "Ataşehir": {
-        ipucu: "Batı Ataşehir bulvarındaki zincir mekanlar yerine Küçükbakkalköy ara sokaklarındaki butik kafeleri ve park yürüyüşünü tercih ederek maliyeti düşürebilirsiniz.",
-        kalemler: [
-          { id: "ulasim", ad: "M8 Metro & İETT Aktarma", detay: "Gidiş-dönüş toplu taşıma", fiyat: 55, sabit: true, secili: true },
-          { id: "kahve", ad: "Batı Ataşehir Kahve Molası", detay: "Kahve + tatlı", fiyat: 350, sabit: false, secili: true },
-          { id: "yemek", ad: "Küçükbakkalköy / Bulvar Yemeği", detay: "Ana yemek + içecek", fiyat: 760, sabit: false, secili: false }
+        ipucu: "Salacak'ta simit-çay + vapur/metro ile başlayıp Kuzguncuk'ta kahve ve akşam yemeği ekleyebilirsiniz. Öğrenci kartı ve Fethi Paşa Korusu İBB tesisleri bütçeyi ciddi biçimde korur.",
+        mekanlar: [
+          { ad: "Salacak'ta Simit & Çay", detay: "Sahil yürüyüşü molası", fiyat: 95, secili: true },
+          { ad: "Kuzguncuk'ta Kahve & Tatlı", detay: "İcadiye Caddesi kafe molası", fiyat: 340, secili: false },
+          { ad: "Kuzguncuk / Çengelköy Akşam Yemeği", detay: "Ana yemek + içecek", fiyat: 780, secili: false }
         ]
       },
       "Kadıköy": {
-        ipucu: "Moda sahilindeki yoğun mekanlar yerine Kadıköy Çarşı içi esnaf lokantalarını veya Moda İBB Kafe'yi seçerek bütçeyi koruyabilirsiniz.",
-        kalemler: [
-          { id: "ulasim", ad: "Vapur / Marmaray / M4 Metro", detay: "Gidiş-dönüş ulaşım", fiyat: 55, sabit: true, secili: true },
-          { id: "kahve", ad: "Moda Sahil Kahve / Dondurma", detay: "Sahil yürüyüşü molası", fiyat: 230, sabit: false, secili: true },
-          { id: "yemek", ad: "Kadıköy Çarşı Akşam Yemeği", detay: "Ana yemek + içecek", fiyat: 680, sabit: false, secili: false }
+        ipucu: "Moda sahilinde yürüyüş yapıp Kadıköy Çarşı esnaf lokantalarını veya Moda İBB Kafe'yi tercih ederek bütçeyi dengeli tutabilirsiniz.",
+        mekanlar: [
+          { ad: "Moda Sahil Kahve / Dondurma", detay: "Sahil yürüyüşü molası", fiyat: 230, secili: true },
+          { ad: "Kadıköy Çarşı Akşam Yemeği", detay: "Ana yemek + içecek", fiyat: 680, secili: false }
+        ]
+      },
+      "Beşiktaş": {
+        ipucu: "Kahvaltıcılar Sokağı yerine çarşı içi seçenekleri değerlendirmek ve gece dönüşte M2 Gece Metrosu / gece İETT hatlarını kullanmak bütçeyi korur.",
+        mekanlar: [
+          { ad: "Kahvaltıcılar Sokağı Kahvaltı", detay: "Kahvaltı tabağı / serpme payı", fiyat: 420, secili: true },
+          { ad: "Akaretler Kahve Molası", detay: "Kahve + atıştırmalık", fiyat: 320, secili: false },
+          { ad: "Çarşı / Ortaköy Akşam Yemeği", detay: "Akşam yemeği menüsü", fiyat: 660, secili: false }
+        ]
+      },
+      "Fatih": {
+        ipucu: "Hocapaşa esnaf lokantaları ve İBB tesisleri Tarihi Yarımada'da hem öğrenci hem yetişkinler için ekonomik alternatif sunar.",
+        mekanlar: [
+          { ad: "Eminönü Sahil Lezzeti", detay: "Klasik sahil atıştırmalığı", fiyat: 220, secili: true },
+          { ad: "Süleymaniye Türk Kahvesi", detay: "Manzaralı kahve molası", fiyat: 240, secili: false },
+          { ad: "Tarihi Yarımada Akşam Yemeği", detay: "Esnaf / köfte menüsü", fiyat: 540, secili: false }
         ]
       }
     };
 
-    function varsayilanSenaryo(ilceAd) {
-      return {
-        ipucu: `${ilceAd} merkezdeki ana cadde kafeleri yerine bölgedeki İBB Sosyal Tesisleri'ni, belediye kafelerini veya yerel esnaf lokantalarını seçerek bütçenizi %35'e kadar koruyabilirsiniz.`,
-        kalemler: [
-          { id: "ulasim", ad: `${ilceAd} Toplu Taşıma`, detay: "Gidiş-dönüş ulaşım", fiyat: 55, sabit: true, secili: true },
-          { id: "kahve", ad: `${ilceAd} Kahve & Tatlı Molası`, detay: "Kafe molası", fiyat: 310, sabit: false, secili: true },
-          { id: "yemek", ad: `${ilceAd} Akşam Yemeği`, detay: "Ana yemek + içecek", fiyat: 640, sabit: false, secili: false }
-        ]
-      };
-    }
-
     let aktifMod = "rota";
     let aktifZaman = "Tümü (39 İlçe)";
     let aktifIlceAd = "Üsküdar";
+    let aktifTarife = "ogrenci"; // "ogrenci" | "tam"
+    let aktifSaatModu = "gunduz"; // "gunduz" | "gece"
     let aktifCarpan = 1.0;
     let kisiSayisi = 2;
     let aktifKalemler = [];
 
+    function getIlceObjesi() {
+      return TUM_39_ILCE.find((i) => i.ad === aktifIlceAd) || TUM_39_ILCE[0];
+    }
+
     function selectDoldur() {
       const selectEl = document.getElementById("ilceSecSelect");
       selectEl.innerHTML = "";
-      ISTANBUL_ILCELERI.forEach((ilce) => {
+      TUM_39_ILCE.forEach((ilce) => {
         const opt = document.createElement("option");
         opt.value = ilce.ad;
         opt.textContent = `${ilce.ad} (${ilce.yaka.replace(" Yakası", "")})`;
@@ -703,48 +939,31 @@
       document.querySelectorAll(".zaman-chip").forEach((b) => b.classList.remove("aktif"));
       btn.classList.add("aktif");
       aktifZaman = btn.dataset.zaman;
-      rotaKartiniGuncelle();
+      if (aktifZaman === "00:00 Sonrası") {
+        saatModuSec("gece");
+      } else {
+        rotaKartiniGuncelle();
+      }
     }
 
-    function ilceDegisti(yeniIlceAd) {
-      aktifIlceAd = yeniIlceAd;
-      const senaryo = OZEL_BUTCE_SENARYOLARI[aktifIlceAd] || varsayilanSenaryo(aktifIlceAd);
-      aktifKalemler = JSON.parse(JSON.stringify(senaryo.kalemler));
-      document.getElementById("butceIlceBaslik").textContent = `${aktifIlceAd}: Rota Bütçesi`;
-      document.getElementById("tasarrufMetni").textContent = senaryo.ipucu;
-      rotaKartiniGuncelle();
+    function tarifeSec(tarife) {
+      aktifTarife = tarife;
+      document.getElementById("btnOgrenci").classList.toggle("aktif", tarife === "ogrenci");
+      document.getElementById("btnTam").classList.toggle("aktif", tarife === "tam");
+      kalemleriOlustur(false);
       butceEkraniniGuncelle();
     }
 
-    function rotaKartiniGuncelle() {
-      const ilce = ISTANBUL_ILCELERI.find((i) => i.ad === aktifIlceAd) || ISTANBUL_ILCELERI[0];
-      document.getElementById("rotaYakaRozet").textContent = ilce.yaka.toUpperCase();
-      document.getElementById("rotaZamanRozet").textContent = aktifZaman;
-
-      if (aktifMod === "date") {
-        document.getElementById("rotaBaslik").textContent = `${ilce.ad}: Date & Akşam Buluşması`;
-        document.getElementById("oneriKutuBaslik").textContent = "DATE PLANLAYICI ÖNERİSİ";
-        document.getElementById("oneriKutuMetin").textContent = `${ilce.ad} rotasında gün batımına yakın sakin bir yürüyüşle başlayıp keyifli bir kahve ve akşam yemeği durağında buluşabilirsiniz.`;
-      } else if (aktifMod === "harita") {
-        document.getElementById("rotaBaslik").textContent = `${ilce.ad}: Duraklar & Ulaşım Noktaları`;
-        document.getElementById("oneriKutuBaslik").textContent = "DURAK & AKTARMA NOTU";
-        document.getElementById("oneriKutuMetin").textContent = `${ilce.ulasim} hatlarını kullanarak merkez duraklara kolayca ulaşabilirsiniz.`;
-      } else {
-        document.getElementById("rotaBaslik").textContent = `${ilce.ad}: ${ilce.rota}`;
-        document.getElementById("oneriKutuBaslik").textContent = "ROTA & DURAK ÖNERİSİ";
-        document.getElementById("oneriKutuMetin").textContent = ilce.oneri;
-      }
-
-      document.getElementById("rotaUlasimSatir").innerHTML =
-        `<strong>Toplu Taşıma:</strong> ${ilce.ulasim} | <strong>Taksi:</strong> ${ilce.taksi}`;
-
-      document.getElementById("sponsorBaslik").textContent = `Sponsorlu / İş Ortağı Mekan Alanı`;
-      document.getElementById("sponsorMetin").textContent =
-        ilce.sponsor || `${ilce.ad} bölgesindeki öne çıkan mekan veya rezervasyon bağlantısı.`;
-
-      const sorgu = encodeURIComponent(`${ilce.ad} İstanbul`);
-      document.getElementById("haritaDisLink").href = `https://www.google.com/maps/search/?api=1&query=${sorgu}`;
-      document.getElementById("ilceHaritaIframe").src = `https://www.google.com/maps?q=${sorgu}&output=embed`;
+    function saatModuSec(mod) {
+      aktifSaatModu = mod;
+      const gBtn = document.getElementById("btnGunduz");
+      const nBtn = document.getElementById("btnGece");
+      gBtn.classList.toggle("aktif", mod === "gunduz");
+      nBtn.classList.toggle("gece-aktif", mod === "gece");
+      nBtn.classList.toggle("aktif", false);
+      kalemleriOlustur(true);
+      rotaKartiniGuncelle();
+      butceEkraniniGuncelle();
     }
 
     function tarzSec(btn) {
@@ -758,6 +977,155 @@
       kisiSayisi = Math.max(1, Math.min(12, kisiSayisi + fark));
       document.getElementById("kisiSayisiGosterge").textContent = `${kisiSayisi} Kişi`;
       butceEkraniniGuncelle();
+    }
+
+    function kalemleriOlustur(varsayilanSecimYenile = true) {
+      const ilce = getIlceObjesi();
+      const t = TARIFE_2026[aktifTarife];
+      const oncekiSecimler = new Map(aktifKalemler.map((k) => [k.id, k.secili]));
+      const ulasimKalemleri = [];
+
+      if (aktifSaatModu === "gunduz") {
+        // Metro / Raylı / Metrobüs gidiş-dönüş tahmini
+        const rayliUcret = Math.round(t.tekBinis * 2);
+        ulasimKalemleri.push({
+          id: "ulasim-rayli",
+          ad: `Metro / Raylı / Metrobüs (${ilce.ad})`,
+          detay: `${ilce.rayli} • ${aktifTarife === "ogrenci" ? "Öğrenci" : "Tam"} gidiş-dönüş tahmini`,
+          fiyat: rayliUcret,
+          sabit: true,
+          gece: false,
+          secili: varsayilanSecimYenile ? true : (oncekiSecimler.get("ulasim-rayli") ?? true)
+        });
+
+        // Vapur kalemi
+        let vapurBirim = aktifTarife === "ogrenci" ? t.vapurMerkezOgrenci : t.vapurMerkezTam;
+        let vapurNot = "Şehir Hatları merkez hat tahmini";
+        if (ilce.ad === "Adalar") {
+          vapurBirim = aktifTarife === "ogrenci" ? t.vapurAdalarOgrenci : t.vapurAdalarTam;
+          vapurNot = "Adalar vapur hattı tek yön tahmini";
+        } else if (["Üsküdar", "Beşiktaş", "Beyoğlu", "Sarıyer", "Eyüpsultan"].includes(ilce.ad)) {
+          vapurBirim = aktifTarife === "ogrenci" ? t.vapurBogazOgrenci : t.vapurBogazTam;
+          vapurNot = "Boğaz / merkez vapur hattı tahmini";
+        }
+
+        ulasimKalemleri.push({
+          id: "ulasim-vapur",
+          ad: `Vapur Hattı (${ilce.ad})`,
+          detay: `${vapurNot} (${aktifTarife === "ogrenci" ? "Öğrenci" : "Tam"})`,
+          fiyat: Math.round(vapurBirim),
+          sabit: true,
+          gece: false,
+          secili: varsayilanSecimYenile ? ["Üsküdar", "Kadıköy", "Beşiktaş", "Fatih", "Beyoğlu", "Adalar", "Sarıyer"].includes(ilce.ad) : (oncekiSecimler.get("ulasim-vapur") ?? false)
+        });
+
+        // İETT / Aktarma kalemi
+        ulasimKalemleri.push({
+          id: "ulasim-aktarma",
+          ad: `İETT / Aktarma (${ilce.ad})`,
+          detay: `${aktifTarife === "ogrenci" ? "Öğrenci aktarma" : "Tam 1. aktarma"} tahmini`,
+          fiyat: Math.round(t.aktarma1),
+          sabit: true,
+          gece: false,
+          secili: varsayilanSecimYenile ? false : (oncekiSecimler.get("ulasim-aktarma") ?? false)
+        });
+      } else {
+        // 00:00 Sonrası Gece Ulaşımı
+        ulasimKalemleri.push({
+          id: "gece-toplu",
+          ad: `00:00 Sonrası Gece Metrosu / İETT / Metrobüs`,
+          detay: ilce.geceHat,
+          fiyat: Math.round(t.tekBinis * 2),
+          sabit: true,
+          gece: true,
+          secili: varsayilanSecimYenile ? true : (oncekiSecimler.get("gece-toplu") ?? true)
+        });
+        ulasimKalemleri.push({
+          id: "gece-taksi",
+          ad: `00:00 Sonrası Taksi / Kısa Mesafe Payı`,
+          detay: `${ilce.taksi} • Kişi başı tahmini katkı`,
+          fiyat: 160,
+          sabit: false,
+          gece: true,
+          secili: varsayilanSecimYenile ? false : (oncekiSecimler.get("gece-taksi") ?? false)
+        });
+      }
+
+      const ozel = OZEL_MEKAN_BUTCELERI[ilce.ad];
+      const mekanHamListesi = ozel ? ozel.mekanlar : [
+        aktifSaatModu === "gece"
+          ? { ad: `${ilce.ad} Gece Çorba / Atıştırmalık`, detay: "00:00 sonrası gece molası", fiyat: 260, secili: true }
+          : { ad: `${ilce.ad} Kahve & Tatlı Molası`, detay: "Kafe / buluşma molası", fiyat: 310, secili: true },
+        { ad: `${ilce.ad} Yemek / Mekan Harcaması`, detay: "Ana yemek + içecek", fiyat: 640, secili: false }
+      ];
+
+      const mekanKalemleri = mekanHamListesi.map((m, idx) => {
+        const id = `mekan-${idx}`;
+        return {
+          id,
+          ad: m.ad,
+          detay: m.detay,
+          fiyat: m.fiyat,
+          sabit: false,
+          gece: aktifSaatModu === "gece",
+          secili: varsayilanSecimYenile ? m.secili : (oncekiSecimler.get(id) ?? m.secili)
+        };
+      });
+
+      aktifKalemler = [...ulasimKalemleri, ...mekanKalemleri];
+    }
+
+    function ilceDegisti(yeniIlceAd) {
+      aktifIlceAd = yeniIlceAd;
+      const ilce = getIlceObjesi();
+      const ozel = OZEL_MEKAN_BUTCELERI[ilce.ad];
+
+      document.getElementById("butceIlceBaslik").textContent = `${ilce.ad}: Rota Bütçesi`;
+      document.getElementById("tasarrufMetni").textContent = ozel
+        ? ozel.ipucu
+        : `${ilce.ad} bölgesinde öğrenci/indirimli İstanbulkart veya aktarma avantajlarını kullanmak ve İBB tesisleri / esnaf lokantalarını seçmek toplam bütçeyi düşürür.`;
+
+      kalemleriOlustur(true);
+      rotaKartiniGuncelle();
+      butceEkraniniGuncelle();
+    }
+
+    function rotaKartiniGuncelle() {
+      const ilce = getIlceObjesi();
+      document.getElementById("rotaYakaRozet").textContent = ilce.yaka.toUpperCase();
+      document.getElementById("rotaZamanRozet").textContent = aktifSaatModu === "gece" ? "00:00 Sonrası" : aktifZaman;
+      document.getElementById("rotaGeceRozet").textContent = aktifSaatModu === "gece" ? "🌙 Gece Ulaşımı Aktif" : "🌙 00:00 Sonrası Hat Bilgisi";
+
+      if (aktifSaatModu === "gece") {
+        document.getElementById("rotaBaslik").textContent = `${ilce.ad}: 00:00 Sonrası Gece Rotası`;
+        document.getElementById("oneriKutuBaslik").textContent = "00:00 SONRASI GECE PLANI";
+        document.getElementById("oneriKutuMetin").textContent = `${ilce.ad} için gece ulaşım seçenekleri: ${ilce.geceHat}`;
+      } else if (aktifMod === "date") {
+        document.getElementById("rotaBaslik").textContent = `${ilce.ad}: Date & Akşam Buluşması`;
+        document.getElementById("oneriKutuBaslik").textContent = "DATE PLANLAYICI ÖNERİSİ";
+        document.getElementById("oneriKutuMetin").textContent = `${ilce.ad} rotasında gün batımına yakın yürüyüşle başlayıp kahve ve akşam yemeği molası planlayabilirsiniz.`;
+      } else if (aktifMod === "harita") {
+        document.getElementById("rotaBaslik").textContent = `${ilce.ad}: Hatlar, Vapur İskeleleri & Duraklar`;
+        document.getElementById("oneriKutuBaslik").textContent = "HAT & SEFER ÖZETİ";
+        document.getElementById("oneriKutuMetin").textContent = `Gündüz seferleri genellikle 06:00–00:00 bandındadır; hafta sonu gece metrosu ve gece İETT hatları 00:00 sonrasında destek verir.`;
+      } else {
+        document.getElementById("rotaBaslik").textContent = `${ilce.ad}: ${ilce.rota}`;
+        document.getElementById("oneriKutuBaslik").textContent = "ROTA & MEKAN ÖNERİSİ";
+        document.getElementById("oneriKutuMetin").textContent = `${ilce.ad} bölgesinde hem öğrenci hem yetişkinler için öne çıkan rotalar ve mekan türleri:`;
+      }
+
+      document.getElementById("detayRayliMetin").textContent = ilce.rayli;
+      document.getElementById("detayVapurMetin").textContent = ilce.vapur;
+      document.getElementById("detayIettMetin").textContent = ilce.iett;
+      document.getElementById("geceUlasimMetin").textContent = ilce.geceHat;
+      document.getElementById("ogrenciMekanMetin").textContent = ilce.ogrenciMekan;
+      document.getElementById("yetiskinMekanMetin").textContent = ilce.yetiskinMekan;
+      document.getElementById("sponsorBaslik").textContent = "Sponsorlu / İş Ortağı Mekan Alanı";
+      document.getElementById("sponsorMetin").textContent = ilce.sponsor;
+
+      const sorgu = encodeURIComponent(`${ilce.ad} İstanbul`);
+      document.getElementById("haritaDisLink").href = `https://www.google.com/maps/search/?api=1&query=${sorgu}`;
+      document.getElementById("ilceHaritaIframe").src = `https://www.google.com/maps?q=${sorgu}&output=embed`;
     }
 
     function kalemToggle(index) {
@@ -781,14 +1149,14 @@
         if (kalem.secili) kisiBasiToplam += birim;
 
         const div = document.createElement("div");
-        div.className = `kalem-item ${kalem.secili ? "secili" : ""}`;
+        div.className = `kalem-item ${kalem.secili ? "secili" : ""} ${kalem.gece ? "gece-kalem" : ""}`;
         div.onclick = () => kalemToggle(idx);
         div.innerHTML = `
           <div class="kalem-sol">
             <input type="checkbox" class="kalem-checkbox" ${kalem.secili ? "checked" : ""} onclick="event.stopPropagation(); kalemToggle(${idx})">
             <div>
               <span class="kalem-ad">${kalem.ad}</span>
-              <span class="kalem-detay">${kalem.detay}${kalem.sabit ? " • Sabit tarife" : ""}</span>
+              <span class="kalem-detay">${kalem.detay}</span>
             </div>
           </div>
           <span class="kalem-fiyat">${satirToplam.toLocaleString("tr-TR")} ₺</span>
@@ -797,14 +1165,20 @@
       });
 
       const genelToplam = kisiBasiToplam * kisiSayisi;
+      const tarifeEtiket = aktifTarife === "ogrenci" ? "Öğrenci" : "Tam";
+      const saatEtiket = aktifSaatModu === "gece" ? "00:00 Sonrası" : "Gündüz/Akşam";
+
       document.getElementById("kisiBasiBilgi").textContent =
-        `Toplam (${kisiSayisi} Kişi • Kişi başı ${kisiBasiToplam.toLocaleString("tr-TR")} ₺)`;
+        `${tarifeEtiket} • ${saatEtiket} • ${kisiSayisi} Kişi (Kişi başı ${kisiBasiToplam.toLocaleString("tr-TR")} ₺)`;
       document.getElementById("toplamTutarGosterge").textContent = `${genelToplam.toLocaleString("tr-TR")} ₺`;
     }
 
     function whatsappGonder() {
       const aktifTarzBtn = document.querySelector(".tarz-btn.aktif");
       const tarzAdi = aktifTarzBtn ? aktifTarzBtn.textContent.trim() : "Standart / Butik";
+      const tarifeAdi = aktifTarife === "ogrenci" ? "Öğrenci Tarifesi" : "Tam Bilet";
+      const saatAdi = aktifSaatModu === "gece" ? "00:00 Sonrası Gece" : "Gündüz / Akşam";
+
       const secilenler = aktifKalemler
         .filter((k) => k.secili)
         .map((k) => `• ${k.ad}: ${(kalemBirimFiyati(k) * kisiSayisi).toLocaleString("tr-TR")} ₺`)
@@ -813,7 +1187,7 @@
       const toplamYazi = document.getElementById("toplamTutarGosterge").textContent;
       const mesaj =
         `📍 *Günün Rotası: ${aktifIlceAd} Planı*\n` +
-        `👥 ${kisiSayisi} Kişi (${tarzAdi})\n\n` +
+        `👥 ${kisiSayisi} Kişi | 🎫 ${tarifeAdi} | 🕒 ${saatAdi} (${tarzAdi})\n\n` +
         `${secilenler || "• Durak seçilmedi"}\n\n` +
         `💰 *Tahmini Toplam:* ${toplamYazi}\n` +
         `🔗 https://yldrmersin6-stack.github.io/gunun-rotasi/`;
