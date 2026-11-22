@@ -630,5 +630,208 @@
 
     fillDistrictSelects();
   </script>
+/* Rota Bütçe Planlayıcı Modülü */
+.rota-butce-kart {
+  background: var(--bg-card, #FFFFFF);
+  border: 1px solid var(--border, #E4DFD5);
+  border-radius: var(--radius-lg, 20px);
+  padding: 20px;
+  margin: 16px auto;
+  box-shadow: var(--shadow, 0 6px 20px rgba(35, 33, 30, 0.05));
+  color: var(--text-main, #23211E);
+  max-width: 640px;
+}
+
+.butce-ust-baslik {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.butce-etiket {
+  background: var(--bg-tip, #FDF4EE);
+  color: var(--accent, #B86538);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill, 999px);
+  text-transform: uppercase;
+}
+
+.kisi-secici {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-soft, #EFECE6);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill, 999px);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.kisi-secici button {
+  background: var(--bg-card, #FFFFFF);
+  border: 1px solid var(--border, #E4DFD5);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--text-main, #23211E);
+}
+
+.butce-baslik {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 22px;
+  margin: 0 0 14px 0;
+  color: var(--text-main, #23211E);
+}
+
+.tarz-secici {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background: var(--bg-soft, #EFECE6);
+  padding: 5px;
+  border-radius: var(--radius-md, 14px);
+  margin-bottom: 16px;
+}
+
+.tarz-btn {
+  border: none;
+  background: transparent;
+  padding: 9px 6px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted, #706B63);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tarz-btn.aktif {
+  background: var(--accent-dark, #23211E);
+  color: #FFFFFF;
+}
+
+.kalem-listesi {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.kalem-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border, #E4DFD5);
+  border-radius: var(--radius-md, 14px);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.kalem-item.secili {
+  border-color: var(--accent, #B86538);
+  background: var(--bg-tip, #FDF4EE);
+}
+
+.kalem-sol {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kalem-checkbox {
+  width: 19px;
+  height: 19px;
+  accent-color: var(--accent, #B86538);
+  cursor: pointer;
+}
+
+.kalem-ad {
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+}
+
+.kalem-detay {
+  font-size: 12px;
+  color: var(--text-muted, #706B63);
+}
+
+.kalem-fiyat {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tasarruf-kutusu {
+  background: var(--bg-tip, #FDF4EE);
+  border: 1px solid var(--border, #E4DFD5);
+  border-radius: var(--radius-md, 14px);
+  padding: 13px 15px;
+  margin-bottom: 16px;
+}
+
+.tasarruf-baslik {
+  color: var(--accent, #B86538);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.tasarruf-metin {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-main, #23211E);
+  margin: 0;
+}
+
+.butce-alt-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border, #E4DFD5);
+  flex-wrap: wrap;
+}
+
+.toplam-etiket {
+  font-size: 12px;
+  color: var(--text-muted, #706B63);
+  display: block;
+}
+
+.toplam-tutar {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-main, #23211E);
+}
+
+.wp-gonder-btn {
+  background: #25D366;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
 </body>
 </html>
