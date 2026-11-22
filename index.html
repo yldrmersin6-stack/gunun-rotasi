@@ -1,10 +1,29 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>500 Seçenekli Arama ve Seçim Sistemi</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Günün Rotası — Akıllı Şehir, Ulaşım ve Date Rehberi</title>
   <style>
+    :root {
+      --bg-page: #F6F4EF;
+      --bg-card: #FFFFFF;
+      --bg-soft: #EFECE6;
+      --bg-tip: #FDF4EE;
+      --bg-promo: #FBF6EE;
+      --text-main: #23211E;
+      --text-muted: #706B63;
+      --accent: #B86538;
+      --accent-dark: #23211E;
+      --border: #E4DFD5;
+      --shadow: 0 6px 20px rgba(35, 33, 30, 0.05);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-pill: 999px;
+      --font-serif: Georgia, 'Times New Roman', serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -12,267 +31,639 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f3f4f6;
-      color: #1f2937;
-      line-height: 1.6;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 64px;
     }
 
-    /* Üst Menü */
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 28px 18px;
+    }
+
+    /* Header */
     header {
-      background-color: #1e293b;
-      color: #ffffff;
-      padding: 20px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header h1 {
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    /* Ana Konteyner */
-    .ana-alan {
-      max-width: 700px;
-      margin: 50px auto;
-      padding: 35px;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    }
-
-    .ana-alan h2 {
-      font-size: 24px;
-      margin-bottom: 10px;
-      color: #0f172a;
-    }
-
-    .ana-alan p {
-      color: #64748b;
-      font-size: 15px;
-      margin-bottom: 25px;
-    }
-
-    /* 500 Seçenekli Arama Kutusu */
-    .arama-kapsayici {
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    .etiket {
-      display: block;
-      font-weight: 600;
-      font-size: 14px;
-      margin-bottom: 8px;
-      color: #334155;
-    }
-
-    #secenek-arama {
-      width: 100%;
-      padding: 14px 16px;
-      font-size: 16px;
-      border: 2px solid #cbd5e1;
-      border-radius: 10px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    #secenek-arama:focus {
-      border-color: #2563eb;
-    }
-
-    #secenek-listesi {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      max-height: 280px;
-      overflow-y: auto;
-      background: #ffffff;
-      border: 1px solid #cbd5e1;
-      border-top: none;
-      border-radius: 0 0 10px 10px;
-      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-      list-style: none;
-    }
-
-    #secenek-listesi li {
-      padding: 12px 16px;
-      font-size: 15px;
-      border-bottom: 1px solid #f1f5f9;
-      cursor: pointer;
-    }
-
-    #secenek-listesi li:hover {
-      background-color: #eff6ff;
-      color: #1d4ed8;
-      font-weight: 500;
-    }
-
-    /* Seçim Sonucu ve Form Alanı */
-    #secim-karti {
-      display: none;
-      background-color: #f8fafc;
-      border: 1px solid #e2e8f0;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
-
-    #secim-karti h3 {
-      font-size: 16px;
-      color: #059669;
-      margin-bottom: 15px;
-    }
-
-    .form-satir {
-      margin-bottom: 12px;
-    }
-
-    .form-satir input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-
-    .onay-btn {
-      width: 100%;
-      padding: 14px;
-      background-color: #2563eb;
-      color: #ffffff;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    .onay-btn:hover {
-      background-color: #1d4ed8;
-    }
-
-    #basari-bildirimi {
-      display: none;
-      margin-top: 15px;
-      padding: 14px;
-      background-color: #dcfce7;
-      color: #166534;
-      border-radius: 8px;
-      font-weight: 500;
       text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 6vw, 44px);
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* Main Mode Switcher */
+    .mode-switcher {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: var(--bg-card);
+      padding: 6px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .mode-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 12px 10px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: var(--accent-dark);
+      color: #FFFFFF;
+    }
+
+    /* Category Pills */
+    .pills-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 18px;
+      scrollbar-width: none;
+    }
+    .pills-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pill {
+      white-space: nowrap;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pill.active {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Cards & Controls */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .control-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 14.5px;
+      font-weight: 500;
+      outline: none;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--accent);
+    }
+
+    /* Route Card Header */
+    .badges-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 10px;
+    }
+
+    .badge-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge-city {
+      background: #F6EAE3;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+    }
+
+    .badge-tag {
+      background: var(--bg-soft);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+    }
+
+    .badge-sponsored {
+      background: #FFF3D6;
+      color: #8A5300;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+    }
+
+    .fav-btn {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-page);
+      color: var(--text-muted);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+    }
+    .fav-btn.liked {
+      color: #D94E4E;
+      background: #FDECEC;
+      border-color: #F5C2C2;
+    }
+
+    .route-title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .route-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    /* Tip & Sponsored Boxes */
+    .tip-box {
+      background: var(--bg-tip);
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+
+    .tip-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .tip-text {
+      font-size: 13.5px;
+      color: var(--text-main);
+    }
+
+    .promo-card {
+      background: var(--bg-promo);
+      border: 1px dashed #D8B894;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .promo-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .promo-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .promo-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .promo-link {
+      align-self: flex-start;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .promo-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Interactive Map Box */
+    .map-box {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .map-box iframe {
+      width: 100%;
+      height: 250px;
+      border: 0;
+      display: block;
+    }
+
+    /* Quick Action Links */
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      background: var(--bg-page);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 12px;
+      border-radius: 12px;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background: var(--bg-soft);
+    }
+
+    .action-btn.primary {
+      background: var(--accent-dark);
+      color: #FFFFFF;
+      border-color: var(--accent-dark);
+    }
+
+    /* Stops Timeline */
+    .stops-list {
+      margin-top: 18px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .stop-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .stop-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .stop-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 48px;
+      padding-top: 2px;
+    }
+
+    .stop-info h4 {
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+
+    .stop-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .transit-badge {
+      display: inline-block;
+      font-size: 11.5px;
+      background: var(--bg-soft);
+      color: var(--text-main);
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    /* Date Planner Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .generate-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .generate-btn:hover {
+      opacity: 0.92;
+    }
+
+    /* Newsletter & Footer */
+    .newsletter-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .newsletter-row input {
+      flex: 1 1 220px;
+    }
+    .newsletter-btn {
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: var(--accent-dark);
+      color: #fff;
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+    }
+    .status-msg {
+      margin-top: 8px;
+      font-size: 12.5px;
+      color: var(--accent);
+      font-weight: 600;
     }
 
     footer {
       text-align: center;
-      padding: 20px;
-      color: #94a3b8;
-      font-size: 13px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 24px;
+      padding: 0 12px;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div class="eyebrow">EDİTÖRYAL ŞEHİR, ULAŞIM &amp; DATE REHBERİ</div>
+      <h1>Günün Rotası</h1>
+      <p class="subtitle">“Deniz kıyısından tarihi avlulara, sabah kahvaltısından gece lezzetlerine, kapıdan kapıya ulaşım ve date planlayıcı”</p>
+    </header>
 
-  <header>
-    <h1>Hızlı Seçim & Talep Portalı</h1>
-  </header>
-
-  <main class="ana-alan">
-    <h2>500 Seçenek Arasından Seçiminizi Yapın</h2>
-    <p>Aşağıdaki kutuya yazarak 500 farklı seçenek arasında anında arama yapabilir ve talebinizi iletebilirsiniz.</p>
-
-    <div class="arama-kapsayici">
-      <label class="etiket" for="secenek-arama">Seçenek Ara (1 - 500):</label>
-      <input type="text" id="secenek-arama" placeholder="Örn: Seçenek 42 yazın veya tıklayın..." autocomplete="off">
-      <ul id="secenek-listesi"></ul>
+    <!-- MAIN MODES -->
+    <div class="mode-switcher">
+      <button class="mode-btn active" onclick="switchMode('routes', this)">Kürasyon Rotalar</button>
+      <button class="mode-btn" onclick="switchMode('date', this)">Date Planlayıcı ✨</button>
+      <button class="mode-btn" onclick="switchMode('transit', this)">Harita, Durak &amp; Yeme-İçme</button>
     </div>
 
-    <div id="secim-karti">
-      <h3 id="secilen-metin">Seçilen: -</h3>
-      <form id="talep-formu">
-        <div class="form-satir">
-          <input type="text" id="musteri-ad" placeholder="Adınız Soyadınız" required>
+    <!-- SECTION 1: KÜRASYON ROTALAR -->
+    <div id="section-routes">
+      <div class="pills-scroll" id="category-pills">
+        <button class="pill active" onclick="filterCategory('Tümü', this)">Tümü (8)</button>
+        <button class="pill" onclick="filterCategory('Kahvaltı', this)">🍳 Sabah Kahvaltısı</button>
+        <button class="pill" onclick="filterCategory('Gece', this)">🌙 Gece Yemeği</button>
+        <button class="pill" onclick="filterCategory('Deniz', this)">🌊 Deniz Kenarı</button>
+        <button class="pill" onclick="filterCategory('Sanat', this)">🎨 Müze &amp; Sanat</button>
+        <button class="pill" onclick="filterCategory('Tarih', this)">🏛️ Tarih &amp; Avlu</button>
+      </div>
+
+      <div class="card">
+        <label class="control-label" for="route-select">ROTANI SEÇ:</label>
+        <select id="route-select" onchange="renderSelectedRoute()"></select>
+      </div>
+
+      <div class="card" id="route-detail-card"></div>
+    </div>
+
+    <!-- SECTION 2: DATE PLANLAYICI -->
+    <div id="section-date" class="hidden">
+      <div class="card">
+        <h2 class="route-title" style="font-size: 22px;">Kişisel Date Programı Oluştur ✨</h2>
+        <p class="route-desc">Saatine, bütçene ve moduna göre adım adım buluşma planı ve Google Haritalar ulaşım rotası çıkar.</p>
+
+        <div class="form-grid">
+          <div>
+            <label class="control-label">BÖLGE SEÇİMİ</label>
+            <select id="date-area">
+              <option value="Karaköy &amp; Galata">Karaköy &amp; Galata</option>
+              <option value="Moda &amp; Kadıköy">Moda &amp; Kadıköy</option>
+              <option value="Beşiktaş &amp; Nişantaşı">Beşiktaş &amp; Nişantaşı</option>
+              <option value="Balat &amp; Fener">Balat &amp; Fener</option>
+              <option value="Bebek &amp; Arnavutköy">Bebek &amp; Arnavutköy</option>
+            </select>
+          </div>
+          <div>
+            <label class="control-label">ZAMAN DİLİMİ</label>
+            <select id="date-time">
+              <option value="Sabah Kahvaltısı (09:00 - 13:00)">Sabah Kahvaltısı (09:00 - 13:00)</option>
+              <option value="Öğleden Sonra &amp; Kahve (14:00 - 18:00)">Öğleden Sonra &amp; Kahve (14:00 - 18:00)</option>
+              <option value="Gün Batımı &amp; Akşam Yemeği (18:30 - 22:30)">Gün Batımı &amp; Akşam Yemeği (18:30 - 22:30)</option>
+              <option value="Gece Kuşu &amp; Gece Lezzetleri (23:00 - 03:00)">Gece Kuşu &amp; Gece Lezzetleri (23:00 - 03:00)</option>
+            </select>
+          </div>
+          <div>
+            <label class="control-label">DATE MODU</label>
+            <select id="date-vibe">
+              <option value="Romantik &amp; Manzara">Romantik &amp; Manzara</option>
+              <option value="Sanat, Müze &amp; Sokak Keşfi">Sanat, Müze &amp; Sokak Keşfi</option>
+              <option value="Gurme &amp; Sokak Lezzetleri">Gurme &amp; Sokak Lezzetleri</option>
+              <option value="Sakin &amp; Uzun Sohbet">Sakin &amp; Uzun Sohbet</option>
+            </select>
+          </div>
+          <div>
+            <label class="control-label">ULAŞIM TERCİHİ</label>
+            <select id="date-transit">
+              <option value="Toplu Taşıma (Metro / Vapur / Otobüs)">Toplu Taşıma (Metro / Vapur / Otobüs)</option>
+              <option value="Taksi &amp; Yürüyüş">Taksi &amp; Yürüyüş</option>
+              <option value="Özel Araç (Otopark Uyumlu)">Özel Araç (Otopark Uyumlu)</option>
+            </select>
+          </div>
         </div>
-        <div class="form-satir">
-          <input type="tel" id="musteri-tel" placeholder="Telefon Numaranız" required>
+
+        <button class="generate-btn" onclick="generateDatePlan()">Bana Özel Date Planı Çıkar</button>
+      </div>
+
+      <div id="date-result-container" class="hidden"></div>
+    </div>
+
+    <!-- SECTION 3: HARİTA, OTOBÜS/TAKSİ DURAKLARI & SAATE GÖRE YEME-İÇME -->
+    <div id="section-transit" class="hidden">
+      <div class="card">
+        <h2 class="route-title" style="font-size: 22px;">Canlı Ulaşım, Duraklar &amp; Saate Göre Mekan Bul</h2>
+        <p class="route-desc">Bulunduğun yeri veya gitmek istediğin semti yaz; en yakın otobüs duraklarını, taksi duraklarını, sabah kahvaltıcılarını veya gece açık mekanları anında haritada aç.</p>
+
+        <label class="control-label" for="location-input">SEMT / KONUM YAZ (ÖRNEK: KARAKÖY, BEŞİKTAŞ, MODA, ARNAVUTKÖY)</label>
+        <input type="text" id="location-input" value="Karaköy, İstanbul" oninput="updateLiveMap()" />
+
+        <div class="action-grid" style="margin-top: 14px;">
+          <button class="action-btn primary" onclick="searchMaps('otobüs durağı')">🚏 Otobüs Durakları</button>
+          <button class="action-btn primary" onclick="searchMaps('taksi durağı')">🚕 Taksi Durakları</button>
+          <button class="action-btn" onclick="searchMaps('sabah kahvaltı mekanları')">🍳 Sabah Kahvaltısı</button>
+          <button class="action-btn" onclick="searchMaps('gece açık yemek çorbacı kokoreç')">🌙 Gece Açık Yemek</button>
+          <button class="action-btn" onclick="searchMaps('metro ve vapur iskelesi')">🚇 Metro &amp; Vapur</button>
+          <button class="action-btn" onclick="openDirections()">🧭 Yol Tarifi Al</button>
         </div>
-        <button type="submit" class="onay-btn">Seçimi Onayla ve Gönder</button>
+
+        <div class="map-box" style="margin-top: 16px;">
+          <iframe id="live-map-iframe" src="https://maps.google.com/maps?q=Karak%C3%B6y%2C%20%C4%B0stanbul&t=&z=14&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="badge-group" style="margin-bottom: 10px;">
+          <span class="badge-city">SAAT REHBERİ</span>
+          <span class="badge-tag">Hangi Saatte Nereye Gidilir?</span>
+        </div>
+        <div class="stops-list" style="border-top: none; padding-top: 0; margin-top: 0;">
+          <div class="stop-item">
+            <div class="stop-time">07:30</div>
+            <div class="stop-info">
+              <h4>Sabah Kahvaltısı &amp; Boğaz Hattı (Beşiktaş Kahvaltıcılar Sokağı / Çengelköy)</h4>
+              <p>Güne erken başlayanlar için fırından yeni çıkmış börek, menemen ve çay durakları.</p>
+              <span class="transit-badge">🚌 Otobüs: 28, 30D, 15F | 🚕 İskele Taksi Durağı</span>
+            </div>
+          </div>
+          <div class="stop-item">
+            <div class="stop-time">13:30</div>
+            <div class="stop-info">
+              <h4>Öğle Molası &amp; Sanat Yürüyüşü (Karaköy &amp; Galataport)</h4>
+              <p>Esnaf lokantaları, modern galeriler ve sahil yürüyüş yolu.</p>
+              <span class="transit-badge">🚊 Tramvay: T1 Karaköy | 🚕 Kemankeş Taksi</span>
+            </div>
+          </div>
+          <div class="stop-item">
+            <div class="stop-time">19:30</div>
+            <div class="stop-info">
+              <h4>Akşam Yemeği &amp; Gün Batımı (Moda Sahil / Arnavutköy)</h4>
+              <p>Deniz kenarında akşam yemeği ve ardından artizan kahve veya tatlı molası.</p>
+              <span class="transit-badge">🚇 Metro: M4 Kadıköy + Nostaljik Tramvay | 🚕 Moda Taksi</span>
+            </div>
+          </div>
+          <div class="stop-item">
+            <div class="stop-time">01:30</div>
+            <div class="stop-info">
+              <h4>Gece Saati Lezzetleri (Taksim / Kadıköy Rıhtım / Beşiktaş Çarşı)</h4>
+              <p>Gece yarısından sonra açık tarihi işkembeciler, kokoreççiler, ıslak hamburger ve gece dönercileri.</p>
+              <span class="transit-badge">🚌 Gece Metrosu (Hafta Sonu M2/M4) | 🚕 7/24 Meydan Taksi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BÜLTEN & İŞ ORTAKLIĞI KARTI -->
+    <div class="card">
+      <div class="badge-group" style="margin-bottom: 8px;">
+        <span class="badge-city">HAFTALIK SEÇKİ</span>
+        <span class="badge-tag">Gizli Rotalar &amp; İndirimli Mekanlar</span>
+      </div>
+      <h3 class="route-title" style="font-size: 20px; margin-bottom: 6px;">Hafta Sonu Rotalarını Cebine Al</h3>
+      <p class="route-desc" style="margin-bottom: 12px;">Her Cuma seçili kahvaltı, date ve gece lezzet duraklarıyla iş ortağı mekan fırsatlarını e-postana gönderelim.</p>
+      <form class="newsletter-row" onsubmit="handleSubscribe(event)">
+        <input type="email" id="newsletter-email" placeholder="E-posta adresin (örnek: ad@mail.com)" required />
+        <button type="submit" class="newsletter-btn">Listeye Katıl</button>
       </form>
+      <div id="newsletter-status" class="status-msg hidden"></div>
     </div>
 
-    <div id="basari-bildirimi">
-      Talebiniz başarıyla alındı! En kısa sürede dönüş yapılacaktır.
-    </div>
-  </main>
-
-  <footer>
-    &copy; 2026 Tüm Hakları Saklıdır.
-  </footer>
+    <footer>
+      Günün Rotası • Bazı mekan ve ulaşım bağlantıları iş ortağı (affiliate) veya sponsorlu öneri içerebilir.
+    </footer>
+  </div>
 
   <script>
-    // 500 Seçenekli Veri Havuzu (Kendi listenizi buraya ekleyebilirsiniz)
-    const secenekler = Array.from({ length: 500 }, (_, i) => `Seçenek #${i + 1} - Hizmet veya Ürün Detayı`);
-
-    const aramaInput = document.getElementById('secenek-arama');
-    const listeUl = document.getElementById('secenek-listesi');
-    const secimKarti = document.getElementById('secim-karti');
-    const secilenMetin = document.getElementById('secilen-metin');
-    const talepFormu = document.getElementById('talep-formu');
-    const basariBildirimi = document.getElementById('basari-bildirimi');
-
-    let aktifSecim = "";
-
-    function listeyiGoster(filtre = '') {
-      listeUl.innerHTML = '';
-      const aranan = filtre.toLocaleLowerCase('tr-TR');
-      const sonuclar = secenekler.filter(item => item.toLocaleLowerCase('tr-TR').includes(aranan));
-
-      if (sonuclar.length === 0) {
-        const li = document.createElement('li');
-        li.textContent = 'Eşleşen seçenek bulunamadı.';
-        li.style.color = '#94a3b8';
-        listeUl.appendChild(li);
-      } else {
-        sonuclar.forEach(item => {
-          const li = document.createElement('li');
-          li.textContent = item;
-          li.addEventListener('click', () => {
-            aktifSecim = item;
-            aramaInput.value = item;
-            secilenMetin.textContent = `Seçilen Öğe: ${item}`;
-            listeUl.style.display = 'none';
-            secimKarti.style.display = 'block';
-            basariBildirimi.style.display = 'none';
-          });
-          listeUl.appendChild(li);
-        });
-      }
-      listeUl.style.display = 'block';
-    }
-
-    aramaInput.addEventListener('focus', () => listeyiGoster(aramaInput.value));
-    aramaInput.addEventListener('input', (e) => listeyiGoster(e.target.value));
-
-    document.addEventListener('click', (e) => {
-      if (!document.querySelector('.arama-kapsayici').contains(e.target)) {
-        listeUl.style.display = 'none';
-      }
-    });
-
-    talepFormu.addEventListener('submit', (e) => {
-      e.preventDefault();
-      secimKarti.style.display = 'none';
-      basariBildirimi.style.display = 'block';
-      talepFormu.reset();
-      aramaInput.value = '';
-    });
-  </script>
-
-</body>
-</html>
+    const routesData = [
+      {
+        id: 1,
+        city: "İSTANBUL",
+        category: "Sanat",
+        tag: "Sahil & Çağdaş Sanat",
+        selectTitle: "Karaköy & Galata (Sahil & Çağdaş Sanat)",
+        title: 
