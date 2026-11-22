@@ -1,10 +1,10 @@
 
-  <!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Günün Rotası — İstanbul 39 İlçe Şehir, Ulaşım &amp; Bütçe Rehberi</title>
+  <title>Günün Rotası — İstanbul 39 İlçe Yerel Ulaşım, AVM, Sahil &amp; Bütçe Rehberi</title>
   <style>
     :root {
       --bg-page: #F6F4EF;
@@ -172,8 +172,7 @@
       flex-wrap: wrap;
       margin-bottom: 10px;
     }
-
-    .rozet-yaka {
+ .rozet-yaka {
       background: var(--bg-tip);
       color: var(--accent);
       font-size: 11px;
@@ -544,8 +543,7 @@
       border-top: 1px solid var(--border);
       flex-wrap: wrap;
     }
-
-    .toplam-etiket {
+.toplam-etiket {
       font-size: 12px;
       color: var(--text-muted);
       display: block;
@@ -593,9 +591,9 @@
 <body>
   <div class="sayfa-kapsayici">
     <header class="ust-header">
-      <div class="ust-kicker">İSTANBUL 39 İLÇE • ULAŞIM, TARİH, ORMAN &amp; AVM REHBERİ</div>
+      <div class="ust-kicker">İSTANBUL 39 İLÇE • YEREL ULAŞIM, AVM, SAHİL &amp; DOĞA REHBERİ</div>
       <h1 class="ana-baslik">Günün Rotası</h1>
-      <p class="alt-aciklama">“Hafta içi veya hafta sonu; tarihi yapılar, ormanlık alanlar, AVM buluşmaları ve 00:00 sonrası gece rotaları”</p>
+      <p class="alt-aciklama">“Her ilçenin kendi ulaşım hatları, AVM'leri, yürüyüş/sahil alanları ve gerçekçi bütçe hesabı”</p>
     </header>
 
     <nav class="mod-sekmeler" aria-label="Rehber Modları">
@@ -606,9 +604,9 @@
 
     <div class="zaman-filtreleri" id="zamanFiltreleri">
       <button type="button" class="zaman-chip aktif" data-zaman="Tümü (39 İlçe)" onclick="zamanSec(this)">Tümü (39 İlçe)</button>
-      <button type="button" class="zaman-chip" data-zaman="Tarihi &amp; Müze" onclick="zamanSec(this)">Tarihi &amp; Müze</button>
-      <button type="button" class="zaman-chip" data-zaman="Orman &amp; Doğa" onclick="zamanSec(this)">Orman &amp; Doğa</button>
-      <button type="button" class="zaman-chip" data-zaman="AVM Buluşma" onclick="zamanSec(this)">AVM Buluşma</button>
+      <button type="button" class="zaman-chip" data-zaman="AVM &amp; Buluşma" onclick="zamanSec(this)">AVM &amp; Buluşma</button>
+      <button type="button" class="zaman-chip" data-zaman="Sahil &amp; Yürüyüş" onclick="zamanSec(this)">Sahil &amp; Yürüyüş</button>
+      <button type="button" class="zaman-chip" data-zaman="Tarihi &amp; Kültür" onclick="zamanSec(this)">Tarihi &amp; Kültür</button>
       <button type="button" class="zaman-chip" data-zaman="00:00 Sonrası" onclick="zamanSec(this)">00:00 Sonrası</button>
     </div>
 
@@ -619,18 +617,18 @@
 
     <article class="kart" id="rotaDetayKarti">
       <div class="rozet-satir">
-        <span class="rozet-yaka" id="rotaYakaRozet">ANADOLU YAKASI</span>
-        <span class="rozet-zaman" id="rotaZamanRozet">Hafta Sonu</span>
+        <span class="rozet-yaka" id="rotaYakaRozet">AVRUPA YAKASI</span>
+        <span class="rozet-zaman" id="rotaZamanRozet">Hafta Sonu • Tümü (39 İlçe)</span>
         <span class="rozet-gece" id="rotaGeceRozet">🌙 00:00 Sonrası Hat Bilgisi</span>
       </div>
-      <h2 class="rota-baslik" id="rotaBaslik">Üsküdar: Salacak Sahil &amp; Kuzguncuk</h2>
+      <h2 class="rota-baslik" id="rotaBaslik">Büyükçekmece: Sahil Yürüyüşü, Mimar Sinan &amp; AVM</h2>
 
       <div class="ulasim-detay-grid">
-        <div class="ulasim-satir-kutu"><strong>🚇 Metro / Raylı / Metrobüs:</strong> <span id="detayRayliMetin"></span></div>
-        <div class="ulasim-satir-kutu"><strong>⛴️ Vapur Hatları &amp; Sefer Bilgisi:</strong> <span id="detayVapurMetin"></span></div>
-        <div class="ulasim-satir-kutu"><strong>🏛️ Tarihi Mekan &amp; Müze Bilgisi:</strong> <span id="detayTarihiMetin"></span></div>
-        <div class="ulasim-satir-kutu"><strong>🌲 Ormanlık Alan / Doğa Noktası:</strong> <span id="detayOrmanMetin"></span></div>
-        <div class="ulasim-satir-kutu"><strong>🏬 Uygun &amp; Üst Segment AVM:</strong> <span id="detayAvmMetin"></span></div>
+        <div class="ulasim-satir-kutu"><strong>🚇 Raylı / Metrobüs / İETT:</strong> <span id="detayUlasimMetin"></span></div>
+        <div class="ulasim-satir-kutu"><strong>⛴️ Deniz / Vapur Durumu:</strong> <span id="detayVapurMetin"></span></div>
+        <div class="ulasim-satir-kutu"><strong>🏬 Bölgedeki AVM &amp; Buluşma Noktaları:</strong> <span id="detayAvmMetin"></span></div>
+        <div class="ulasim-satir-kutu"><strong>🌿 Ücretsiz &amp; Ücretli Yürüyüş / Sahil / Doğa:</strong> <span id="detayYuruyusMetin"></span></div>
+        <div class="ulasim-satir-kutu"><strong>🏛️ Tarihi / Kültürel Durum:</strong> <span id="detayTarihiMetin"></span></div>
       </div>
 
       <div class="gece-ulasim-kutu" id="geceUlasimKutu">
@@ -639,15 +637,15 @@
       </div>
 
       <div class="kutu-oneri">
-        <span class="kutu-oneri-baslik" id="oneriKutuBaslik">ROTA &amp; MEKAN ÖNERİSİ</span>
+        <span class="kutu-oneri-baslik" id="oneriKutuBaslik">İLÇEYE ÖZEL ROTA &amp; MEKAN ÖNERİSİ</span>
         <p class="kutu-oneri-metin" id="oneriKutuMetin"></p>
         <div class="mekan-karsilastirma">
           <div class="mekan-kutu">
-            <span class="mekan-kutu-baslik">🎓 Öğrenci &amp; Bütçe Dostu Mekan</span>
+            <span class="mekan-kutu-baslik">🎓 Öğrenci &amp; Bütçe Dostu Seçenek</span>
             <span id="ogrenciMekanMetin"></span>
           </div>
           <div class="mekan-kutu">
-            <span class="mekan-kutu-baslik">🥂 Yetişkin &amp; Sosyal / Şık Mekan</span>
+            <span class="mekan-kutu-baslik">🥂 Yetişkin &amp; Sosyal / Buluşma Seçeneği</span>
             <span id="yetiskinMekanMetin"></span>
           </div>
         </div>
@@ -656,13 +654,13 @@
       <div class="kutu-sponsor">
         <h3 class="kutu-sponsor-baslik" id="sponsorBaslik">Sponsorlu / İş Ortağı Mekan Alanı</h3>
         <p class="kutu-sponsor-metin" id="sponsorMetin"></p>
-        <a class="harita-baglanti" id="haritaDisLink" href="#" target="_blank" rel="noopener noreferrer">Mekanları Haritada Gör →</a>
+        <a class="harita-baglanti" id="haritaDisLink" href="#" target="_blank" rel="noopener noreferrer">İlçeyi Haritada Gör →</a>
       </div>
     </article>
 
     <section class="kart" id="rotaButceModulu" aria-label="Rota Bütçe Hesaplayıcı">
       <div class="butce-ust">
-        <span class="butce-etiket">DETAYLI ROTA BÜTÇE HESAPLAYICI</span>
+        <span class="butce-etiket">İLÇEYE ÖZEL BÜTÇE HESAPLAYICI</span>
         <div class="kisi-secici">
           <button type="button" onclick="kisiDegistir(-1)" aria-label="Kişi azalt">−</button>
           <span id="kisiSayisiGosterge">2 Kişi</span>
@@ -670,7 +668,7 @@
         </div>
       </div>
 
-      <h3 class="butce-baslik" id="butceIlceBaslik">Üsküdar: Rota Bütçesi</h3>
+      <h3 class="butce-baslik" id="butceIlceBaslik">Büyükçekmece: Rota Bütçesi</h3>
 
       <div class="kontrol-satiri-3">
         <div class="seg-grup" role="group" aria-label="Yolcu Tarifesi">
@@ -696,7 +694,7 @@
       <div class="kalem-listesi" id="butceKalemListesi"></div>
 
       <div class="tasarruf-kutusu">
-        <span class="tasarruf-baslik">💡 YEREL TASARRUF, MÜZE KART &amp; ULAŞIM İPUCU</span>
+        <span class="tasarruf-baslik">💡 İLÇE TASARRUF &amp; ULAŞIM İPUCU</span>
         <p class="tasarruf-metin" id="tasarrufMetni"></p>
       </div>
 
@@ -721,137 +719,182 @@
 
   <script>
     const TARIFE_2026 = {
-      ogrenci: {
-        tekBinis: 22.55,
-        aktarma1: 11.21,
-        vapurMerkez: 28.44,
-vapurBogaz: 37.61,
-        vapurAdalar: 75.64
-      },
-      tam: {
-        tekBinis: 46.20,
-        aktarma1: 34.40,
-        vapurMerkez: 65.21,
-        vapurBogaz: 76.90,
-        vapurAdalar: 151.23
-      }
+      ogrenci: { tekBinis: 22.55, aktarma1: 11.21, vapurMerkez: 28.44, vapurBogaz: 37.61, vapurAdalar: 75.64 },
+      tam: { tekBinis: 46.20, aktarma1: 34.40, vapurMerkez: 65.21, vapurBogaz: 76.90, vapurAdalar: 151.23 }
     };
 
-    const ISTANBUL_ILCELERI = [
+    const ISTANBUL_39_ILCE = [
+      {
+        ad: "Adalar", yaka: "Anadolu Yakası", rota: "Büyükada, Heybeliada, Burgazada & Kınalıada",
+        ulasim: "Adalarda metro, metrobüs ve şehir içi otobüs yoktur. Ada içinde yürüyüş, bisiklet ve ada içi elektrikli toplu taşıma kullanılır.",
+        vapur: "Şehir Hatları & Mavi Marmara vapurları (Bostancı, Kadıköy, Beşiktaş, Kabataş, Eminönü çıkışlı); seferler gün içi saatlidir, 00:00 sonrası düzenli sefer yoktur.",
+        avm: "Adalarda büyük kapalı AVM yoktur; iskele çevresi çarşı, pastane, dondurmacı ve butik dükkanlar öne çıkar.",
+        yuruyus: "Ücretsiz: Sahil boyu ve koru/ada içi yürüyüş yolları • Ücretli: Bisiklet kiralama veya özel plaj/tesis girişleri.",
+        tarihi: "Ada köşkleri, tarihi iskele yapıları, manastırlar ve ada dokusu.",
+        geceHat: "00:00 sonrası adalara/adalardan düzenli vapur seferi yoktur; son vapur saatine göre plan yapın.",
+        ogrenciMekan: "Sahil yürüyüşü, iskele çevresi uygun atıştırmalıklar ve ada içi keşif.",
+        yetiskinMekan: "Sahil restoranları, manzaralı kahve durakları ve gün batımı buluşmaları.",
+        sponsor: "Ada iskeleleri ve sahil hattındaki öne çıkan duraklar.",
+        vapurVar: true, ucretliYuruyus: 140, avmVar: false, tarihiVar: true,
+        tasarrufNotu: "Adalar'da AVM yerine sahil yürüyüşü ve iskele çevresi durakları öne çıkar; dönüşte son vapur saatini kaçırmayın."
+      },
+      {
+        ad: "Silivri", yaka: "Avrupa Yakası", rota: "Silivri Sahil, Selimpaşa & Vega AVM Hattı",
+        ulasim: "Raylı sistem/metrobüs doğrudan yoktur; Silivri ve Selimpaşa hattında İETT bölge otobüsleri ve minibüsler kullanılır.",
+        vapur: "Silivri'de düzenli şehir içi vapur iskelesi yoktur.",
+        avm: "Vega AVM Silivri ve ilçe merkez/çarşı buluşma noktaları.",
+        yuruyus: "Ücretsiz: Silivri sahil yürüyüş yolu ve sahil parkları • Ücretli: Sahildeki özel plaj/şezlong veya özel tesis alanları.",
+        tarihi: "Silivri sahil ve merkez çevresindeki yerel tarihi/kültürel noktalar.",
+        geceHat: "00:00 sonrası seferler sınırlıdır; gece/erken saat İETT bölge hatları veya taksi/özel araç planlanmalıdır.",
+        ogrenciMekan: "Silivri sahil yürüyüşü, Vega AVM kafe/yeme-içme ve sahil çay molaları.",
+        yetiskinMekan: "Sahil kenarı yemek mekanları, Vega AVM ve hafta sonu deniz kenarı buluşmaları.",
+        sponsor: "Vega AVM Silivri ve sahil hattındaki öne çıkan noktalar.",
+        vapurVar: false, ucretliYuruyus: 120, avmVar: true, tarihiVar: true,
+        tasarrufNotu: "Silivri'de sahil yürüyüşü ücretsizdir; özel plaj/tesis girişi ve Vega AVM harcamasını ihtiyacınıza göre seçin."
+      },
+      {
+        ad: "Büyükçekmece", yaka: "Avrupa Yakası", rota: "Sahil Yürüyüş Yolu, Mimar Sinan Köprüsü & AVM'ler",
+        ulasim: "Metrobüs (TÜYAP/Beylikdüzü bağlantılı) ve Büyükçekmece/Mimar Sinan/Kumburgaz İETT hatları.",
+        vapur: "Büyükçekmece'de düzenli şehir içi vapur seferleri yoktur; sahil ve göl kenarı yürüyüş rotaları öne çıkar.",
+        avm: "Atirus AVM, İstanbul Outlet Park ve Kıyı İstanbul yaşam/alışveriş alanı.",
+        yuruyus: "Ücretsiz: Büyükçekmece sahil yürüyüş yolu ve sahil park alanları • Ücretli: Sahil/göl çevresindeki özel plaj, su sporu veya ücretli tesis alanları.",
+        tarihi: "Mimar Sinan Köprüsü ve tarihi merkez çevresi.",
+        geceHat: "Gece saatlerinde ana arter İETT/taksi bağlantıları veya metrobüs aktarması kullanılır.",
+        ogrenciMekan: "Ücretsiz sahil yürüyüşü, Atirus / İstanbul Outlet Park kafe molaları.",
+        yetiskinMekan: "Kıyı İstanbul / sahil hattı restoranları ve gün batımı buluşmaları.",
+        sponsor: "Büyükçekmece sahil, Kıyı İstanbul ve AVM buluşma noktaları.",
+        vapurVar: false, ucretliYuruyus: 130, avmVar: true, tarihiVar: true,
+        tasarrufNotu: "Büyükçekmece'de sahil bandında ücretsiz yürüyüş yapabilir, bütçeye göre Atirus, İstanbul Outlet Park veya Kıyı İstanbul seçeneklerini tercih edebilirsiniz."
+      },
+      {
+        ad: "Esenyurt", yaka: "Avrupa Yakası", rota: "AVM Buluşmaları, Parklar & Metrobüs Hattı",
+        ulasim: "Metrobüs (Saadetdere / Haramidere Sanayi durakları) ve Esenyurt İETT otobüs hatları.",
+        vapur: "Esenyurt'ta vapur iskelesi yoktur.",
+        avm: "Marmara Park, Torium, Pelican Mall ve yakın aksında Akbatı.",
+        yuruyus: "Ücretsiz: İlçe içi parklar ve yürüyüş alanları • Ücretli: Özel spor/eğlence alanları veya park içi ücretli etkinlikler.",
+        tarihi: "Esenyurt'ta öne çıkan tarihi saray/müze yapısı bulunmaz; AVM ve park buluşmaları ön plandadır.",
+        geceHat: "24 saat çalışan Metrobüs hattına (Saadetdere/Haramidere) İETT veya taksi ile bağlanabilirsiniz.",
+        ogrenciMekan: "Marmara Park, Torium veya Pelican Mall kafe/food court ve park yürüyüşü.",
+        yetiskinMekan: "Akbatı / Marmara Park veya çevre restoranlarda akşam buluşmaları.",
+        sponsor: "Esenyurt AVM ve merkez hattındaki öne çıkan buluşma noktaları.",
+        vapurVar: false, ucretliYuruyus: 0, avmVar: true, tarihiVar: false,
+        tasarrufNotu: "Esenyurt'ta tarihi müze girişi yer almaz; Marmara Park, Torium ve Pelican Mall gibi yakın AVM seçeneklerini değerlendirebilirsiniz."
+      },
       {
         ad: "Üsküdar", yaka: "Anadolu Yakası", rota: "Salacak Sahil, Kuzguncuk & Fethi Paşa",
-        rayli: "Marmaray & M5 (Üsküdar–Çekmeköy) Metrosu",
-        vapur: "Üsküdar–Eminönü / Karaköy / Beşiktaş Şehir Hatları vapurları (gündüz-akşam sık sefer, geç saatte durur).",
-        tarihi: "Kız Kulesi (ayrı biletli), Mihrimah Sultan Külliyesi & çevresi; MüzeKart kapsamı yapıya göre değişir.",
-        orman: "Fethi Paşa Korusu (ücretsiz yürüyüş/koru, İBB Sosyal Tesisleri) & Nakkaştepe Millet Bahçesi.",
-        avm: "Uygun/Pratik: Capitol AVM (Altunizade/Üsküdar hattı) • Üst Segment: Emaar Square Mall (yakın aks).",
-        geceHat: "Cuma-Cumartesi 24 saat M5 Gece Metrosu + 15F / 11ÜS Gece İETT hatları.",
-        ogrenciMekan: "Fethi Paşa Korusu İBB Sosyal Tesisleri, Salacak sahilde simit-çay ve Nevçarşı esnaf lokantaları.",
-        yetiskinMekan: "Kuzguncuk butik kafeleri ve Boğaz manzaralı akşam yemeği mekanları.",
-        sponsor: "Salacak ve Kuzguncuk hattında öne çıkan kafe ve akşam buluşma noktaları.",
-        tarihiVar: true,
-        tasarrufNotu: "Salacak'ta simit-çay ve Fethi Paşa Korusu İBB tesisleri bütçeyi korur; devlet müzelerinde öğrenci/MüzeKart kurallarına dikkat edin."
+        ulasim: "Marmaray, M5 Metro (Üsküdar–Çekmeköy) ve 15 / 15F / 12A İETT hatları.",
+        vapur: "Üsküdar–Eminönü / Karaköy / Beşiktaş Şehir Hatları vapurları (gündüz-akşam sık sefer).",
+        avm: "Capitol AVM ve yakın aksında Emaar Square Mall.",
+        yuruyus: "Ücretsiz: Salacak sahil yürüyüşü ve Fethi Paşa Korusu yaya girişi • Ücretli: Kız Kulesi veya özel müze/tesis girişleri.",
+        tarihi: "Kız Kulesi (ayrı biletli), Mihrimah Sultan Külliyesi ve tarihi dokular.",
+        geceHat: "Cuma-Cumartesi 24 saat M5 Gece Metrosu + 15F / 11ÜS Gece İETT.",
+        ogrenciMekan: "Fethi Paşa Korusu İBB Sosyal Tesisleri, Salacak sahil ve Nevçarşı esnaf lokantaları.",
+        yetiskinMekan: "Kuzguncuk butik kafeleri ve Boğaz manzaralı akşam yemekleri.",
+        sponsor: "Salacak ve Kuzguncuk hattındaki öne çıkan mekanlar.",
+        vapurVar: true, ucretliYuruyus: 120, avmVar: true, tarihiVar: true,
+        tasarrufNotu: "Salacak sahil ve Fethi Paşa Korusu yürüyüşü ücretsizdir; bütçeyi İBB tesisleri ve esnaf lokantalarıyla dengeli tutabilirsiniz."
       },
       {
-        ad: "Esenyurt", yaka: "Avrupa Yakası", rota: "Merkez, AVM Buluşmaları & Yeşil Alanlar",
-        rayli: "Metrobüs (Saadetdere / Haramidere Sanayi durakları) & İETT aktarmaları",
-        vapur: "Esenyurt'ta doğrudan vapur iskelesi yoktur; Avcılar/Büyükçekmece sahil veya Marmaray/Metrobüs aktarmaları kullanılır.",
-        tarihi: "Esenyurt'ta öne çıkan klasik tarihi saray/müze yapısı bulunmaz; gezi planı ağırlıklı olarak AVM, park ve yeme-içme odaklıdır.",
-        orman: "Recep Tayyip Erdoğan Parkı / şehir içi yeşil alanlar & çevre parkları (ücretsiz yürüyüş/dinlenme).",
-        avm: "Uygun/Pratik: Marmara Park, Torium & Pelican Mall • Üst Segment: Akbatı (Esenyurt/Bahçeşehir sınırı) veya İstinyePark/Zorlu aksı.",
-        geceHat: "24 saat Metrobüs hattına (Saadetdere/Haramidere) İETT veya taksi ile bağlanarak gece ulaşımı sağlayabilirsiniz.",
-        ogrenciMekan: "Marmara Park / Torium / Pelican Mall food court & kafe buluşmaları ve park yürüyüşleri.",
-        yetiskinMekan: "Akbatı veya çevre restoran/kafelerde akşam yemeği ve buluşma noktaları.",
-        sponsor: "Esenyurt AVM ve merkez hattındaki öne çıkan buluşma noktaları.",
-        tarihiVar: false,
-        tasarrufNotu: "Esenyurt'ta tarihi müze girişi yer almaz; Marmara Park, Torium ve Pelican Mall gibi erişimi kolay AVM'lerde kampanya/food court seçeneklerini değerlendirebilirsiniz."
-      },
-      {
-        ad: "Kadıköy", yaka: "Anadolu Yakası", rota: "Moda Sahil, Çarşı & Fenerbahçe",
-        rayli: "M4 (Kadıköy–Sabiha Gökçen) Metrosu, Marmaray (Söğütlüçeşme) & T3 Tramvayı",
+ad: "Kadıköy", yaka: "Anadolu Yakası", rota: "Moda Sahil, Çarşı & Fenerbahçe Parkı",
+        ulasim: "M4 Metro, Marmaray (Söğütlüçeşme), T3 Moda Tramvayı, Metrobüs (Söğütlüçeşme) ve İETT hatları.",
         vapur: "Kadıköy–Karaköy / Eminönü / Beşiktaş Şehir Hatları vapurları.",
-        tarihi: "Haydarpaşa Gar çevresi & tarihi Moda dokusu; müze/sergi noktaları için güncel bilet kontrolü önerilir.",
-        orman: "Fenerbahçe Parkı (ücretsiz sahil/park yürüyüşü) & Kalamış-Moda sahil yeşil aksı.",
-        avm: "Uygun/Pratik: Tepe Nautilus (Ayrılık Çeşmesi/Söğütlüçeşme) • Üst Segment: Akasya / Emaar Square aksı.",
-        geceHat: "Cuma-Cumartesi 24 saat M4 Gece Metrosu + 24 saat Metrobüs (Söğütlüçeşme) + 11ÜS / 19S Gece İETT.",
-        ogrenciMekan: "Moda İBB Kafe, Kadıköy Çarşı esnaf lokantaları ve Fenerbahçe Parkı sahil yürüyüşü.",
+        avm: "Tepe Nautilus ve yakın aksında Akasya / Emaar Square.",
+        yuruyus: "Ücretsiz: Moda sahil, Kalamış sahil ve Fenerbahçe Parkı yürüyüş hattı • Ücretli: Özel kulüp/plaj veya ücretli etkinlik alanları.",
+        tarihi: "Haydarpaşa çevresi, tarihi Moda ve Kadıköy çarşı dokusu.",
+        geceHat: "Cuma-Cumartesi 24 saat M4 Gece Metrosu + 24 saat Metrobüs + 11ÜS / 19S Gece İETT.",
+        ogrenciMekan: "Moda İBB Kafe, Kadıköy Çarşı esnaf lokantaları ve Fenerbahçe Parkı.",
         yetiskinMekan: "Caferağa/Moda butik restoranları, kahve durakları ve akşam mekanları.",
-        sponsor: "Moda ve Kadıköy Çarşı bölgesindeki öne çıkan mekan ve rezervasyon önerileri.",
-        tarihiVar: true,
-        tasarrufNotu: "Moda İBB Kafe ve Kadıköy Çarşı içi esnaf lokantaları, sahil hattındaki yüksek fiyatlı mekanlara göre çok daha dengeli bütçe sunar."
+        sponsor: "Moda ve Kadıköy Çarşı bölgesindeki öne çıkan mekanlar.",
+        vapurVar: true, ucretliYuruyus: 90, avmVar: true, tarihiVar: true,
+        tasarrufNotu: "Moda ve Fenerbahçe sahil yürüyüşü ücretsizdir; Kadıköy Çarşı esnaf lokantaları ve Moda İBB Kafe bütçeyi korur."
       },
       {
         ad: "Beşiktaş", yaka: "Avrupa Yakası", rota: "Çarşı, Yıldız Parkı & Ortaköy",
-        rayli: "M2 Metro (Gayrettepe/Taksim) + sahil/otobüs bağlantısı",
-        vapur: "Beşiktaş–Kadıköy & Üsküdar Şehir Hatları vapurları.",
-        tarihi: "Dolmabahçe Sarayı (ayrı biletli/yüksek ücretli) & Ihlamur Kasrı (Milli Saraylar / MüzeKart kuralları kontrol edilmeli).",
-        orman: "Yıldız Parkı (koru/yürüyüş ve İBB Malta/Çadır köşkleri) & Bebek-Arnavutköy sahil hattı.",
-        avm: "Uygun/Pratik: Cevahir / Kanyon (M2 hattı yakın) • Üst Segment: Zorlu Center (Beşiktaş/Zincirlikuyu) & İstinyePark.",
-        geceHat: "Cuma-Cumartesi 24 saat M2 Gece Metrosu + 40 / 25G / 55G Gece İETT hatları.",
+        ulasim: "M2 Metro (Gayrettepe/Taksim), Metrobüs (Zincirlikuyu) ve 28 / 30M / 40 İETT hatları.",
+        vapur: "Beşiktaş–Kadıköy ve Üsküdar Şehir Hatları vapurları.",
+        avm: "Zorlu Center, Kanyon ve yakın aksında Cevahir / İstinyePark.",
+        yuruyus: "Ücretsiz: Bebek-Arnavutköy-Ortaköy sahil hattı ve Yıldız Parkı yaya girişi • Ücretli: Dolmabahçe Sarayı / özel müze-tesis girişleri.",
+        tarihi: "Dolmabahçe Sarayı, Ihlamur Kasrı ve tarihi Beşiktaş dokusu.",
+        geceHat: "Cuma-Cumartesi 24 saat M2 Gece Metrosu + 40 / 25G / 55G Gece İETT.",
         ogrenciMekan: "Beşiktaş Çarşı uygun kahvaltı/esnaf lokantaları ve Yıldız Parkı yürüyüşü.",
-        yetiskinMekan: "Akaretler ve Ortaköy hattındaki butik/şık kafeler ve akşam yemekleri.",
+        yetiskinMekan: "Akaretler, Ortaköy veya Zorlu/Kanyon hattında kahve ve akşam yemeği.",
         sponsor: "Beşiktaş, Akaretler ve Ortaköy çevresindeki öne çıkan mekanlar.",
-        tarihiVar: true,
-        tasarrufNotu: "Beşiktaş Çarşı içi esnaf lokantalarını ve Yıldız Parkı yürüyüşünü tercih etmek, sahil ve AVM harcamalarını dengeler."
+        vapurVar: true, ucretliYuruyus: 150, avmVar: true, tarihiVar: true,
+        tasarrufNotu: "Yıldız Parkı ve sahil hattında yürüyüş yapıp Çarşı içi esnaf lokantalarını seçmek bütçeyi rahatlatır."
       },
       {
-        ad: "Fatih", yaka: "Avrupa Yakası", rota: "Süleymaniye, Eminönü & Tarihi Yarımada",
-        rayli: "T1 (Kabataş–Bağcılar) Tramvayı, Marmaray (Sirkeci/Yenikapı) & M1A/M1B/M2 (Yenikapı/Vezneciler)",
-        vapur: "Eminönü–Üsküdar / Kadıköy & Haliç Şehir Hatları vapurları.",
-        tarihi: "Topkapı Sarayı, Ayasofya, Yerebatan Sarnıcı & Kariye; devlet müzelerinde MüzeKart (yabancı/özel bilet kuralları ayrıdır) ve giriş ücreti farkları bulunur.",
-        orman: "Gülhane Parkı (tarihi koru/yürüyüş) & Cankurtaran sahil yeşil alanı.",
-        avm: "Uygun/Pratik: Historia Fatih / Marmara Forum veya Olivium (T1/Marmaray ile kolay erişim) • Üst Segment: Eminönü/Karaköy/Zorlu aksı.",
+        ad: "Fatih", yaka: "Avrupa Yakası", rota: "Süleymaniye, Eminönü, Balat & Gülhane",
+        ulasim: "T1 Tramvay, Marmaray (Sirkeci/Yenikapı), M1A/M1B/M2 (Yenikapı/Vezneciler) ve İETT hatları.",
+        vapur: "Eminönü–Üsküdar / Kadıköy ve Haliç Şehir Hatları vapurları.",
+        avm: "Historia Fatih AVM (ilçe içi); çevre aksında Marmara Forum / Olivium.",
+        yuruyus: "Ücretsiz: Gülhane Parkı ve Cankurtaran sahil yürüyüşü • Ücretli: Topkapı Sarayı, Ayasofya, Yerebatan Sarnıcı vb. müze/yapı girişleri.",
+        tarihi: "Tarihi Yarımada, Süleymaniye, Balat/Fener, sarnıçlar ve saray/müze yapıları.",
         geceHat: "Cuma-Cumartesi 24 saat M1A, M1B ve M2 Gece Metrosu + gece İETT/Metrobüs bağlantıları.",
-        ogrenciMekan: "Hocapaşa esnaf lokantaları, Gülhane/Cankurtaran İBB tesisleri ve Balat/Fener sokak kafeleri.",
+        ogrenciMekan: "Hocapaşa esnaf lokantaları, İBB tesisleri ve Balat/Fener kafeleri.",
         yetiskinMekan: "Süleymaniye manzaralı mekanlar, tarihi restoranlar ve akşam rotaları.",
         sponsor: "Tarihi Yarımada ve Balat çevresindeki öne çıkan duraklar.",
-        tarihiVar: true,
-        tasarrufNotu: "Hocapaşa esnaf lokantaları ve İBB tesisleri Tarihi Yarımada'da hem öğrenci hem yetişkinler için ekonomik alternatif sunar."
+        vapurVar: true, ucretliYuruyus: 100, avmVar: true, tarihiVar: true,
+        tasarrufNotu: "Tarihi Yarımada'da müze girişleri yüksek olabildiğinden gezilecek yapıyı net seçmek ve Hocapaşa esnaf lokantalarını tercih etmek bütçeyi korur."
       }
     ];
-const DIGER_34_ILCE = [
-      ["Adalar", "Anadolu Yakası"], ["Arnavutköy", "Avrupa Yakası"], ["Ataşehir", "Anadolu Yakası"],
-      ["Avcılar", "Avrupa Yakası"], ["Bağcılar", "Avrupa Yakası"], ["Bahçelievler", "Avrupa Yakası"],
-      ["Bakırköy", "Avrupa Yakası"], ["Başakşehir", "Avrupa Yakası"], ["Bayrampaşa", "Avrupa Yakası"],
-      ["Beykoz", "Anadolu Yakası"], ["Beylikdüzü", "Avrupa Yakası"], ["Beyoğlu", "Avrupa Yakası"],
-      ["Büyükçekmece", "Avrupa Yakası"], ["Çatalca", "Avrupa Yakası"], ["Çekmeköy", "Anadolu Yakası"],
-      ["Esenler", "Avrupa Yakası"], ["Eyüpsultan", "Avrupa Yakası"], ["Gaziosmanpaşa", "Avrupa Yakası"],
-      ["Güngören", "Avrupa Yakası"], ["Kağıthane", "Avrupa Yakası"], ["Kartal", "Anadolu Yakası"],
-      ["Küçükçekmece", "Avrupa Yakası"], ["Maltepe", "Anadolu Yakası"], ["Pendik", "Anadolu Yakası"],
-      ["Sancaktepe", "Anadolu Yakası"], ["Sarıyer", "Avrupa Yakası"], ["Silivri", "Avrupa Yakası"],
-      ["Sultanbeyli", "Anadolu Yakası"], ["Sultangazi", "Avrupa Yakası"], ["Şile", "Anadolu Yakası"],
-      ["Şişli", "Avrupa Yakası"], ["Tuzla", "Anadolu Yakası"], ["Ümraniye", "Anadolu Yakası"],
-      ["Zeytinburnu", "Avrupa Yakası"]
+
+    const DIGER_31_ILCE = [
+      ["Arnavutköy", "Avrupa Yakası", "Arnavutköy Merkez, Havalimanı Metrosu & Durusu", "M11 Metro ve 36 / 36L / H-6 İETT", "Vapur iskelesi yoktur.", "Arnavutköy/Göktürk çevresi AVM ve çarşı durakları", "Ücretsiz: İlçe/orman yürüyüş alanları • Ücretli: Özel mesire/tesis alanları", "Yerel tarihi yapılar ve köy/merkez dokusu", "36 / H-6 ve taksi/özel araç bağlantıları", false, 100],
+      ["Ataşehir", "Anadolu Yakası", "Batı Ataşehir, Küçükbakkalköy & M8 Hattı", "M8 Metro, M4/M5 aktarmaları ve 19F / 8A / 13 İETT", "Vapur iskelesi yoktur; Kadıköy/Bostancı aktarmalı.", "Watergarden, Metropol İstanbul ve yakınında Optimum/Emaar Square", "Ücretsiz: İlçe içi park ve yürüyüş alanları • Ücretli: Özel spor/eğlence alanları", "Bölge merkez ve çevre dokusu", "M4 Gece Metrosu aktarması ve gece/erken saat İETT", false, 90],
+      ["Avcılar", "Avrupa Yakası", "Avcılar Sahil Parkı, Merkez & Metrobüs", "Metrobüs ve 34 / 34BZ / 76 İETT", "Deniz/vapur seferleri sınırlı veya sezonluktur; sahil yürüyüşü öne çıkar.", "Pelican Mall (yakın komşu) ve Avcılar merkez çarşı/AVM noktaları", "Ücretsiz: Avcılar Sahil Parkı yürüyüş yolu • Ücretli: Sahil çevresi özel tesis/etkinlikler", "Sahil ve merkez çevresi", "24 saat Metrobüs hattı ve İETT/taksi bağlantıları", false, 80],
+      ["Bağcılar", "Avrupa Yakası", "Kirazlı, Merkez & Metro Hattı", "M1B & M3 Metro ve 97 / 98 / 31Y İETT", "Vapur iskelesi yoktur.", "212 Outlet / Mall of İstanbul (yakın aks) ve merkez çarşı", "Ücretsiz: Mahalle/ilçe parkları • Ücretli: Özel eğlence/spor alanları", "Merkez ve çevre mahalleler", "M1B Gece Metrosu ve gece İETT/Metrobüs aktarmaları", false, 70],
+      ["Bahçelievler", "Avrupa Yakası", "Şirinevler, İncirli, Haznedar & Metrobüs", "M1A Metro, Metrobüs ve 31E / 98 / 72T İETT", "Vapur iskelesi yoktur.", "Kadir Has AVM, MetroPort ve yakınında Marmara Forum / Capacity", "Ücretsiz: İlçe parkları ve yürüyüş güzergahları • Ücretli: Özel spor/eğlence alanları", "Merkez ve çevre dokusu", "24 saat Metrobüs (Şirinevler/Bahçelievler/İncirli) ve gece İETT", false, 70],
+      ["Bakırköy", "Avrupa Yakası", "Sahil Yolu, Florya & Merkez", "Marmaray, M1A Metro, Metrobüs (İncirli) ve 71T / 72T / 81 İETT", "Bakırköy deniz hatları bağlantısı (sezonluk/hat bazlı).", "Capacity, Carousel, Galleria ve Florya/Ataköy hattı AVM'leri", "Ücretsiz: Sahil yürüyüş yolu ve Florya yeşil alanları • Ücretli: Özel tesis/etkinlik alanları", "Sahil ve merkez tarihi/kültürel noktalar", "24 saat Metrobüs (İncirli) ve gece İETT/taksi", true, 100],
+      ["Başakşehir", "Avrupa Yakası", "Sular Vadisi, Kayaşehir & Metro Hattı", "M3 & M9 Metro ve 78 / 79K / 146T İETT", "Vapur iskelesi yoktur.", "Mall of İstanbul ve Başakşehir/Kayaşehir çarşı-AVM noktaları", "Ücretsiz: Sular Vadisi ve park yürüyüş yolları • Ücretli: Özel tesis/etkinlik alanları", "Çevre ve merkez noktalar", "Gece/erken saat İETT ve taksi bağlantıları", false, 80],
+      ["Bayrampaşa", "Avrupa Yakası", "Forum İstanbul, Merkez & Raylı Hatlar", "M1A Metro, T4 Tramvay ve 32 / 33 / 55B İETT", "Vapur iskelesi yoktur.", "Forum İstanbul AVM ve merkez çarşı durakları", "Ücretsiz: İlçe içi park alanları • Ücretli: Forum içi/çevresi özel eğlence alanları", "Merkez ve çevre mahalleler", "Cuma-Cumartesi 24 saat M1A Gece Metrosu", false, 80],
+      ["Beykoz", "Anadolu Yakası", "Boğaz Sahili, Kanlıca, Anadolu Kavağı & Korular", "15 / 14M / 15A İETT (Üsküdar/Kavacık/Çekmeköy bağlantılı)", "Şehir Hatları Boğaz Hattı vapurları (Beykoz, Kanlıca, Anadolu Kavağı).", "Kavacık ve çevre alışveriş/buluşma noktaları", "Ücretsiz: Boğaz sahil yürüyüşü ve korular • Ücretli: Tabiat parkı/mesire girişleri ve özel tesisler", "Yoros Kalesi çevresi ve Boğaz tarihi dokusu", "Gece saatlerinde hatlar sınırlıdır; taksi/özel araç veya erken dönüş planlayın", true, 130],
+      ["Beylikdüzü", "Avrupa Yakası", "Yaşam Vadisi, Sahil & Metrobüs", "Metrobüs ve 76 / 145T / 303A İETT", "Gürpınar / West İstanbul Marina deniz bağlantıları (hat/sezon bazlı).", "Marmara Park / Perlavista ve Beylikdüzü AVM/çarşı noktaları", "Ücretsiz: Yaşam Vadisi ve sahil yürüyüş alanları • Ücretli: Özel plaj/tesis alanları", "Sahil ve merkez çevresi", "24 saat Metrobüs hattı ve gece İETT/taksi", false, 90],
+      ["Beyoğlu", "Avrupa Yakası", "Karaköy, Galata, Taksim & Cihangir", "M2 Metro, T1 Tramvay, F2 Tünel ve 30D / 74A / 55T İETT", "Karaköy–Kadıköy ve Üsküdar Şehir Hatları vapurları.", "Demirören İstiklal ve yakınında Zorlu / Kanyon / Cevahir", "Ücretsiz: Karaköy-Galata-Cihangir yürüyüş rotaları • Ücretli: Galata Kulesi ve özel müzeler", "Galata Kulesi, Pera ve tarihi Beyoğlu dokusu", "Cuma-Cumartesi 24 saat M2 Gece Metrosu + 25G / 40 / 50G Gece İETT", true, 120],
+      ["Çatalca", "Avrupa Yakası", "Çatalca Merkez, Doğa & Kır Rotaları", "İETT bölge otobüs hatları (401 / 402 vb.)", "Vapur iskelesi yoktur.", "İlçe merkez çarşı ve yerel alışveriş noktaları", "Ücretsiz: Köy/doğa yürüyüş güzergahları • Ücretli: Özel kır/piknik/mesire tesisleri", "Çatalca merkez ve çevre tarihi noktalar", "Gece seferleri çok sınırlıdır; gündüz/akşam planı önerilir", false, 110],
+      ["Çekmeköy", "Anadolu Yakası", "Taşdelen, Alemdağ, Madenler & M5 Metro", "M5 Metro (Çekmeköy/Sarıgazi hattı) ve 11ÇK / 14 / 19E İETT", "Vapur iskelesi yoktur; Üsküdar/Kadıköy aktarmalı.", "Bölge/çevre AVM seçenekleri (Metrogarden / Buyaka aksı)", "Ücretsiz: Orman/park yürüyüş alanları • Ücretli: Tabiat parkı/mesire girişleri", "Çekmeköy ve çevre noktalar", "Cuma-Cumartesi 24 saat M5 Gece Metrosu (Üsküdar hattı)", false, 100],
+      ["Esenler", "Avrupa Yakası", "Dörtyol Meydan, Davutpaşa & M1B Metro", "M1B Metro ve 33B / 97 / 303 İETT", "Vapur iskelesi yoktur.", "İlçe içi çarşı ve yakınında Forum İstanbul / 212 aksı", "Ücretsiz: İlçe parkları • Ücretli: Özel spor/eğlence alanları", "Merkez ve çevre mahalleler", "Cuma-Cumartesi 24 saat M1B Gece Metrosu", false, 70],
+      ["Eyüpsultan", "Avrupa Yakası", "Eyüp, Haliç, Pierre Loti & Kemerburgaz", "T5 Tramvay, M7 Metro ve 48 / 39 / 99A İETT", "Haliç Şehir Hatları vapurları (gün içi belirli seferler).", "Axis İstanbul, Venezia Mega Outlet ve Göktürk/Vadistanbul aksı", "Ücretsiz: Haliç kıyısı yürüyüşü • Ücretli: Kemerburgaz Kent Ormanı / özel tesis girişleri", "Eyüp Sultan ve tarihi Haliç dokusu", "Cuma-Cumartesi 24 saat M7 Gece Metrosu + 55G Gece İETT", true, 120],
+      ["Gaziosmanpaşa", "Avrupa Yakası", "Meydan, Küçükköy, T4 Tramvay & M7 Metro", "T4 Tramvay, M7 Metro ve 36TC / 38 / 88 İETT", "Vapur iskelesi yoktur.", "Vega AVM Sultangazi/GOP aksı ve merkez çarşı", "Ücretsiz: İlçe parkları • Ücretli: Özel tesis/eğlence alanları", "Merkez ve çevre mahalleler", "Cuma-Cumartesi 24 saat M7 Gece Metrosu", false, 75],
+      ["Güngören", "Avrupa Yakası", "Merter, Haznedar, Merkez & Raylı Hatlar", "M1A Metro, T1 Tramvay ve 31 / 92 / 98H İETT", "Vapur iskelesi yoktur.", "Merter/Güngören çevre AVM ve çarşı noktaları", "Ücretsiz: İlçe parkları • Ücretli: Özel spor/eğlence alanları", "Merkez ve çevre dokusu", "Cuma-Cumartesi 24 saat M1A Gece Metrosu", false, 70],
+      ["Kağıthane", "Avrupa Yakası", "Cendere Vadisi, Merkez & M7 Metro", "M7 Metro (Kağıthane) ve 48T / 62 / 64Ç İETT", "Vapur iskelesi yoktur; Beşiktaş/Karaköy aktarmalı.", "Axis Kağıthane ve yakınında Vadistanbul / Kanyon / Cevahir", "Ücretsiz: Cendere ve park yürüyüş yolları • Ücretli: Özel spor/sosyal alanlar", "Merkez ve çevre dokusu", "Cuma-Cumartesi 24 saat M7 Gece Metrosu", false, 90],
+      ["Kartal", "Anadolu Yakası", "Kartal Sahil, Yakacık, M4 Metro & Marmaray", "M4 Metro, Marmaray ve 17 / 133KT / KM34 İETT", "Yalova / deniz bağlantıları ve sahil hattı (sezonluk/hat bazlı).", "Anatolium / IKEA Kartal aksı ve sahil/merkez buluşma noktaları", "Ücretsiz: Kartal sahil parkı yürüyüş yolu • Ücretli: Aydos/özel mesire veya tesis alanları", "Sahil ve merkez çevresi", "Cuma-Cumartesi 24 saat M4 Gece Metrosu", false, 90],
+      ["Küçükçekmece", "Avrupa Yakası", "Göl Kenarı, Sefaköy, Marmaray & Metrobüs", "Marmaray, Metrobüs (Sefaköy/Beşyol) ve 89 / 98AB / 76O İETT", "Vapur iskelesi yoktur; göl kenarı ve Marmaray sahil hatları bulunur.", "ArmoniPark AVM ve Sefaköy/Halkalı çevre AVM'leri", "Ücretsiz: Göl kenarı ve park yürüyüş alanları • Ücretli: Özel tesis/etkinlik alanları", "Küçükçekmece Gölü ve çevre tarihi noktalar", "24 saat Metrobüs (Sefaköy/Beşyol) ve gece İETT/taksi", false, 80],
+      ["Maltepe", "Anadolu Yakası", "Maltepe Sahil Parkı, Bağdat/Merkez & M4/Marmaray", "M4 Metro, Marmaray ve 16 / 17 / 251 İETT", "Bostancı/Kartal iskelelerine yakın sahil hattı.", "Maltepe Park AVM ve merkez/sahil buluşma noktaları", "Ücretsiz: Maltepe Sahil Parkı yürüyüş ve spor alanları • Ücretli: Özel tesis/etkinlik alanları", "Sahil ve merkez çevresi", "Cuma-Cumartesi 24 saat M4 Gece Metrosu", false, 85],
+      ["Pendik", "Anadolu Yakası", "Pendik Sahil, Marina, Marmaray & M4/Sabiha Gökçen", "Marmaray, M4 Metro ve 17 / 133P / KM24 İETT", "Yalova İDO / deniz bağlantıları ve sahil hattı.", "Pendorya / Neomarin / Viaport Marina (yakın aks)", "Ücretsiz: Pendik sahil yürüyüş yolu • Ücretli: Özel tesis/marina/mesire alanları", "Sahil ve merkez çevresi", "Cuma-Cumartesi 24 saat M4 Gece Metrosu ve gece İETT/taksi", false, 95],
+      ["Sancaktepe", "Anadolu Yakası", "Sarıgazi, Samandıra & M5 Metro", "M5 Metro (Sarıgazi) ve 11 / 14S / 19S İETT", "Vapur iskelesi yoktur.", "Sancaktepe merkez/çevre AVM ve çarşı noktaları", "Ücretsiz: İlçe parkları ve yürüyüş alanları • Ücretli: Özel mesire/tesis alanları", "Merkez ve çevre dokusu", "Cuma-Cumartesi 24 saat M5 Gece Metrosu", false, 80],
+      ["Sarıyer", "Avrupa Yakası", "Emirgan, Belgrad/Bentler, Tarabya & Sahil", "M2 Metro (Hacıosman/İTÜ) ve 25E / 40B / 29Ş İETT", "Boğaz Hattı ve Sarıyer/İstinye vapur hatları.", "İstinyePark ve Sarıyer/Maslak çevre AVM'leri", "Ücretsiz: Emirgan Korusu ve sahil yürüyüşü • Ücretli: Tabiat parkları (giriş ücreti uygulanır)", "Rumeli Hisarı çevresi, Sadberk Hanım Müzesi ve sahil dokusu", "Cuma-Cumartesi 24 saat M2 Gece Metrosu + 25G / 40 Gece İETT", true, 140],
+      ["Silivri", "Avrupa Yakası", "Silivri Sahil, Selimpaşa & Vega AVM", "İETT bölge otobüsleri ve minibüsler (metro/metrobüs yoktur)", "Düzenli vapur iskelesi yoktur.", "Vega AVM Silivri ve ilçe merkez/sahil durakları", "Ücretsiz: Silivri sahil yürüyüş yolu • Ücretli: Sahil özel tesis/plaj alanları", "Silivri merkez ve çevre noktalar", "Gece seferleri sınırlıdır; taksi/özel araç veya erken dönüş planlayın", false, 120],
+      ["Sultanbeyli", "Anadolu Yakası", "Gölet Çevresi, Merkez & TEM Hattı", "14KS / 18E / 131 İETT ve M4/M5 yönlü bağlantılar", "Vapur iskelesi yoktur.", "Plato AVM / çevre alışveriş noktaları", "Ücretsiz: Gölet çevresi ve park yürüyüşü • Ücretli: Özel tesis/eğlence alanları", "Merkez ve çevre mahalleler", "Gece/erken saat İETT ve taksi bağlantıları", false, 75],
+      ["Sultangazi", "Avrupa Yakası", "Hacı Şükrü, Cebeci, T4 Tramvay & M7 Metro", "T4 Tramvay, M7 Metro ve 36 / 38 / 336 İETT", "Vapur iskelesi yoktur.", "Vega AVM Sultangazi ve merkez çarşı durakları", "Ücretsiz: İlçe parkları ve yürüyüş alanları • Ücretli: Çevre mesire/özel alanlar", "Merkez ve çevre mahalleler", "Cuma-Cumartesi 24 saat M7 Gece Metrosu", false, 80],
+      ["Şile", "Anadolu Yakası", "Şile Feneri, Sahil, Ağva & Doğa Rotaları", "139 / 139A İETT ve bölge hatları", "Şehir içi düzenli vapur iskelesi yoktur.", "İlçe merkez ve sahil çarşı/kafe durakları", "Ücretsiz: Sahil ve orman/doğa yürüyüş rotaları • Ücretli: Özel plaj/kamping/tesis alanları", "Şile Feneri ve sahil/doğa dokusu", "Gece seferleri sınırlıdır; gündüz/akşam planı önerilir", true, 130],
+      ["Şişli", "Avrupa Yakası", "Nişantaşı, Teşvikiye, Osmanbey & Mecidiyeköy", "M2 Metro, M7 Metro, Metrobüs ve 30A / 46T / 54E İETT", "Beşiktaş/Kabataş iskelelerine kısa aktarma.", "Cevahir AVM, Kanyon ve yakınında Zorlu / Nişantaşı aksı", "Ücretsiz: Maçka Demokrasi Parkı ve Nişantaşı/Teşvikiye yürüyüşü • Ücretli: Özel müze/etkinlikler", "Teşvikiye/Nişantaşı ve tarihi apartman/kültür dokusu", "Cuma-Cumartesi 24 saat M2 & M7 Gece Metrosu + 24 saat Metrobüs", true, 110],
+      ["Tuzla", "Anadolu Yakası", "Tuzla Sahil, Marina, Marmaray & İETT", "Marmaray (Tuzla/İçmeler) ve 133T / 500T / KM11 İETT", "Sahil ve marina hattı (sezonluk/özel tekne/hat bazlı).", "Viaport Marina ve Tuzla merkez/sahil durakları", "Ücretsiz: Tuzla sahil yürüyüş yolu • Ücretli: Marina/özel tesis/etkinlik alanları", "Tuzla merkez ve sahil çevresi", "Gece/erken saat İETT ve Marmaray/taksi bağlantıları", false, 100],
+      ["Ümraniye", "Anadolu Yakası", "Çarşı, Santral, Finans Merkezi & M5/M8 Metro", "M5 Metro, M8 Metro ve 14 / 15 / 20Ü İETT", "Vapur iskelesi yoktur; Üsküdar/Kadıköy aktarmalı.", "Buyaka AVM, Canpark ve yakınında Metrogarden / Emaar Square", "Ücretsiz: İlçe parkları ve yürüyüş yolları • Ücretli: Özel spor/eğlence alanları", "Merkez ve çevre dokusu", "Cuma-Cumartesi 24 saat M5 Gece Metrosu", false, 85],
+      ["Zeytinburnu", "Avrupa Yakası", "Kazlıçeşme Sahil, Merkez, Marmaray & T1/Metrobüs", "Marmaray (Kazlıçeşme), T1 Tramvay, Metrobüs ve 93 / 97 İETT", "Sahil hattı; Eminönü/Karaköy/Bakırköy deniz hatlarına yakın.", "Olivium Outlet Center ve Marmara Forum (yakın komşu)", "Ücretsiz: Kazlıçeşme sahil yürüyüş yolu • Ücretli: Özel tesis/etkinlik alanları", "Tarihi sur ve sahil çevresi", "24 saat Metrobüs ve gece İETT/taksi bağlantıları", true, 90]
     ];
 
-    function varsayilanIlce(ad, yaka) {
+    function digerIlceObje([ad, yaka, rota, ulasim, vapur, avm, yuruyus, tarihi, geceHat, vapurVar, ucretliYuruyus]) {
       return {
-        ad, yaka,
-        rota: `${ad} Merkez, Doğa & Buluşma Rotaları`,
-        rayli: "Bölge metro / Marmaray / tramvay / Metrobüs veya İETT bağlantıları",
-        vapur: ad === "Adalar"
-          ? "Bostancı / Kadıköy / Beşiktaş / Kabataş–Adalar vapur hatları."
-          : (yaka === "Anadolu Yakası" ? "Kadıköy / Bostancı / Üsküdar iskelelerine aktarmalı vapur hatları." : "Eminönü / Karaköy / Beşiktaş iskelelerine aktarmalı vapur hatları."),
-        tarihi: `${ad} çevresindeki tarihi yapılar ve müzelerde güncel giriş ücretleri/MüzeKart geçerliliği kontrol edilmelidir.`,
-        orman: `${ad} ve yakın çevresindeki ormanlık alanlar/tabiat parklarında giriş ücretleri ve ateş/mangal kuralları alan bazında değişir.`,
-        avm: "Uygun/Pratik: Bölge/outlet AVM seçenekleri • Üst Segment: Emaar Square / Zorlu / İstinyePark / Kanyon aksı.",
-        geceHat: "Cuma-Cumartesi gece metrosu hatlarına (M1A, M1B, M2, M4, M5, M6, M7), 24 saat Metrobüs'e veya gece İETT/taksi hatlarına aktarma yapın.",
-        ogrenciMekan: `${ad} çevresinde İBB tesisleri, esnaf lokantaları ve park/sahil yürüyüş rotaları.`,
-        yetiskinMekan: `${ad} merkezdeki butik kafeler, restoranlar ve akşam buluşma mekanları.`,
-        sponsor: `${ad} bölgesindeki öne çıkan mekan veya rezervasyon bağlantısı.`,
-        tarihiVar: true,
-        tasarrufNotu: `${ad} için tüyo: Müze giriş kurallarını, park/orman giriş koşullarını ve uygun/üst segment AVM seçeneklerini bütçenize göre planlayın.`
+        ad, yaka, rota, ulasim, vapur, avm, yuruyus, tarihi, geceHat,
+        ogrenciMekan: `${ad} bölgesinde yürüyüş/park alanları, uygun kafeler ve bütçe dostu duraklar.`,
+        yetiskinMekan: `${ad} ve yakın çevresinde öne çıkan AVM/kafe ve akşam buluşma noktaları.`,
+        sponsor: `${ad} bölgesindeki öne çıkan mekan veya buluşma noktaları.`,
+        vapurVar,
+        ucretliYuruyus,
+        avmVar: true,
+        tarihiVar: ad !== "Esenyurt",
+        tasarrufNotu: `${ad} için tüyo: Bölgedeki ücretsiz yürüyüş/park alanlarını değerlendirin, varsa ücretli tesis/AVM harcamasını bütçenize göre seçin.`
       };
     }
 
     const TUM_39_ILCE = [
-      ...ISTANBUL_ILCELERI,
-      ...DIGER_34_ILCE.map(([ad, yaka]) => varsayilanIlce(ad, yaka))
+      ...ISTANBUL_39_ILCE,
+      ...DIGER_31_ILCE.map(digerIlceObje)
     ];
 
     let aktifMod = "rota";
     let aktifZaman = "Tümü (39 İlçe)";
-    let aktifIlceAd = "Esenyurt";
+    let aktifIlceAd = "Büyükçekmece";
     let aktifTarife = "ogrenci";
     let aktifGunTipi = "haftasonu";
     let aktifSaatModu = "gunduz";
@@ -863,7 +906,7 @@ const DIGER_34_ILCE = [
       return TUM_39_ILCE.find((i) => i.ad === aktifIlceAd) || TUM_39_ILCE[0];
     }
 
-function selectDoldur() {
+    function selectDoldur() {
       const sel = document.getElementById("ilceSecSelect");
       sel.innerHTML = "";
       TUM_39_ILCE.forEach((ilce) => {
@@ -919,7 +962,8 @@ function selectDoldur() {
       kalemleriOlustur(false);
       butceEkraniniGuncelle();
     }
-function gunTipiSec(gun) {
+
+    function gunTipiSec(gun) {
       aktifGunTipi = gun;
       segButonlariniGuncelle();
       kalemleriOlustur(false);
@@ -953,84 +997,88 @@ function gunTipiSec(gun) {
       const t = TARIFE_2026[aktifTarife];
       const onceki = new Map(aktifKalemler.map((k) => [k.id, k.secili]));
       const liste = [];
+if (aktifSaatModu === "gunduz") {
+        if (ilce.ad !== "Adalar") {
+          liste.push({
+            id: "ulasim-kara",
+            ad: `Ulaşım (${ilce.ad})`,
+            detay: `${aktifTarife === "ogrenci" ? "Öğrenci" : "Tam"} gidiş-dönüş tahmini`,
+            fiyat: Math.round(t.tekBinis * 2),
+            sabit: true,
+            gece: false,
+            secili: varsayilanYenile ? true : (onceki.get("ulasim-kara") ?? true)
+          });
+        }
 
-      if (aktifSaatModu === "gunduz") {
-        liste.push({
-          id: "ulasim-rayli",
-          ad: `Metro / Metrobüs / İETT (${ilce.ad})`,
-          detay: `${aktifTarife === "ogrenci" ? "Öğrenci" : "Tam"} gidiş-dönüş tahmini`,
-          fiyat: Math.round(t.tekBinis * 2),
-          sabit: true,
-          gece: false,
-          secili: varsayilanYenile ? true : (onceki.get("ulasim-rayli") ?? true)
-        });
-
-        if (ilce.ad !== "Esenyurt") {
+        if (ilce.vapurVar) {
           let vapurFiyat = t.vapurMerkez;
           if (ilce.ad === "Adalar") vapurFiyat = t.vapurAdalar;
-          else if (["Üsküdar", "Beşiktaş", "Beyoğlu", "Sarıyer", "Eyüpsultan"].includes(ilce.ad)) vapurFiyat = t.vapurBogaz;
+          else if (["Üsküdar", "Beşiktaş", "Beyoğlu", "Sarıyer", "Eyüpsultan", "Beykoz"].includes(ilce.ad)) vapurFiyat = t.vapurBogaz;
 
           liste.push({
             id: "ulasim-vapur",
-            ad: `Vapur Hattı (${ilce.ad})`,
+            ad: `Vapur (${ilce.ad})`,
             detay: `${aktifTarife === "ogrenci" ? "Öğrenci" : "Tam"} tek yön tahmini`,
             fiyat: Math.round(vapurFiyat),
             sabit: true,
             gece: false,
-            secili: varsayilanYenile ? ["Üsküdar", "Kadıköy", "Beşiktaş", "Fatih", "Beyoğlu", "Adalar", "Sarıyer"].includes(ilce.ad) : (onceki.get("ulasim-vapur") ?? false)
+            secili: varsayilanYenile ? ["Adalar", "Üsküdar", "Kadıköy", "Beşiktaş", "Fatih", "Beyoğlu", "Sarıyer"].includes(ilce.ad) : (onceki.get("ulasim-vapur") ?? false)
           });
         }
       } else {
         liste.push({
           id: "ulasim-gece",
-          ad: `00:00 Sonrası Gece Ulaşımı (${ilce.ad})`,
-          detay: aktifGunTipi === "haftasonu" ? "Hafta sonu gece metrosu / Metrobüs / gece İETT tahmini" : "Hafta içi gece İETT / Metrobüs / aktarma tahmini",
+          ad: `00:00 Sonrası Ulaşım (${ilce.ad})`,
+          detay: ilce.ad === "Adalar" ? "Gece düzenli vapur yok • Dönüş/plan tahmini" : `${aktifTarife === "ogrenci" ? "Öğrenci" : "Tam"} gece ulaşım tahmini`,
           fiyat: Math.round(t.tekBinis * 2),
           sabit: true,
           gece: true,
           secili: varsayilanYenile ? true : (onceki.get("ulasim-gece") ?? true)
         });
       }
-if (ilce.tarihiVar) {
+
+      if (ilce.ucretliYuruyus > 0) {
+        liste.push({
+          id: "ucretli-alan",
+          ad: `Ücretli Sahil / Alan / Tesis (${ilce.ad})`,
+          detay: "Ücretsiz yürüyüş hattına ek ücretli tesis/plaj/alan seçimi",
+          fiyat: ilce.ucretliYuruyus,
+          sabit: true,
+          gece: false,
+          secili: varsayilanYenile ? (aktifZaman === "Sahil & Yürüyüş") : (onceki.get("ucretli-alan") ?? false)
+        });
+      }
+
+      if (ilce.tarihiVar) {
         liste.push({
           id: "tarihi-giris",
-          ad: "Tarihi Mekan / Müze Girişi",
-          detay: aktifTarife === "ogrenci" ? "Öğrenci / MüzeKart veya indirimli giriş tahmini" : "Müze / saray / kule giriş tahmini",
+          ad: `Tarihi / Müze Girişi (${ilce.ad})`,
+          detay: aktifTarife === "ogrenci" ? "Öğrenci / MüzeKart veya indirimli giriş" : "Müze / yapı giriş tahmini",
           fiyat: aktifTarife === "ogrenci" ? 120 : 450,
           sabit: true,
           gece: false,
-          secili: varsayilanYenile ? (aktifZaman === "Tarihi & Müze") : (onceki.get("tarihi-giris") ?? false)
+          secili: varsayilanYenile ? (aktifZaman === "Tarihi & Kültür") : (onceki.get("tarihi-giris") ?? false)
         });
       }
 
       liste.push({
-        id: "orman-giris",
-        ad: ilce.ad === "Esenyurt" ? "Park / Yeşil Alan Molası" : "Ormanlık Alan / Tabiat Parkı",
-        detay: aktifGunTipi === "haftasonu" ? "Hafta sonu park/doğa yürüyüşü veya giriş payı" : "Hafta içi park/doğa yürüyüşü veya giriş payı",
-        fiyat: ilce.ad === "Esenyurt" ? 0 : (aktifGunTipi === "haftasonu" ? 90 : 60),
-        sabit: true,
-        gece: false,
-        secili: varsayilanYenile ? (aktifZaman === "Orman & Doğa") : (onceki.get("orman-giris") ?? false)
-      });
-
-      liste.push({
-        id: "kafe-avm",
-        ad: ilce.ad === "Esenyurt" ? "AVM Buluşma / Kafe (Esenyurt)" : (aktifZaman === "AVM Buluşma" ? `AVM Kafe / Buluşma (${ilce.ad})` : `Kahve / Mekan Molası (${ilce.ad})`),
-        detay: aktifGunTipi === "haftasonu" ? "Hafta sonu AVM/kafe harcaması" : "Hafta içi AVM/kafe harcaması",
+        id: "avm-kafe",
+        ad: ilce.avmVar ? `AVM / Kafe Buluşması (${ilce.ad})` : `Kafe / Sahil Molası (${ilce.ad})`,
+        detay: aktifGunTipi === "haftasonu" ? "Hafta sonu buluşma/kafe tahmini" : "Hafta içi buluşma/kafe tahmini",
         fiyat: aktifGunTipi === "haftasonu" ? 340 : 280,
         sabit: false,
         gece: aktifSaatModu === "gece",
-        secili: varsayilanYenile ? true : (onceki.get("kafe-avm") ?? true)
+        secili: varsayilanYenile ? true : (onceki.get("avm-kafe") ?? true)
       });
 
       liste.push({
-        id: "aksam-yemek",
-        ad: `Yemek / Akşam Planı (${ilce.ad})`,
+        id: "yemek",
+        ad: `Yemek Planı (${ilce.ad})`,
         detay: "Ana yemek + içecek tahmini",
         fiyat: 680,
         sabit: false,
         gece: aktifSaatModu === "gece",
-        secili: varsayilanYenile ? false : (onceki.get("aksam-yemek") ?? false)
+        secili: varsayilanYenile ? false : (onceki.get("yemek") ?? false)
       });
 
       aktifKalemler = liste;
@@ -1054,22 +1102,21 @@ if (ilce.tarihiVar) {
       document.getElementById("rotaGeceRozet").textContent = aktifSaatModu === "gece" ? "🌙 00:00 Sonrası Aktif" : "🌙 00:00 Sonrası Hat Bilgisi";
 
       document.getElementById("rotaBaslik").textContent = `${ilce.ad}: ${ilce.rota}`;
-      document.getElementById("detayRayliMetin").textContent = ilce.rayli;
+      document.getElementById("detayUlasimMetin").textContent = ilce.ulasim;
       document.getElementById("detayVapurMetin").textContent = ilce.vapur;
-      document.getElementById("detayTarihiMetin").textContent = ilce.tarihi;
-      document.getElementById("detayOrmanMetin").textContent = ilce.orman;
       document.getElementById("detayAvmMetin").textContent = ilce.avm;
+      document.getElementById("detayYuruyusMetin").textContent = ilce.yuruyus;
+      document.getElementById("detayTarihiMetin").textContent = ilce.tarihi;
       document.getElementById("geceUlasimMetin").textContent = ilce.geceHat;
-
-      if (aktifMod === "date") {
+if (aktifMod === "date") {
         document.getElementById("oneriKutuBaslik").textContent = "DATE PLANLAYICI ÖNERİSİ";
-        document.getElementById("oneriKutuMetin").textContent = `${gunEtiket} planında ${ilce.ad} içinde AVM/kafe buluşması ve akşam yemeğini kolay ulaşım hatlarıyla birleştirebilirsiniz.`;
+        document.getElementById("oneriKutuMetin").textContent = `${gunEtiket} planında ${ilce.ad} için kendi bölgesindeki yürüyüş/buluşma noktalarını birleştirebilirsiniz.`;
       } else if (aktifMod === "harita") {
-        document.getElementById("oneriKutuBaslik").textContent = "HAT, DOĞA & AVM ÖZETİ";
-        document.getElementById("oneriKutuMetin").textContent = `${ilce.ad} için ulaşım, doğa/park ve AVM bilgileri aşağıda listelenmiştir.`;
+        document.getElementById("oneriKutuBaslik").textContent = "İLÇE HAT & ALAN ÖZETİ";
+        document.getElementById("oneriKutuMetin").textContent = `${ilce.ad} için yerel ulaşım, sahil/yürüyüş ve AVM/buluşma bilgileri aşağıdadır.`;
       } else {
-        document.getElementById("oneriKutuBaslik").textContent = "ÖĞRENCİ & YETİŞKİN MEKAN ÖNERİSİ";
-        document.getElementById("oneriKutuMetin").textContent = `${ilce.ad} için ${gunEtiket.toLowerCase()} öne çıkan öğrenci ve yetişkin buluşma önerileri:`;
+        document.getElementById("oneriKutuBaslik").textContent = "İLÇEYE ÖZEL ROTA & MEKAN ÖNERİSİ";
+        document.getElementById("oneriKutuMetin").textContent = `${ilce.ad} için ${gunEtiket.toLowerCase()} öne çıkan öneriler:`;
       }
 
       document.getElementById("ogrenciMekanMetin").textContent = ilce.ogrenciMekan;
@@ -1091,7 +1138,8 @@ if (ilce.tarihiVar) {
       const carpan = kalem.sabit ? 1 : aktifCarpan;
       return Math.round((kalem.fiyat * carpan) / 5) * 5;
     }
-function butceEkraniniGuncelle() {
+
+    function butceEkraniniGuncelle() {
       const listeEl = document.getElementById("butceKalemListesi");
       listeEl.innerHTML = "";
       let kisiBasi = 0;
