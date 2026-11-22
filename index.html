@@ -24,58 +24,22 @@
       --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg-page);
       color: var(--text-main);
       font-family: var(--font-sans);
       line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
       padding-bottom: 64px;
     }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 28px 18px;
-    }
+    .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
 
-    header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.8px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      font-family: var(--font-serif);
-      font-size: clamp(32px, 6vw, 44px);
-      font-weight: 700;
-      color: var(--text-main);
-      letter-spacing: -0.5px;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 16px;
-      color: var(--text-muted);
-      max-width: 560px;
-      margin: 0 auto;
-    }
+    header { text-align: center; margin-bottom: 20px; }
+    .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+    h1 { font-family: var(--font-serif); font-size: clamp(30px, 6vw, 42px); color: var(--text-main); margin-bottom: 8px; }
+    .subtitle { font-family: var(--font-serif); font-style: italic; font-size: 15px; color: var(--text-muted); max-width: 560px; margin: 0 auto; }
 
     .mode-switcher {
       display: grid;
@@ -86,38 +50,30 @@
       border-radius: var(--radius-lg);
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .mode-btn {
       border: none;
       background: transparent;
       color: var(--text-main);
-      font-family: var(--font-sans);
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
-      padding: 12px 10px;
+      padding: 11px 8px;
       border-radius: var(--radius-md);
       cursor: pointer;
-      transition: all 0.2s ease;
     }
-
-    .mode-btn.active {
-      background: var(--accent-dark);
-      color: #FFFFFF;
-    }
+    .mode-btn.active { background: var(--accent-dark); color: #FFFFFF; }
 
     .pills-scroll {
       display: flex;
       gap: 8px;
       overflow-x: auto;
       padding-bottom: 8px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       scrollbar-width: none;
     }
-    .pills-scroll::-webkit-scrollbar {
-      display: none;
-    }
+    .pills-scroll::-webkit-scrollbar { display: none; }
 
     .pill {
       white-space: nowrap;
@@ -126,224 +82,66 @@
       color: var(--text-main);
       font-size: 13px;
       font-weight: 500;
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: var(--radius-pill);
       cursor: pointer;
-      transition: all 0.2s ease;
     }
-
-    .pill.active {
-      background: var(--accent);
-      color: #FFFFFF;
-      border-color: var(--accent);
-      font-weight: 600;
-    }
+    .pill.active { background: var(--accent); color: #FFFFFF; border-color: var(--accent); font-weight: 600; }
 
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 20px;
+      padding: 18px;
       box-shadow: var(--shadow);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .control-label {
       display: block;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 1.2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
       color: var(--text-muted);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      margin-top: 10px;
     }
+    .control-label:first-child { margin-top: 0; }
 
     select, input {
       width: 100%;
-      padding: 12px 14px;
+      padding: 11px 13px;
       border-radius: var(--radius-md);
       border: 1px solid var(--border);
       background: var(--bg-page);
       color: var(--text-main);
-      font-family: var(--font-sans);
       font-size: 14.5px;
       font-weight: 500;
-      outline: none;
     }
 
-    select:focus, input:focus {
-      border-color: var(--accent);
-    }
+    .badges-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .badge-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge-city { background: #F6EAE3; color: var(--accent); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); text-transform: uppercase; }
+    .badge-tag { background: var(--bg-soft); color: var(--text-muted); font-size: 12px; padding: 4px 12px; border-radius: var(--radius-pill); }
 
-    .badges-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      gap: 10px;
-    }
+    .route-title { font-family: var(--font-serif); font-size: 24px; line-height: 1.25; margin-bottom: 10px; }
+    .route-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; }
 
-    .badge-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .tip-box { background: var(--bg-tip); border-left: 3px solid var(--accent); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; font-size: 13.5px; }
+    .tip-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
 
-    .badge-city {
-      background: #F6EAE3;
-      color: var(--accent);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
-      text-transform: uppercase;
-    }
+    .promo-card { background: var(--bg-promo); border: 1px dashed #D8B894; border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 14px; font-size: 13.5px; }
+    .promo-link { display: inline-block; margin-top: 6px; font-weight: 700; color: var(--accent); text-decoration: none; }
 
-    .badge-tag {
-      background: var(--bg-soft);
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 500;
-      padding: 4px 12px;
-      border-radius: var(--radius-pill);
-    }
+    .map-box { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); margin: 14px 0; }
+    .map-box iframe { width: 100%; height: 240px; border: 0; display: block; }
 
-    .badge-sponsored {
-      background: #FFF3D6;
-      color: #8A5300;
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.6px;
-      padding: 3px 9px;
-      border-radius: var(--radius-pill);
-      text-transform: uppercase;
-    }
-
-    .fav-btn {
-      width: 36px;
-      height: 36px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--bg-page);
-      color: var(--text-muted);
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-    }
-    .fav-btn.liked {
-      color: #D94E4E;
-      background: #FDECEC;
-      border-color: #F5C2C2;
-    }
-
-    .route-title {
-      font-family: var(--font-serif);
-      font-size: 26px;
-      line-height: 1.25;
-      margin-bottom: 12px;
-      color: var(--text-main);
-    }
-
-    .route-desc {
-      font-size: 14.5px;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-    }
-
-    .tip-box {
-      background: var(--bg-tip);
-      border-left: 3px solid var(--accent);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 18px;
-    }
-
-    .tip-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 4px;
-    }
-
-    .tip-text {
-      font-size: 13.5px;
-      color: var(--text-main);
-    }
-
-    .promo-card {
-      background: var(--bg-promo);
-      border: 1px dashed #D8B894;
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
-      margin-bottom: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .promo-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .promo-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .promo-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .promo-link {
-      align-self: flex-start;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--accent);
-      text-decoration: none;
-    }
-    .promo-link:hover {
-      text-decoration: underline;
-    }
-
-    .map-box {
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      margin-bottom: 16px;
-    }
-
-    .map-box iframe {
-      width: 100%;
-      height: 250px;
-      border: 0;
-      display: block;
-    }
-
-    .action-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-      margin-top: 12px;
-    }
-
+    .action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 10px; }
     .action-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
       text-decoration: none;
       background: var(--bg-page);
       border: 1px solid var(--border);
@@ -352,78 +150,13 @@
       font-weight: 600;
       padding: 10px 12px;
       border-radius: 12px;
-      transition: 0.2s;
       cursor: pointer;
     }
-
-    .action-btn:hover {
-      background: var(--bg-soft);
-    }
-
-    .action-btn.primary {
-      background: var(--accent-dark);
-      color: #FFFFFF;
-      border-color: var(--accent-dark);
-    }
-
-    .stops-list {
-      margin-top: 18px;
-      border-top: 1px solid var(--border);
-      padding-top: 16px;
-    }
-
-    .stop-item {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 14px;
-      padding-bottom: 14px;
-      border-bottom: 1px dashed var(--border);
-    }
-    .stop-item:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .stop-time {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent);
-      min-width: 48px;
-      padding-top: 2px;
-    }
-
-    .stop-info h4 {
-      font-size: 15px;
-      margin-bottom: 3px;
-    }
-
-    .stop-info p {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .transit-badge {
-      display: inline-block;
-      font-size: 11.5px;
-      background: var(--bg-soft);
-      color: var(--text-main);
-      padding: 3px 9px;
-      border-radius: 6px;
-      font-weight: 500;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 12px;
-      margin-bottom: 14px;
-    }
+    .action-btn.primary { background: var(--accent-dark); color: #FFFFFF; border-color: var(--accent-dark); }
 
     .generate-btn {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       background: var(--accent);
       color: #fff;
       border: none;
@@ -431,49 +164,17 @@
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      transition: 0.2s;
+      margin-top: 12px;
     }
 
-    .generate-btn:hover {
-      opacity: 0.92;
-    }
+    .stop-item { padding: 10px 0; border-bottom: 1px dashed var(--border); }
+    .stop-item:last-child { border-bottom: none; }
+    .stop-time { font-size: 12px; font-weight: 700; color: var(--accent); }
+    .stop-item h4 { font-size: 15px; margin: 2px 0; }
+    .stop-item p { font-size: 13px; color: var(--text-muted); }
 
-    .newsletter-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .newsletter-row input {
-      flex: 1 1 220px;
-    }
-    .newsletter-btn {
-      padding: 12px 18px;
-      border-radius: var(--radius-md);
-      border: none;
-      background: var(--accent-dark);
-      color: #fff;
-      font-weight: 600;
-      font-size: 13.5px;
-      cursor: pointer;
-    }
-    .status-msg {
-      margin-top: 8px;
-      font-size: 12.5px;
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 24px;
-      padding: 0 12px;
-    }
-
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
+    footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -481,633 +182,249 @@
     <header>
       <div class="eyebrow">İSTANBUL 39 İLÇE • ŞEHİR, ULAŞIM &amp; DATE REHBERİ</div>
       <h1>Günün Rotası</h1>
-      <p class="subtitle">“Avrupa'dan Anadolu'ya İstanbul'un 39 ilçesinde sabah kahvaltısından gece lezzetlerine, kapıdan kapıya ulaşım ve date planlayıcı”</p>
+      <p class="subtitle">“Sabah kahvaltısından gece lezzetlerine, 39 ilçede rota, ulaşım durağı ve date planlayıcı”</p>
     </header>
 
     <div class="mode-switcher">
-      <button class="mode-btn active" onclick="switchMode('routes', this)">Kürasyon Rotalar</button>
-      <button class="mode-btn" onclick="switchMode('date', this)">Date Planlayıcı ✨</button>
-      <button class="mode-btn" onclick="switchMode('transit', this)">Harita, Durak &amp; Yeme-İçme</button>
+      <button type="button" class="mode-btn active" id="btn-routes" onclick="switchMode('routes')">Kürasyon Rotalar</button>
+      <button type="button" class="mode-btn" id="btn-date" onclick="switchMode('date')">Date Planlayıcı</button>
+      <button type="button" class="mode-btn" id="btn-transit" onclick="switchMode('transit')">Harita &amp; Durak</button>
     </div>
 
+    <!-- MOD 1: KÜRASYON ROTALAR -->
     <div id="section-routes">
-      <div class="pills-scroll" id="category-pills">
-        <button class="pill active" onclick="filterCategory('Tümü', this)">Tümü (39 İlçe)</button>
-        <button class="pill" onclick="filterCategory('Kahvaltı', this)">🍳 Sabah Kahvaltısı</button>
-        <button class="pill" onclick="filterCategory('Gece', this)">🌙 Gece Yemeği</button>
-        <button class="pill" onclick="filterCategory('Deniz', this)">🌊 Deniz &amp; Sahil</button>
-        <button class="pill" onclick="filterCategory('Sanat', this)">🎨 Müze &amp; Sanat</button>
-        <button class="pill" onclick="filterCategory('Tarih', this)">🏛️ Tarih &amp; Avlu</button>
-        <button class="pill" onclick="filterCategory('Doğa', this)">🌲 Park &amp; Doğa</button>
+      <div class="pills-scroll">
+        <button type="button" class="pill active" onclick="setCategory('Tümü', this)">Tümü (39 İlçe)</button>
+        <button type="button" class="pill" onclick="setCategory('Kahvaltı', this)">Sabah Kahvaltısı</button>
+        <button type="button" class="pill" onclick="setCategory('Gece', this)">Gece Yemeği</button>
+        <button type="button" class="pill" onclick="setCategory('Deniz', this)">Deniz &amp; Sahil</button>
+        <button type="button" class="pill" onclick="setCategory('Doğa', this)">Park &amp; Doğa</button>
+        <button type="button" class="pill" onclick="setCategory('Tarih', this)">Tarih &amp; Kültür</button>
       </div>
 
       <div class="card">
-        <div class="form-grid" style="margin-bottom: 0;">
-          <div>
-            <label class="control-label" for="district-filter">İLÇE FİLTRESİ (39 İLÇE):</label>
-            <select id="district-filter" onchange="populateSelect()"></select>
-          </div>
-          <div>
-            <label class="control-label" for="route-select">ROTANI SEÇ:</label>
-            <select id="route-select" onchange="renderSelectedRoute()"></select>
-          </div>
-        </div>
+        <label class="control-label" for="route-district">İLÇE SEÇ (39 İLÇE)</label>
+        <select id="route-district" onchange="renderRouteCard()"></select>
       </div>
 
-      <div class="card" id="route-detail-card"></div>
+      <div class="card" id="route-card-body"></div>
     </div>
 
+    <!-- MOD 2: DATE PLANLAYICI -->
     <div id="section-date" class="hidden">
       <div class="card">
-        <h2 class="route-title" style="font-size: 22px;">Kişisel Date Programı Oluştur ✨</h2>
-        <p class="route-desc">İstanbul'un 39 ilçesinden birini seç; saatine, bütçene ve moduna göre adım adım buluşma planı ve Google Haritalar ulaşım rotası çıkar.</p>
+        <h2 class="route-title" style="font-size:21px;">Kişisel Date Programı Oluştur</h2>
+        <label class="control-label" for="date-district">İLÇE SEÇİMİ</label>
+        <select id="date-district"></select>
 
-        <div class="form-grid">
-          <div>
-            <label class="control-label" for="date-area">İLÇE / BÖLGE SEÇİMİ (39 İLÇE)</label>
-            <select id="date-area"></select>
-          </div>
-          <div>
-            <label class="control-label" for="date-time">ZAMAN DİLİMİ</label>
-            <select id="date-time">
-              <option value="Sabah Kahvaltısı (09:00 - 13:00)">Sabah Kahvaltısı (09:00 - 13:00)</option>
-              <option value="Öğleden Sonra &amp; Kahve (14:00 - 18:00)">Öğleden Sonra &amp; Kahve (14:00 - 18:00)</option>
-              <option value="Gün Batımı &amp; Akşam Yemeği (18:30 - 22:30)">Gün Batımı &amp; Akşam Yemeği (18:30 - 22:30)</option>
-              <option value="Gece Kuşu &amp; Gece Lezzetleri (23:00 - 03:00)">Gece Kuşu &amp; Gece Lezzetleri (23:00 - 03:00)</option>
-            </select>
-          </div>
-          <div>
-            <label class="control-label" for="date-vibe">DATE MODU</label>
-            <select id="date-vibe">
-              <option value="Romantik &amp; Manzara">Romantik &amp; Manzara</option>
-              <option value="Sanat, Müze &amp; Sokak Keşfi">Sanat, Müze &amp; Sokak Keşfi</option>
-              <option value="Gurme &amp; Sokak Lezzetleri">Gurme &amp; Sokak Lezzetleri</option>
-              <option value="Sakin &amp; Uzun Sohbet">Sakin &amp; Uzun Sohbet</option>
-            </select>
-          </div>
-          <div>
-            <label class="control-label" for="date-transit">ULAŞIM TERCİHİ</label>
-            <select id="date-transit">
-              <option value="Toplu Taşıma (Metro / Metrobüs / Vapur / Otobüs)">Toplu Taşıma (Metro / Metrobüs / Vapur / Otobüs)</option>
-              <option value="Taksi &amp; Yürüyüş">Taksi &amp; Yürüyüş</option>
-              <option value="Özel Araç (Otopark Uyumlu)">Özel Araç (Otopark Uyumlu)</option>
-            </select>
-          </div>
-        </div>
+        <label class="control-label" for="date-slot">ZAMAN DİLİMİ</label>
+        <select id="date-slot">
+          <option value="Sabah Kahvaltısı (09:30 - 13:00)">Sabah Kahvaltısı (09:30 - 13:00)</option>
+          <option value="Gün Batımı &amp; Akşam Yemeği (18:30 - 22:30)">Gün Batımı &amp; Akşam Yemeği (18:30 - 22:30)</option>
+          <option value="Gece Lezzetleri &amp; Sohbet (23:00 - 03:00)">Gece Lezzetleri &amp; Sohbet (23:00 - 03:00)</option>
+        </select>
 
-        <button class="generate-btn" onclick="generateDatePlan()">Bana Özel Date Planı Çıkar</button>
+        <label class="control-label" for="date-mood">DATE MODU</label>
+        <select id="date-mood">
+          <option value="Romantik &amp; Manzara">Romantik &amp; Manzara</option>
+          <option value="Gurme &amp; Sokak Lezzetleri">Gurme &amp; Sokak Lezzetleri</option>
+          <option value="Sakin &amp; Uzun Sohbet">Sakin &amp; Uzun Sohbet</option>
+        </select>
+
+        <button type="button" class="generate-btn" onclick="buildDatePlan()">Date Planı Çıkar</button>
       </div>
 
-      <div id="date-result-container" class="hidden"></div>
+      <div class="card hidden" id="date-output"></div>
     </div>
 
+    <!-- MOD 3: HARİTA & DURAK -->
     <div id="section-transit" class="hidden">
       <div class="card">
-        <h2 class="route-title" style="font-size: 22px;">Canlı Ulaşım, Duraklar &amp; Saate Göre Mekan Bul</h2>
-        <p class="route-desc">Listeden 39 ilçeden birini seç veya özel semt/mahalle adı yaz; en yakın otobüs duraklarını, taksi duraklarını, sabah kahvaltıcılarını veya gece açık mekanları anında haritada aç.</p>
+        <h2 class="route-title" style="font-size:21px;">Duraklar, Ulaşım &amp; Saate Göre Mekan</h2>
+        <label class="control-label" for="transit-district">İLÇE SEÇ</label>
+        <select id="transit-district" onchange="syncTransitInput()"></select>
 
-        <div class="form-grid">
-          <div>
-            <label class="control-label" for="transit-district-select">HIZLI İLÇE SEÇ (39 İLÇE)</label>
-            <select id="transit-district-select" onchange="selectTransitDistrict()"></select>
-          </div>
-          <div>
-            <label class="control-label" for="location-input">SEMT / MAHALLE YAZ</label>
-            <input type="text" id="location-input" value="Beyoğlu, İstanbul" oninput="updateLiveMap()" />
-          </div>
+        <label class="control-label" for="transit-query-input">SEMT / KONUM</label>
+        <input type="text" id="transit-query-input" value="Beşiktaş, İstanbul" oninput="updateTransitMap('')" />
+
+        <div class="action-grid">
+          <button type="button" class="action-btn primary" onclick="updateTransitMap('otobüs durağı')">Otobüs Durakları</button>
+          <button type="button" class="action-btn primary" onclick="updateTransitMap('taksi durağı')">Taksi Durakları</button>
+          <button type="button" class="action-btn" onclick="updateTransitMap('sabah kahvaltı')">Sabah Kahvaltısı</button>
+          <button type="button" class="action-btn" onclick="updateTransitMap('gece açık yemek çorbacı')">Gece Açık Yemek</button>
         </div>
 
-        <div class="action-grid" style="margin-top: 14px;">
-          <button class="action-btn primary" onclick="searchMaps('otobüs durağı')">🚏 Otobüs Durakları</button>
-          <button class="action-btn primary" onclick="searchMaps('taksi durağı')">🚕 Taksi Durakları</button>
-          <button class="action-btn" onclick="searchMaps('sabah kahvaltı mekanları')">🍳 Sabah Kahvaltısı</button>
-          <button class="action-btn" onclick="searchMaps('gece açık yemek çorbacı kokoreç')">🌙 Gece Açık Yemek</button>
-          <button class="action-btn" onclick="searchMaps('metro metrobüs vapur iskelesi')">🚇 Metro &amp; Vapur</button>
-          <button class="action-btn" onclick="openDirections()">🧭 Yol Tarifi Al</button>
+        <div class="map-box">
+          <iframe id="transit-iframe" loading="lazy"></iframe>
         </div>
-
-        <div class="map-box" style="margin-top: 16px;">
-          <iframe id="live-map-iframe" src="https://maps.google.com/maps?q=Beyo%C4%9Flu%2C%20%C4%B0stanbul&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="badge-group" style="margin-bottom: 10px;">
-          <span class="badge-city">SAAT REHBERİ</span>
-          <span class="badge-tag">Hangi Saatte Nereye Gidilir?</span>
-        </div>
-        <div class="stops-list" style="border-top: none; padding-top: 0; margin-top: 0;">
-          <div class="stop-item">
-            <div class="stop-time">07:30</div>
-            <div class="stop-info">
-              <h4>Sabah Kahvaltısı &amp; Boğaz / Kıyı Hattı (Beşiktaş / Çengelköy / Sarıyer)</h4>
-              <p>Güne erken başlayanlar için fırından yeni çıkmış börek, menemen ve çay durakları.</p>
-              <span class="transit-badge">🚌 Otobüs: 28, 30D, 15F, 25E | 🚕 İskele Taksi Durağı</span>
-            </div>
-          </div>
-          <div class="stop-item">
-            <div class="stop-time">13:30</div>
-            <div class="stop-info">
-              <h4>Öğle Molası &amp; Kültür Yürüyüşü (Karaköy / Bakırköy / Kadıköy)</h4>
-              <p>Esnaf lokantaları, modern galeriler ve sahil yürüyüş yolları.</p>
-              <span class="transit-badge">🚊 Marmaray / T1 Tramvay / M4 Metro | 🚕 Merkez Taksi</span>
-            </div>
-          </div>
-          <div class="stop-item">
-            <div class="stop-time">19:30</div>
-            <div class="stop-info">
-              <h4>Akşam Yemeği &amp; Gün Batımı (Moda / Arnavutköy / Florya / Büyükçekmece)</h4>
-              <p>Deniz kenarında akşam yemeği ve ardından artizan kahve veya tatlı molası.</p>
-              <span class="transit-badge">🚇 Marmaray &amp; Sahil Hatları | 🚕 Sahil Taksi</span>
-            </div>
-          </div>
-          <div class="stop-item">
-            <div class="stop-time">01:30</div>
-            <div class="stop-info">
-              <h4>Gece Saati Lezzetleri (Taksim / Kadıköy / Beşiktaş / Avcılar / Şişli)</h4>
-              <p>Gece yarısından sonra açık tarihi işkembeciler, kokoreççiler, ıslak hamburger ve gece dönercileri.</p>
-              <span class="transit-badge">🚌 24 Saat Metrobüs &amp; Gece Metrosu (M2/M4) | 🚕 7/24 Taksi</span>
-            </div>
-          </div>
+        <div class="action-grid">
+          <a class="action-btn primary" id="transit-dir-link" href="#" target="_blank" rel="noopener">Yol Tarifi Al</a>
+          <a class="action-btn" id="transit-search-link" href="#" target="_blank" rel="noopener">Haritada Aç</a>
         </div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="badge-group" style="margin-bottom: 8px;">
-        <span class="badge-city">HAFTALIK SEÇKİ</span>
-        <span class="badge-tag">39 İlçeden Gizli Rotalar &amp; Mekan Fırsatları</span>
-      </div>
-      <h3 class="route-title" style="font-size: 20px; margin-bottom: 6px;">Hafta Sonu Rotalarını Cebine Al</h3>
-      <p class="route-desc" style="margin-bottom: 12px;">Her Cuma İstanbul'un farklı ilçelerinden seçili kahvaltı, date ve gece lezzet duraklarıyla iş ortağı fırsatlarını e-postana gönderelim.</p>
-      <form class="newsletter-row" onsubmit="handleSubscribe(event)">
-        <input type="email" id="newsletter-email" placeholder="E-posta adresin (örnek: ad@mail.com)" required />
-        <button type="submit" class="newsletter-btn">Listeye Katıl</button>
-      </form>
-      <div id="newsletter-status" class="status-msg hidden"></div>
-    </div>
-
-    <footer>
-      Günün Rotası • İstanbul 39 İlçe Rehberi • Bazı mekan ve ulaşım bağlantıları iş ortağı (affiliate) veya sponsorlu öneri içerebilir.
-    </footer>
+    <footer>Günün Rotası • İstanbul 39 İlçe Rehberi • Sponsorlu veya iş ortağı bağlantılar yer alabilir.</footer>
   </div>
 
   <script>
-    const istanbulDistricts = [
-      { name: "Arnavutköy", side: "Avrupa", category: "Doğa", spot: "Karaburun Sahil & Tayakadın Orman Yolu", transit: "M11 Arnavutköy Hastane M
-          { name: "Avcılar", side: "Avrupa", category: "Deniz", spot: "Ambarlı Sahil Parkı & Küçükçekmece Göl Kıyısı", transit: "Metrobüs Avcılar Merkez • 76 / 146 İETT", taxi: "Avcılar Meydan Taksi • Ambarlı Sahil Taksi", tip: "Ambarlı sahil yürüyüş yolunda deniz havası alıp Marmara Caddesi'nde gece lezzetlerini deneyebilirsiniz." },
-      { name: "Bağcılar", side: "Avrupa", category: "Gece", spot: "Bağcılar Meydan & Güneşli Lezzet Hattı", transit: "M1B & M3 Kirazlı-Bağcılar Metro • T1 Tramvay", taxi: "Bağcılar Meydan Taksi • Güneşli Taksi", tip: "Kirazlı ve Meydan çevresinde geç saatlere kadar açık kebap ve çorba durakları bulunur." },
-      { name: "Bahçelievler", side: "Avrupa", category: "Kahvaltı", spot: "Talatpaşa Bulvarı & Yayla Kafe Sokağı", transit: "M1A Yenibosna/Bahçelievler Metro • Metrobüs", taxi: "Yayla Meydan Taksi • Şirinevler Taksi", tip: "Yayla bölgesindeki butik kahvaltıcılar ve üçüncü nesil kahveciler hafta sonu sabahları çok keyiflidir." },
-      { name: "Bakırköy", side: "Avrupa", category: "Deniz", spot: "Florya Atatürk Ormanı, Sahil & Yeşilköy", transit: "Marmaray Bakırköy / Yeşilköy • M3 Metro • İDO", taxi: "Bakırköy Özgürlük Meydanı Taksi • Yeşilköy Sahil Taksi", tip: "Yeşilköy sahil hattında yürüyüş yapıp tarihi Rum evleri arasında kahve molası verebilirsiniz." },
-      { name: "Başakşehir", side: "Avrupa", category: "Doğa", spot: "Bahçeşehir Gölet Parkı & Sular Vadisi", transit: "M3 Başakşehir-Kayaşehir Metro • 146T İETT", taxi: "Bahçeşehir Gölet Taksi • Başakşehir Merkez Taksi", tip: "Bahçeşehir Gölet çevresi akşam yürüyüşü ve göl manzaralı restoranlar için oldukça sakindir." },
-      { name: "Bayrampaşa", side: "Avrupa", category: "Gece", spot: "Yıldırım Mahallesi Boşnak Börekçileri & Adapark", transit: "M1A / M1B Sağmalcılar & Kocatepe Metro • T4 Tramvay", taxi: "Bayrampaşa Meydan Taksi • Yıldırım Taksi", tip: "Sabah erken saatlerde Yıldırım Mahallesi'nde taze Boşnak böreği ve mantısı yemeden dönmeyin." },
-      { name: "Beşiktaş", side: "Avrupa", category: "Kahvaltı", spot: "Kahvaltıcılar Sokağı, Yıldız Parkı & Bebek-Ortaköy", transit: "Beşiktaş İskele Vapuru • M7 Yıldız Metro • 22 / 25E / 30D", taxi: "Beşiktaş Meydan Taksi • Bebek Parkı Taksi", tip: "Sabah Beşiktaş'ta kahvaltı yapıp Yıldız Parkı içinden Ortaköy veya Bebek sahiline yürüyebilirsiniz." },
-      { name: "Beylikdüzü", side: "Avrupa", category: "Deniz", spot: "Yaşam Vadisi & West İstanbul Marina (Yakuplu)", transit: "Metrobüs Beylikdüzü Sondurak • 145T İETT", taxi: "Yaşam Vadisi Taksi • Marina Taksi Durağı", tip: "Yaşam Vadisi'nin Japon Bahçesi bölümünde yürüyüş yapıp akşam Yakuplu Marina'da deniz kenarına geçebilirsiniz." },
-      { name: "Beyoğlu", side: "Avrupa", category: "Sanat", spot: "Karaköy Rıhtım, Galata Kulesi, Cihangir & İstiklal", transit: "M2 Şişhane/Taksim Metro • T1 Karaköy • Tünel & Vapur", taxi: "Karaköy Rıhtım Taksi • Taksim Meydan Taksi", tip: "İstanbul Modern terasından Boğaz'ı izleyip Galata'nın ara sokaklarında kahve ve gece lezzetlerini keşfedin." },
-      { name: "Büyükçekmece", side: "Avrupa", category: "Deniz", spot: "Kordonboyu Sahil, Mimar Sinan Köprüsü & Kültürpark", transit: "400A / 401 İETT • Metrobüs Tüyap Bağlantısı", taxi: "Büyükçekmece Kordon Taksi • Mimaroba Taksi", tip: "Tarihi Kanuni Sultan Süleyman Köprüsü'nde gün batımını izlemek İstanbul'un en dingin anlarındandır." },
-      { name: "Çatalca", side: "Avrupa", category: "Doğa", spot: "İnceğiz Mağaraları, Çilingoz & Köy Kahvaltıları", transit: "401 / 401T Çatalca İETT Hatları", taxi: "Çatalca Meydan Taksi • İnceğiz Taksi", tip: "Hafta sonu şehir kalabalığından kaçıp doğa içinde serpme köy kahvaltısı yapmak için birebirdir." },
-      { name: "Esenler", side: "Avrupa", category: "Tarih", spot: "15 Temmuz Millet Bahçesi & Dörtyol Meydanı", transit: "M1B Esenler & Menderes Metro • 33 / 85C İETT", taxi: "Esenler Dörtyol Taksi • Otogar Taksi", tip: "Geniş yürüyüş parkurları ve aile dostu açık alanlarıyla hafta sonu nefes alma noktasıdır." },
-      { name: "Esenyurt", side: "Avrupa", category: "Gece", spot: "Esenyurt Meydan, Necmi Kadıoğlu Parkı & Gece Lezzetleri", transit: "Metrobüs Haramidere/Saadetdere • 142 / 146 İETT", taxi: "Esenyurt Meydan Taksi • Cumhuriyet Meydanı Taksi", tip: "Meydan çevresinde ve Doğan Araslı Bulvarı üzerinde gece geç saatlere kadar açık restoranlar bulunur." },
-      { name: "Eyüpsultan", side: "Avrupa", category: "Tarih", spot: "Pierre Loti Tepesi, Eyüp Sultan Meydanı & Göktürk", transit: "T5 Eminönü-Alibeyköy Tramvay • TF2 Teleferik • Haliç Vapuru", taxi: "Eyüpsultan Meydan Taksi • Göktürk Merkez Taksi", tip: "T5 tramvayı ile Haliç kıyısından gelip teleferikle Pierre Loti'de gün batımı çayı içebilirsiniz." },
-      { name: "Fatih", side: "Avrupa", category: "Tarih", spot: "Süleymaniye, Balat-Fener, Sultanahmet & Eminönü", transit: "T1 Tramvay • Marmaray Sirkeci • M2 Vezneciler • Vapur", taxi: "Süleymaniye Taksi • Balat Sahil Taksi • Eminönü Taksi", tip: "Sabah Balat'ın renkli sokaklarını gezip öğleden sonra Süleymaniye avlularında kuru fasulye ve kahve molası verin." },
-      { name: "Gaziosmanpaşa", side: "Avrupa", category: "Doğa", spot: "Vialand Tema Park & Yıldıztabya Seyir Noktaları", transit: "T4 Topkapı-Mescid-i Selam Tramvay • 36T / 38B İETT", taxi: "Gaziosmanpaşa Meydan Taksi • Vialand Taksi", tip: "Eğlence parkı ve alışveriş caddesiyle enerjik bir gün planı için tercih edilebilir." },
-      { name: "Güngören", side: "Avrupa", category: "Gece", spot: "Merter Tekstil Merkezi & Kale Center Çevresi", transit: "T1 Bağcılar-Kabataş Tramvay • M1A Merter Metro • Metrobüs", taxi: "Merter Metro Taksi • Kale Center Taksi", tip: "Merter çevresindeki esnaf lokantaları ve gece açık kebapçılar lezzet açısından oldukça zengindir." },
-      { name: "Kağıthane", side: "Avrupa", category: "Doğa", spot: "Hasbahçe Mesire Alanı & Sadabad Dere Yolu", transit: "M7 & M11 Kağıthane Metro • 41AT / 62 İETT", taxi: "Kağıthane Merkez Taksi • Hasbahçe Taksi", tip: "M11 ve M7 metro hatlarının kesişiminde yer aldığı için hem havalimanına hem Beşiktaş'a ulaşımı çok hızlıdır." },
-      { name: "Küçükçekmece", side: "Avrupa", category: "Deniz", spot: "Menekşe Sahil Parkı & Küçükçekmece Göl Kıyısı", transit: "Marmaray Küçükçekmece / Mustafa Kemal • Metrobüs", taxi: "Küçükçekmece İskele Taksi • Cennet Mahallesi Taksi", tip: "Göl ile denizin birleştiği Menekşe sahilinde gün batımı yürüyüşü oldukça keyiflidir." },
-      { name: "Sarıyer", side: "Avrupa", category: "Deniz", spot: "Emirgan Korusu, Yeniköy, Tarabya & Kilyos", transit: "M2 Hacıosman Metro • 25E / 40 / 42T İETT • Boğaz Vapuru", taxi: "Emirgan Taksi • Yeniköy İskele Taksi • Sarıyer Merkez Taksi", tip: "Emirgan'da sabah kahvaltısı yapıp Yeniköy-Tarabya sahil hattında Boğaz'a sıfır yürüyüş yapabilirsiniz." },
-      { name: "Silivri", side: "Avrupa", category: "Deniz", spot: "Silivri Sahil Kordonu, Selimpaşa & Yoğurtçu Durakları", transit: "300 / 303 Silivri İETT Ekspres Hatları", taxi: "Silivri Sahil Taksi • Otogar Taksi", tip: "Meşhur Silivri yoğurdu ve sahil boyunca uzanan balık restoranları hafta sonu rotası için idealdir." },
-      { name: "Sultangazi", side: "Avrupa", category: "Doğa", spot: "Sultangazi Kent Ormanı & Mimar Sinan Kent Ormanı", transit: "T4 Cebeci & Mescid-i Selam Tramvay • 36CE İETT", taxi: "Sultangazi Meydan Taksi • Kent Ormanı Taksi", tip: "Seyir kulesi, gölet çevresi ve bisiklet yollarıyla doğa içinde sakin bir sabah geçirebilirsiniz." },
-      { name: "Şişli", side: "Avrupa", category: "Sanat", spot: "Nişantaşı, Teşvikiye, Bomontiada & Maçka Parkı", transit: "M2 Osmanbey & Şişli-Mecidiyeköy Metro • Metrobüs", taxi: "Nişantaşı Valikonağı Taksi • Bomontiada Taksi", tip: "Bomontiada'da sergi ve akşam yemeği, gündüz ise Nişantaşı sokaklarında artizan kahve rotası yapabilirsiniz." },
-      { name: "Zeytinburnu", side: "Avrupa", category: "Tarih", spot: "Kazlıçeşme Sanat, Fişekhane & Merkezefendi", transit: "Marmaray Zeytinburnu / Kazlıçeşme • T1 Tramvay", taxi: "Fişekhane Taksi • Zeytinburnu Meydan Taksi", tip: "Tarihi Fişekhane'nin restore edilmiş taş yapılarında sergi, gastronomi ve sahil yürüyüşünü birleştirin." },
-
-      { name: "Adalar", side: "Anadolu", category: "Deniz", spot: "Büyükada Aya Yorgi, Heybeliada & Burgazada", transit: "Şehir Hatları & Mavi Marmara Vapurları (Kabataş/Kadıköy/Bostancı)", taxi: "Elektrikli Ada Taksi & Bisiklet Kiralama", tip: "Burgazada Kalpazankaya'da gün batımı veya Büyükada'da sabah bisiklet turu en özel deneyimlerdir." },
-      { name: "Ataşehir", side: "Anadolu", category: "Gece", spot: "Batı Ataşehir Bulvar 216, Watergarden & Küçükbakkalköy", transit: "M8 Bostancı-Parseller Metro • 8A / 19F / 256 İETT", taxi: "Watergarden Taksi • Batı Ataşehir Taksi", tip: "Modern restoranları, su gösterileri ve geç saatlere kadar canlı mekanlarıyla Anadolu Yakası'nın buluşma noktasıdır." },
-      { name: "Beykoz", side: "Anadolu", category: "Doğa", spot: "Anadolu Kavağı, Polonezköy, Kanlıca & Küçüksu", transit: "15 / 15F / 15BK İETT • Boğaz Hattı Vapurları", taxi: "Kanlıca İskele Taksi • Kavacık Taksi • Polonezköy Taksi", tip: "Kanlıca'da pudra şekerli yoğurt yiyip Polonezköy tabiat parkında uzun bir doğa yürüyüşüne çıkabilirsiniz." },
-      { name: "Çekmeköy", side: "Anadolu", category: "Doğa", spot: "Çekmeköy Doğa Parkı & Alemdağ Orman Yürüyüş Yolu", transit: "M5 Üsküdar-Samandıra Metro • 11ÜS / 14A İETT", taxi: "Çekmeköy Merkez Taksi • Madenler Metro Taksi", tip: "M5 metrosu ile kolayca ulaşıp Alemdağ orman havasında kahvaltı yapabilirsiniz." },
-      { name: "Kadıköy", side: "Anadolu", category: "Deniz", spot: "Moda Sahil, Kadıköy Çarşı, Bahariye & Bağdat Caddesi", transit: "M4 Kadıköy Metro • Marmaray • T3 Tramvay • Kadıköy Vapuru", taxi: "Moda Taksi • Kadıköy Rıhtım Taksi • Şaşkınbakkal Taksi", tip: "Moda İskelesi'nde kahve içip gün batımında sahil çimlerinde Tarihi Yarımada manzarasını izleyin." },
-      { name: "Kartal", side: "Anadolu", category: "Deniz", spot: "Dragos Sahil, Kartal Kordonboyu & Aydos Ormanı", transit: "M4 Kartal Metro • Marmaray Kartal & Atalar", taxi: "Kartal Sahil Taksi • Dragos Taksi Durağı", tip: "Aydos Ormanı gölet kenarında sabah yürüyüşü yapıp akşam Dragos sahilinde Adalar manzarasına karşı yemek yiyebilirsiniz." },
-      { name: "Maltepe", side: "Anadolu", category: "Deniz", spot: "Maltepe Orhangazi Şehir Parkı & Küçükyalı Sahil", transit: "M4 Maltepe/Küçükyalı Metro • Marmaray", taxi: "Maltepe Sahil Taksi • Küçükyalı Taksi", tip: "Geniş bisiklet ve yürüyüş parkurları olan Maltepe sahilinde gün batımı çok keyiflidir." },
-      { name: "Pendik", side: "Anadolu", category: "Deniz", spot: "Pendik Marina, Sahil Parkı & Ballıca Köyü", transit: "M4 Pendik/Tavşantepe Metro • Marmaray & YHT • İDO", taxi: "Pendik Marina Taksi • Çarşı Taksi", tip: "Pendik Marina'da deniz kenarı kafelerde oturabilir veya hafta sonu Ballıca'da köy kahvaltısına gidebilirsiniz." },
-      { name: "Sancaktepe", side: "Anadolu", category: "Doğa", spot: "Sancaktepe Kent Parkı & Aydos Kuzey Orman Hattı", transit: "M5 Sancaktepe & Samandıra Merkez Metro • 11ÜS İETT", taxi: "Sancaktepe Meydan Taksi • Samandıra Taksi", tip: "M5 metro hattının uzamasıyla birlikte ulaşımı çok pratikleşen sakin bir hafta sonu rotasıdır." },
-      { name: "Sultanbeyli", side: "Anadolu", category: "Tarih", spot: "Aydos Kalesi, Gölet Parkı & Sultan Korusu", transit: "131T / 132C / KM70 İETT Hatları", taxi: "Sultanbeyli Meydan Taksi • Gölet Taksi", tip: "İstanbul'un fethinden kalma tarihi Aydos Kalesi'ne çıkıp panoramik manzarayı görebilirsiniz." },
-      { name: "Şile", side: "Anadolu", category: "Deniz", spot: "Şile Feneri, Ağva Göksu Deresi & Saklıgöl", transit: "139 / 139A Üsküdar-Şile-Ağva İETT Hatları", taxi: "Şile Meydan Taksi • Ağva Merkez Taksi", tip: "Sabah Saklıgöl'de kahvaltı, öğleden sonra Şile Feneri ve Ağva nehir kıyısında tekne turu yapabilirsiniz." },
-      { name: "Tuzla", side: "Anadolu", category: "Deniz", spot: "Tuzla Marina, Mercan Sahil & Tarihi Tuzla Köftecileri", transit: "Marmaray Tuzla • 130 / 130Ş İETT Hatları", taxi: "Tuzla Marina Taksi • Sahil Taksi", tip: "Sahil boyunca yürüyüp meşhur Tuzla köftecilerinde öğle yemeği ve marina turu planlayabilirsiniz." },
-      { name: "Ümraniye", side: "Anadolu", category: "Doğa", spot: "Ümraniye Millet Bahçesi, Trabzon Park & Meydan", transit: "M5 Ümraniye/Çarşı/Yamanevler Metro • M8 Metro", taxi: "Ümraniye Çarşı Taksi • Meydan AVM Taksi", tip: "M5 ve M8 metro hatlarıyla kolayca ulaşıp Trabzon Park'ın çam ağaçları arasında kahvaltı yapabilirsiniz." },
-      { name: "Üsküdar", side: "Anadolu", category: "Kahvaltı", spot: "Çengelköy Çınaraltı, Kuzguncuk, Kız Kulesi & Salacak", transit: "M5 Üsküdar Metro • Marmaray • Şehir Hatları Vapuru", taxi: "Üsküdar İskele Taksi • Çengelköy Taksi • Kuzguncuk Taksi", tip: "Sabah Çengelköy Çınaraltı'nda börek-çay, öğleden sonra Kuzguncuk sokakları ve akşam Salacak'ta gün batımı yapın." }
+    var DISTRICTS = [
+      { n: "Adalar", s: "Anadolu", c: "Deniz", p: "Büyükada, Heybeliada & Burgazada", t: "Şehir Hatları Vapurları", tx: "Ada Taksi & Bisiklet Noktaları" },
+      { n: "Arnavutköy", s: "Avrupa", c: "Doğa", p: "Karaburun Sahil & Orman Hattı", t: "M11 Metro & 336E İETT", tx: "Arnavutköy Merkez Taksi" },
+      { n: "Ataşehir", s: "Anadolu", c: "Gece", p: "Batı Ataşehir & Küçükbakkalköy", t: "M8 Metro & 19F İETT", tx: "Ataşehir Meydan Taksi" },
+      { n: "Avcılar", s: "Avrupa", c: "Deniz", p: "Ambarlı Sahil & Göl Kıyısı", t: "Metrobüs & 76 İETT", tx: "Avcılar Merkez Taksi" },
+      { n: "Bağcılar", s: "Avrupa", c: "Gece", p: "Bağcılar Meydan & Güneşli", t: "M1B / M3 Metro & T1", tx: "Bağcılar Meydan Taksi" },
+      { n: "Bahçelievler", s: "Avrupa", c: "Kahvaltı", p: "Yayla & Talatpaşa Kafe Hattı", t: "M1A Metro & Metrobüs", tx: "Yayla Meydan Taksi" },
+      { n: "Bakırköy", s: "Avrupa", c: "Deniz", p: "Florya Sahil & Yeşilköy", t: "Marmaray & M3 Metro", tx: "Bakırköy Meydan Taksi" },
+      { n: "Başakşehir", s: "Avrupa", c: "Doğa", p: "Bahçeşehir Gölet & Sular Vadisi", t: "M3 Metro & 146T İETT", tx: "Bahçeşehir Gölet Taksi" },
+      { n: "Bayrampaşa", s: "Avrupa", c: "Gece", p: "Yıldırım Börekçileri & Adapark", t: "M1A Metro & T4 Tramvay", tx: "Bayrampaşa Meydan Taksi" },
+      { n: "Beşiktaş", s: "Avrupa", c: "Kahvaltı", p: "Kahvaltıcılar Sokağı, Yıldız & Bebek", t: "Vapur, M7 & 22/25E/30D", tx: "Beşiktaş Meydan Taksi" },
+      { n: "Beykoz", s: "Anadolu", c: "Doğa", p: "Kanlıca, Polonezköy & Anadolu Kavağı", t: "15 / 15F İETT & Vapur", tx: "Kanlıca & Kavacık Taksi" },
+      { n: "Beylikdüzü", s: "Avrupa", c: "Deniz", p: "Yaşam Vadisi & Yakuplu Marina", t: "Metrobüs & 145T İETT", tx: "Yaşam Vadisi Taksi" },
+      { n: "Beyoğlu", s: "Avrupa", c: "Tarih", p: "Karaköy, Galata, Cihangir & İstiklal", t: "M2 Metro, T1 & Vapur", tx: "Karaköy & Taksim Taksi" },
+      { n: "Büyükçekmece", s: "Avrupa", c: "Deniz", p: "Kordonboyu & Tarihi Köprü", t: "400A / 401 İETT & Metrobüs", tx: "Büyükçekmece Sahil Taksi" },
+      { n: "Çatalca", s: "Avrupa", c: "Doğa", p: "İnceğiz & Köy Kahvaltı Durakları", t: "401 / 401T İETT Hatları", tx: "Çatalca Meydan Taksi" },
+      { n: "Çekmeköy", s: "Anadolu", c: "Doğa", p: "Çekmeköy Doğa Parkı & Alemdağ", t: "M5 Metro & 11ÜS İETT", tx: "Çekmeköy Merkez Taksi" },
+      { n: "Esenler", s: "Avrupa", c: "Tarih", p: "15 Temmuz Millet Bahçesi & Dörtyol", t: "M1B Metro & 33 İETT", tx: "Esenler Dörtyol Taksi" },
+      { n: "Esenyurt", s: "Avrupa", c: "Gece", p: "Esenyurt Meydan & Gece Lezzetleri", t: "Metrobüs & 142 İETT", tx: "Esenyurt Meydan Taksi" },
+      { n: "Eyüpsultan", s: "Avrupa", c: "Tarih", p: "Pierre Loti, Eyüp Meydan & Göktürk", t: "T5 Tramvay & Teleferik", tx: "Eyüpsultan Meydan Taksi" },
+      { n: "Fatih", s: "Avrupa", c: "Tarih", p: "Süleymaniye, Balat-Fener & Eminönü", t: "T1 Tramvay & Marmaray", tx: "Süleymaniye & Balat Taksi" },
+      { n: "Gaziosmanpaşa", s: "Avrupa", c: "Doğa", p: "Vialand & Yıldıztabya Hattı", t: "T4 Tramvay & 36T İETT", tx: "Gaziosmanpaşa Meydan Taksi" },
+      { n: "Güngören", s: "Avrupa", c: "Gece", p: "Merter & Kale Center Çevresi", t: "T1 Tramvay & M1A Metro", tx: "Merter Metro Taksi" },
+      { n: "Kadıköy", s: "Anadolu", c: "Deniz", p: "Moda Sahil, Çarşı & Bağdat Caddesi", t: "M4 Metro, Marmaray & Vapur", tx: "Moda & Kadıköy Rıhtım Taksi" },
+      { n: "Kağıthane", s: "Avrupa", c: "Doğa", p: "Hasbahçe & Sadabad Hattı", t: "M7 / M11 Metro & 62 İETT", tx: "Kağıthane Merkez Taksi" },
+      { n: "Kartal", s: "Anadolu", c: "Deniz", p: "Dragos Sahil & Aydos Ormanı", t: "M4 Metro & Marmaray", tx: "Kartal Sahil Taksi" },
+      { n: "Küçükçekmece", s: "Avrupa", c: "Deniz", p: "Menekşe Sahil & Göl Kıyısı", t: "Marmaray & Metrobüs", tx: "Küçükçekmece İskele Taksi" },
+      { n: "Maltepe", s: "Anadolu", c: "Deniz", p: "Orhangazi Şehir Parkı & Sahil", t: "M4 Metro & Marmaray", tx: "Maltepe Sahil Taksi" },
+      { n: "Pendik", s: "Anadolu", c: "Deniz", p: "Pendik Marina & Sahil Parkı", t: "M4 Metro, Marmaray & YHT", tx: "Pendik Marina Taksi" },
+      { n: "Sancaktepe", s: "Anadolu", c: "Doğa", p: "Sancaktepe Kent Parkı & Orman Hattı", t: "M5 Metro & 11ÜS İETT", tx: "Sancaktepe Meydan Taksi" },
+      { n: "Sarıyer", s: "Avrupa", c: "Deniz", p: "Emirgan, Yeniköy, Tarabya & Kilyos", t: "M2 Metro & 25E / 40 İETT", tx: "Emirgan & Sarıyer Taksi" },
+      { n: "Silivri", s: "Avrupa", c: "Deniz", p: "Silivri Sahil Kordonu & Selimpaşa", t: "300 / 303 İETT Hatları", tx: "Silivri Sahil Taksi" },
+      { n: "Sultanbeyli", s: "Anadolu", c: "Tarih", p: "Aydos Kalesi & Gölet Parkı", t: "131T / 132C İETT Hatları", tx: "Sultanbeyli Meydan Taksi" },
+      { n: "Sultangazi", s: "Avrupa", c: "Doğa", p: "Sultangazi Kent Ormanı", t: "T4 Tramvay & 36CE İETT", tx: "Sultangazi Meydan Taksi" },
+      { n: "Şile", s: "Anadolu", c: "Deniz", p: "Şile Feneri, Ağva & Saklıgöl", t: "139 / 139A İETT Hatları", tx: "Şile & Ağva Taksi" },
+      { n: "Şişli", s: "Avrupa", c: "Tarih", p: "Nişantaşı, Bomontiada & Maçka", t: "M2 Metro & Metrobüs", tx: "Nişantaşı & Bomontiada Taksi" },
+      { n: "Tuzla", s: "Anadolu", c: "Deniz", p: "Tuzla Marina & Mercan Sahil", t: "Marmaray & 130 İETT", tx: "Tuzla Marina Taksi" },
+      { n: "Ümraniye", s: "Anadolu", c: "Doğa", p: "Millet Bahçesi & Trabzon Park", t: "M5 & M8 Metro Hatları", tx: "Ümraniye Çarşı Taksi" },
+      { n: "Üsküdar", s: "Anadolu", c: "Kahvaltı", p: "Çengelköy, Kuzguncuk & Salacak", t: "M5 Metro, Marmaray & Vapur", tx: "Üsküdar & Çengelköy Taksi" },
+      { n: "Zeytinburnu", s: "Avrupa", c: "Tarih", p: "Fişekhane & Kazlıçeşme Hattı", t: "Marmaray & T1 Tramvay", tx: "Fişekhane Taksi" }
     ];
 
-    const routesData = istanbulDistricts.map((d, idx) => ({
-      id: idx + 1,
-      district: d.name,
-      side: d.side,
-      city: "İSTANBUL • " + d.side.toUpperCase() + " YAKASI",
-      category: d.category,
-      tag: d.name + " • " + d.category + " Rotası",
-      selectTitle: d.name + " (" + d.side + ") — " + d.spot,
-      title: d.name + " Rehberi: " + d.spot,
-      desc: d.side + " Yakası'nın öne çıkan ilçelerinden " + d.name + " bölgesinde; sabah kahvaltısından akşam yemeğine, toplu taşıma duraklarından taksi noktalarına kadar adım adım şehir rotası.",
-      tip: d.tip,
-      promoTitle: d.name + " Öne Çıkan Mekanlar & Rezervasyon Seçenekleri",
-      promoDesc: d.name + " bölgesindeki en yüksek puanlı kahvaltı, akşam yemeği ve kafe duraklarını haritada incele.",
-      promoUrl: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(d.name + " İstanbul en iyi restoran kafe kahvaltı"),
-      mapQuery: d.name + " İstanbul",
-      busStops: d.transit,
-      taxiStops: d.taxi,
-      stops: [
-        { time: "09:30", name: d.name + " — Sabah Kahvaltısı & İlk Kahve", detail: "Güne " + d.name + " merkez veya sahil hattında taze fırın ürünleri ve kahvaltı ile başlangıç.", transit: d.transit.split("•")[0].trim() },
-        { time: "13:30", name: d.spot, detail: d.name + " ilçesinin simge noktalarında yürüyüş, fotoğraf ve kültür molası.", transit: "Yürüyüş / Kısa Hat" },
-        { time: "19:30", name: d.name + " Akşam Yemeği & Gece Durakları", detail: "Gün batımı sonrası yerel lezzet restoranları, tatlıcılar ve güvenli dönüş noktaları.", transit: d.taxi.split("•")[0].trim() }
-      ]
-    }));
+    var activeCategory = "Tümü";
 
-    let currentCategory = "Tümü";
-    let likedIds = new Set();
+    function fillDistrictSelects() {
+      var list = activeCategory === "Tümü"
+        ? DISTRICTS
+        : DISTRICTS.filter(function(d) { return d.c === activeCategory; });
 
-    try {
-      const stored = JSON.parse(localStorage.getItem("gunun_rotasi_likes") || "[]");
-      if (Array.isArray(stored)) likedIds = new Set(stored);
-    } catch (e) {}
+      var opts = list.map(function(d) {
+        return '<option value="' + d.n + '">' + d.n + ' (' + d.s + ')</option>';
+      }).join("");
 
-    function saveLikes() {
-      try {
-        localStorage.setItem("gunun_rotasi_likes", JSON.stringify([...likedIds]));
-      } catch (e) {}
+      document.getElementById("route-district").innerHTML = opts;
+
+      var allOpts = DISTRICTS.map(function(d) {
+        return '<option value="' + d.n + '">' + d.n + ' (' + d.s + ')</option>';
+      }).join("");
+
+      var dateSel = document.getElementById("date-district");
+      var transSel = document.getElementById("transit-district");
+      if (!dateSel.innerHTML) {
+        dateSel.innerHTML = allOpts;
+        dateSel.value = "Beyoğlu";
+      }
+      if (!transSel.innerHTML) {
+        transSel.innerHTML = allOpts;
+        transSel.value = "Beşiktaş";
+      }
+      renderRouteCard();
     }
 
-    function initDistrictDropdowns() {
-      const avrupa = istanbulDistricts.filter(d => d.side === "Avrupa");
-      const anadolu = istanbulDistricts.filter(d => d.side === "Anadolu");
-
-      const groupedOptions =
-        '<optgroup label="Avrupa Yakası (25 İlçe)">' +
-          avrupa.map(d => '<option value="' + d.name + '">' + d.name + '</option>').join("") +
-        '</optgroup>' +
-        '<optgroup label="Anadolu Yakası (14 İlçe)">' +
-          anadolu.map(d => '<option value="' + d.name + '">' + d.name + '</option>').join("") +
-        '</optgroup>';
-
-      document.getElementById("district-filter").innerHTML =
-        '<option value="ALL">Tüm İlçeler (39 İlçe)</option>' + groupedOptions;
-
-      const dateArea = document.getElementById("date-area");
-      dateArea.innerHTML = groupedOptions;
-      dateArea.value = "Beyoğlu";
-
-      const transitSelect = document.getElementById("transit-district-select");
-      transitSelect.innerHTML = groupedOptions;
-      transitSelect.value = "Beyoğlu";
+    function switchMode(mode) {
+      ["routes", "date", "transit"].forEach(function(m) {
+        document.getElementById("section-" + m).classList.toggle("hidden", m !== mode);
+        document.getElementById("btn-" + m).classList.toggle("active", m === mode);
+      });
+      if (mode === "transit") {
+        updateTransitMap("");
+      }
     }
 
-    function switchMode(mode, btn) {
-      document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+    function setCategory(cat, btn) {
+      activeCategory = cat;
+      document.querySelectorAll(".pill").forEach(function(p) { p.classList.remove("active"); });
       btn.classList.add("active");
-
-      document.getElementById("section-routes").classList.add("hidden");
-      document.getElementById("section-date").classList.add("hidden");
-      document.getElementById("section-transit").classList.add("hidden");
-
-      document.getElementById("section-" + mode).classList.remove("hidden");
+      fillDistrictSelects();
     }
 
-    function filterCategory(cat, btn) {
-      currentCategory = cat;
-      document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
-      btn.classList.add("active");
-      populateSelect();
-    }
-
-    function populateSelect() {
-      const select = document.getElementById("route-select");
-      const selectedDistrict = document.getElementById("district-filter").value;
-
-      let filtered = routesData;
-      if (selectedDistrict !== "ALL") {
-        filtered = filtered.filter(r => r.district === selectedDistrict);
+    function findDistrict(name) {
+      for (var i = 0; i < DISTRICTS.length; i++) {
+        if (DISTRICTS[i].n === name) return DISTRICTS[i];
       }
-      if (currentCategory !== "Tümü") {
-        const byCat = filtered.filter(r => r.category === currentCategory);
-        if (byCat.length > 0) {
-          filtered = byCat;
-        }
-      }
-
-      select.innerHTML = filtered.map(r =>
-        '<option value="' + r.id + '">' + r.selectTitle + '</option>'
-      ).join("");
-
-      renderSelectedRoute();
+      return DISTRICTS[0];
     }
 
-    function toggleLike(id) {
-      if (likedIds.has(id)) {
-        likedIds.delete(id);
-      } else {
-        likedIds.add(id);
-      }
-      saveLikes();
-      renderSelectedRoute();
-    }
+    function renderRouteCard() {
+      var name = document.getElementById("route-district").value;
+      var d = findDistrict(name);
+      var q = encodeURIComponent(d.n + " İstanbul");
+      var foodQ = encodeURIComponent(d.n + " İstanbul restoran kahvaltı");
 
-    function renderSelectedRoute() {
-      const id = Number(document.getElementById("route-select").value);
-      const route = routesData.find(r => r.id === id) || routesData[0];
-      const isLiked = likedIds.has(route.id);
-
-      const mapUrl = "https://maps.google.com/maps?q=" + encodeURIComponent(route.mapQuery) + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
-      const gmapsDirect = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(route.mapQuery);
-      const busDirect = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(route.mapQuery + " otobüs durağı");
-      const taxiDirect = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(route.mapQuery + " taksi durağı");
-      const dirDirect = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(route.mapQuery);
-
-      const stopsHtml = route.stops.map(s =>
-        '<div class="stop-item">' +
-          '<div class="stop-time">' + s.time + '</div>' +
-          '<div class="stop-info">' +
-            '<h4>' + s.name + '</h4>' +
-            '<p>' + s.detail + '</p>' +
-            '<span class="transit-badge">🧭 Ulaşım: ' + s.transit + '</span>' +
-          '</div>' +
-        '</div>'
-      ).join("");
-
-      document.getElementById("route-detail-card").innerHTML =
+      document.getElementById("route-card-body").innerHTML =
         '<div class="badges-row">' +
           '<div class="badge-group">' +
-            '<span class="badge-city">' + route.city + '</span>' +
-            '<span class="badge-tag">' + route.tag + '</span>' +
-          '</div>' +
-          '<button class="fav-btn ' + (isLiked ? "liked" : "") + '" onclick="toggleLike(' + route.id + ')" title="Favorilere Ekle">' +
-            (isLiked ? "♥" : "♡") +
-          '</button>' +
-        '</div>' +
-        '<h2 class="route-title">' + route.title + '</h2>' +
-        '<p class="route-desc">' + route.desc + '</p>' +
-        '<div class="tip-box">' +
-          '<div class="tip-title">✨ KÜRATÖRÜN ALTIN İPUCU &amp; ULAŞIM NOTU</div>' +
-          '<div class="tip-text">' +
-            route.tip + '<br><br>' +
-            '<strong>🚏 Otobüs &amp; Raylı Sistem:</strong> ' + route.busStops + '<br>' +
-            '<strong>🚕 Taksi Durakları:</strong> ' + route.taxiStops +
+            '<span class="badge-city">' + d.s + ' Yakası</span>' +
+            '<span class="badge-tag">' + d.c + '</span>' +
           '</div>' +
         '</div>' +
-        '<div class="promo-card">' +
-          '<div class="promo-top">' +
-            '<span class="promo-title">' + route.promoTitle + '</span>' +
-            '<span class="badge-sponsored">İş Ortağı / Öneri</span>' +
+        '<h2 class="route-title">' + d.n + ': ' + d.p + '</h2>' +
+        '<p class="route-desc"><b>Toplu Taşıma:</b> ' + d.t + ' &nbsp;|&nbsp; <b>Taksi:</b> ' + d.tx + '</p>' +
+        '<div class="tip-box"><div class="tip-title">Rota &amp; Durak Önerisi</div>' + d.n + ' merkezde kahve veya yemek molası verip en yakın duraktan dönüş rotası planlayabilirsiniz.</div>' +
+        '<div class="promo-card"><b>Sponsorlu / İş Ortağı Mekan Alanı:</b> ' + d.n + ' bölgesindeki öne çıkan mekan veya rezervasyon bağlantısı.' +
+          '<br><a class="promo-link" href="https://www.google.com/maps/search/?api=1&query=' + foodQ + '" target="_blank" rel="noopener">Mekanları Haritada Gör →</a>' +
         '</div>' +
-          '<p class="promo-desc">' + route.promoDesc + '</p>' +
-          '<a class="promo-link" href="' + route.promoUrl + '" target="_blank" rel="noopener sponsored">Mekanları &amp; Fırsatları İncele →</a>' +
-        '</div>' +
-        '<div class="map-box">' +
-          '<iframe src="' + mapUrl + '" loading="lazy"></iframe>' +
-        '</div>' +
+        '<div class="map-box"><iframe loading="lazy" src="https://maps.google.com/maps?q=' + q + '&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe></div>' +
         '<div class="action-grid">' +
-          '<a class="action-btn primary" href="' + dirDirect + '" target="_blank" rel="noopener">🧭 Yol Tarifi Başlat</a>' +
-          '<a class="action-btn" href="' + busDirect + '" target="_blank" rel="noopener">🚏 Otobüs Durakları</a>' +
-          '<a class="action-btn" href="' + taxiDirect + '" target="_blank" rel="noopener">🚕 Taksi Durakları</a>' +
-          '<a class="action-btn" href="' + gmapsDirect + '" target="_blank" rel="noopener">📍 Google Haritalar</a>' +
-        '</div>' +
-        '<div class="stops-list">' +
-          '<div class="control-label" style="margin-bottom: 12px;">ADIM ADIM ROTA PROGRAMI</div>' +
-          stopsHtml +
+          '<a class="action-btn primary" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '" target="_blank" rel="noopener">Yol Tarifi Al</a>' +
+          '<a class="action-btn" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(d.n + " İstanbul otobüs durağı") + '" target="_blank" rel="noopener">Otobüs Durakları</a>' +
+          '<a class="action-btn" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(d.n + " İstanbul taksi durağı") + '" target="_blank" rel="noopener">Taksi Durakları</a>' +
         '</div>';
     }
 
-    function generateDatePlan() {
-      const area = document.getElementById("date-area").value;
-      const time = document.getElementById("date-time").value;
-      const vibe = document.getElementById("date-vibe").value;
-      const transit = document.getElementById("date-transit").value;
-      const districtObj = istanbulDistricts.find(d => d.name === area) || istanbulDistricts[0];
-
-      let step1 = { t: "Başlangıç", h: area + " Buluşma & İlk Kahve", d: districtObj.spot + " çevresinde sohbete odaklanabileceğiniz sıcak bir başlangıç." };
-      let step2 = { t: "+1.5 Saat", h: vibe + " Rotası", d: area + " sokaklarında keyifli yürüyüş, fotoğraf noktaları ve manzara molası." };
-      let step3 = { t: "+3 Saat", h: "Akşam / Yemek & Tatlı Finali", d: time + " saatine en uygun seçkin restoran veya gece lezzet durağı." };
-
-      if (time.indexOf("Sabah") !== -1) {
-        step1 = { t: "09:30", h: area + " — Sabah Kahvaltısı", d: "Sıcak çay, taze fırın ürünleri ve serpme kahvaltı ile güne enerjik başlangıç." };
-        step2 = { t: "11:30", h: districtObj.spot, d: "Kahvaltı sonrası sakin yürüyüş ve artizan kahve molası." };
-        step3 = { t: "13:00", h: "Tatlı & Dönüş Planı", d: "Tatlı durağı sonrası " + districtObj.transit.split("•")[0].trim() + " bağlantısıyla kolay dönüş." };
-      } else if (time.indexOf("Gece") !== -1) {
-        step1 = { t: "23:00", h: area + " — Gece Kahvesi & Sohbet", d: "Gece atmosferinde keyifli buluşma ve yürüyüş." };
-        step2 = { t: "00:45", h: area + " Gece Lezzeti Durağı", d: "Gece saatinde açık olan en iyi kokoreç, burger veya sıcak çorba mekanı." };
-        step3 = { t: "02:00", h: "Güvenli Eve Dönüş Rotası", d: districtObj.taxi.split("•")[0].trim() + " veya gece toplu taşıma bağlantısı." };
-      }
-
-      const mapQuery = area + " İstanbul";
-      const mapUrl = "https://maps.google.com/maps?q=" + encodeURIComponent(mapQuery) + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
-      const dirUrl = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(mapQuery);
-      const foodUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(area + " İstanbul restoran kafe");
-      const taxiUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(area + " İstanbul taksi durağı");
-
-      const plainSummary = "Günün Rotası — " + area + " (" + districtObj.side + " Yakası) | " + time + " | Mod: " + vibe + " | Ulaşım: " + transit + "\n1) " + step1.t + ": " + step1.h + "\n2) " + step2.t + ": " + step2.h + "\n3) " + step3.t + ": " + step3.h;
-
-      const container = document.getElementById("date-result-container");
-      container.classList.remove("hidden");
-      container.innerHTML =
-        '<div class="card">' +
-          '<div class="badges-row">' +
-            '<div class="badge-group">' +
-              '<span class="badge-city">' + area + ' • ' + districtObj.side.toUpperCase() + ' YAKASI</span>' +
-              '<span class="badge-tag">' + vibe + '</span>' +
-            '</div>' +
-            '<button class="action-btn" style="padding: 6px 12px; font-size: 12px;" onclick="copyDateSummary()">📋 Planı Kopyala</button>' +
-          '</div>' +
-          '<h3 class="route-title" style="font-size: 23px;">' + area + ' — ' + time + '</h3>' +
-          '<p class="route-desc">Ulaşım planı: <strong>' + transit + '</strong> • Bölge hatları: ' + districtObj.transit + '</p>' +
-          '<div class="tip-box">' +
-            '<div class="tip-title">💡 ' + area.toUpperCase() + ' DATE İPUCU &amp; TAKSİ NOKTASI</div>' +
-            '<div class="tip-text">' + districtObj.tip + '<br><strong>🚕 En Yakın Duraklar:</strong> ' + districtObj.taxi + '</div>' +
-          '</div>' +
-          '<div class="stops-list" style="border-top: none; padding-top: 0;">' +
-            '<div class="stop-item"><div class="stop-time">' + step1.t + '</div><div class="stop-info"><h4>' + step1.h + '</h4><p>' + step1.d + '</p></div></div>' +
-            '<div class="stop-item"><div class="stop-time">' + step2.t + '</div><div class="stop-info"><h4>' + step2.h + '</h4><p>' + step2.d + '</p></div></div>' +
-            '<div class="stop-item"><div class="stop-time">' + step3.t + '</div><div class="stop-info"><h4>' + step3.h + '</h4><p>' + step3.d + '</p></div></div>' +
-          '</div>' +
-          '<div class="map-box" style="margin-top: 16px;"><iframe src="' + mapUrl + '" loading="lazy"></iframe></div>' +
-          '<div class="action-grid">' +
-            '<a class="action-btn primary" href="' + dirUrl + '" target="_blank" rel="noopener">🧭 Rotaya Yol Tarifi Al</a>' +
-            '<a class="action-btn" href="' + foodUrl + '" target="_blank" rel="noopener">🍽️ ' + area + ' Mekanları</a>' +
-            '<a class="action-btn" href="' + taxiUrl + '" target="_blank" rel="noopener">🚕 ' + area + ' Taksi Durakları</a>' +
-          '</div>' +
-          '<div id="copy-status" class="status-msg hidden"></div>' +
+    function buildDatePlan() {
+      var d = findDistrict(document.getElementById("date-district").value);
+      var slot = document.getElementById("date-slot").value;
+      var mood = document.getElementById("date-mood").value;
+      var q = encodeURIComponent(d.n + " İstanbul");
+      var out = document.getElementById("date-output");
+      out.classList.remove("hidden");
+      out.innerHTML =
+        '<h3 class="route-title" style="font-size:20px;">' + d.n + ' — ' + slot + '</h3>' +
+        '<p class="route-desc"><b>Mod:</b> ' + mood + ' &nbsp;|&nbsp; <b>Ulaşım:</b> ' + d.t + '</p>' +
+        '<div class="stop-item"><div class="stop-time">1. Adım</div><h4>' + d.n + ' Buluşma &amp; Kahve</h4><p>' + d.p + ' çevresinde sohbet başlangıcı.</p></div>' +
+        '<div class="stop-item"><div class="stop-time">2. Adım</div><h4>' + mood + ' Yürüyüşü</h4><p>Bölgedeki sahil, sokak veya manzara noktaları.</p></div>' +
+        '<div class="stop-item"><div class="stop-time">3. Adım</div><h4>Yemek &amp; Dönüş</h4><p>' + d.tx + ' üzerinden pratik dönüş.</p></div>' +
+        '<div class="action-grid">' +
+          '<a class="action-btn primary" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '" target="_blank" rel="noopener">Rotaya Yol Tarifi Al</a>' +
+          '<a class="action-btn" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(d.n + " İstanbul romantik kafe restoran") + '" target="_blank" rel="noopener">Bölgedeki Mekanlar</a>' +
         '</div>';
-      window.__latestDateSummary = plainSummary;
     }
 
-    function copyDateSummary() {
-      if (!window.__latestDateSummary) return;
-      navigator.clipboard?.writeText(window.__latestDateSummary).then(() => {
-        const el = document.getElementById("copy-status");
-        el.textContent = "Date planı panoya kopyalandı, WhatsApp'ta paylaşabilirsin.";
-        el.classList.remove("hidden");
-      });
+    function syncTransitInput() {
+      document.getElementById("transit-query-input").value = document.getElementById("transit-district").value + ", İstanbul";
+      updateTransitMap("");
     }
 
-    function selectTransitDistrict() {
-      const dist = document.getElementById("transit-district-select").value;
-      document.getElementById("location-input").value = dist + ", İstanbul";
-      updateLiveMap();
+    function updateTransitMap(extra) {
+      var base = document.getElementById("transit-query-input").value.trim() || "İstanbul";
+      var full = (base + " " + extra).trim();
+      var enc = encodeURIComponent(full);
+      document.getElementById("transit-iframe").src = "https://maps.google.com/maps?q=" + enc + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
+      document.getElementById("transit-dir-link").href = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(base);
+      document.getElementById("transit-search-link").href = "https://www.google.com/maps/search/?api=1&query=" + enc;
     }
 
-    function updateLiveMap() {
-      const loc = document.getElementById("location-input").value.trim() || "İstanbul";
-      document.getElementById("live-map-iframe").src =
-        "https://maps.google.com/maps?q=" + encodeURIComponent(loc) + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
-    }
-
-    function searchMaps(keyword) {
-      const loc = document.getElementById("location-input").value.trim() || "İstanbul";
-      const fullQuery = loc + " " + keyword;
-      document.getElementById("live-map-iframe").src =
-        "https://maps.google.com/maps?q=" + encodeURIComponent(fullQuery) + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
-    }
-
-    function openDirections() {
-      const loc = document.getElementById("location-input").value.trim() || "İstanbul";
-      window.open("https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(loc), "_blank", "noopener");
-    }
-
-    function handleSubscribe(e) {
-      e.preventDefault();
-      const input = document.getElementById("newsletter-email");
-      const status = document.getElementById("newsletter-status");
-      try {
-        const saved = JSON.parse(localStorage.getItem("gunun_rotasi_subs") || "[]");
-        saved.push({ email: input.value.trim(), date: new Date().toISOString() });
-        localStorage.setItem("gunun_rotasi_subs", JSON.stringify(saved));
-      } catch (err) {}
-      status.textContent = "Kaydın alındı! Hafta sonu seçkileri için hazırsın.";
-      status.classList.remove("hidden");
-      input.value = "";
-    }
-
-    try {
-      initDistrictDropdowns();
-      populateSelect();
-    } catch (err) {
-      document.getElementById("route-detail-card").innerHTML =
-        "<p>Rotalar yüklenirken bir sorun oluştu, sayfayı yenileyebilirsin.</p>";
-    }
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Günün Rotası — İstanbul 39 İlçe Rehberi</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #F6F4EF; color: #23211E; margin: 0; padding: 20px; }
-    .box { max-width: 760px; margin: 0 auto 16px; background: #fff; border: 1px solid #E4DFD5; border-radius: 16px; padding: 18px; }
-    h1 { margin: 0 0 8px; font-size: 28px; }
-    label { display: block; font-size: 12px; font-weight: bold; margin: 12px 0 6px; color: #706B63; }
-    select, input, button { width: 100%; padding: 11px; border-radius: 10px; border: 1px solid #D8D2C7; font-size: 15px; box-sizing: border-box; }
-    button { background: #B86538; color: #fff; border: none; font-weight: bold; cursor: pointer; margin-top: 12px; }
-    .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-    .btns a { text-align: center; text-decoration: none; background: #23211E; color: #fff; padding: 11px; border-radius: 10px; font-weight: bold; font-size: 14px; }
-    iframe { width: 100%; height: 240px; border: 0; border-radius: 12px; margin-top: 14px; }
-    .promo { background: #FDF4EE; border-left: 4px solid #B86538; padding: 12px; border-radius: 10px; margin-top: 14px; font-size: 14px; }
-  </style>
-</head>
-<body>
-  <div class="box">
-    <h1>Günün Rotası</h1>
-    <p>İstanbul'un 39 ilçesi için rota, ulaşım, durak ve mekan rehberi.</p>
-
-    <label for="ilceSec">İLÇE SEÇ (39 İLÇE)</label>
-    <select id="ilceSec" onchange="guncelle()">
-      <optgroup label="Avrupa Yakası">
-        <option value="Arnavutköy">Arnavutköy</option>
-        <option value="Avcılar">Avcılar</option>
-        <option value="Bağcılar">Bağcılar</option>
-        <option value="Bahçelievler">Bahçelievler</option>
-        <option value="Bakırköy">Bakırköy</option>
-        <option value="Başakşehir">Başakşehir</option>
-        <option value="Bayrampaşa">Bayrampaşa</option>
-        <option value="Beşiktaş" selected>Beşiktaş</option>
-        <option value="Beylikdüzü">Beylikdüzü</option>
-        <option value="Beyoğlu">Beyoğlu</option>
-        <option value="Büyükçekmece">Büyükçekmece</option>
-        <option value="Çatalca">Çatalca</option>
-        <option value="Esenler">Esenler</option>
-        <option value="Esenyurt">Esenyurt</option>
-        <option value="Eyüpsultan">Eyüpsultan</option>
-        <option value="Fatih">Fatih</option>
-        <option value="Gaziosmanpaşa">Gaziosmanpaşa</option>
-        <option value="Güngören">Güngören</option>
-        <option value="Kağıthane">Kağıthane</option>
-        <option value="Küçükçekmece">Küçükçekmece</option>
-        <option value="Sarıyer">Sarıyer</option>
-        <option value="Silivri">Silivri</option>
-        <option value="Sultangazi">Sultangazi</option>
-        <option value="Şişli">Şişli</option>
-        <option value="Zeytinburnu">Zeytinburnu</option>
-      </optgroup>
-      <optgroup label="Anadolu Yakası">
-        <option value="Adalar">Adalar</option>
-        <option value="Ataşehir">Ataşehir</option>
-        <option value="Beykoz">Beykoz</option>
-        <option value="Çekmeköy">Çekmeköy</option>
-        <option value="Kadıköy">Kadıköy</option>
-        <option value="Kartal">Kartal</option>
-        <option value="Maltepe">Maltepe</option>
-        <option value="Pendik">Pendik</option>
-        <option value="Sancaktepe">Sancaktepe</option>
-        <option value="Sultanbeyli">Sultanbeyli</option>
-        <option value="Şile">Şile</option>
-        <option value="Tuzla">Tuzla</option>
-        <option value="Ümraniye">Ümraniye</option>
-        <option value="Üsküdar">Üsküdar</option>
-      </optgroup>
-    </select>
-
-    <label for="zamanSec">ZAMAN / KONSEPT</label>
-    <select id="zamanSec" onchange="guncelle()">
-      <option value="sabah kahvaltı mekanları">Sabah Kahvaltısı</option>
-      <option value="restoran kafe">Öğle / Akşam Yemeği &amp; Kafe</option>
-      <option value="gece açık yemek çorbacı kokoreç">Gece Açık Yemek</option>
-      <option value="otobüs durağı">Otobüs Durakları</option>
-      <option value="taksi durağı">Taksi Durakları</option>
-    </select>
-
-    <div id="detay"></div>
-    <iframe id="harita" loading="lazy"></iframe>
-
-    <div class="btns">
-      <a id="yolLink" href="#" target="_blank" rel="noopener">Yol Tarifi Al</a>
-      <a id="mekanLink" href="#" target="_blank" rel="noopener">Mekanları / Durakları Aç</a>
-    </div>
-
-    <div class="promo" id="gelirAlani"></div>
-  </div>
-
-  <script>
-    function guncelle() {
-      var ilce = document.getElementById("ilceSec").value;
-      var zaman = document.getElementById("zamanSec").value;
-      var sorgu = encodeURIComponent(ilce + " İstanbul " + zaman);
-      var hedef = encodeURIComponent(ilce + " İstanbul");
-
-      document.getElementById("detay").innerHTML =
-        "<h3>" + ilce + " — Seçili Rota</h3>" +
-        "<p><b>Arama / Durak Odagı:</b> " + zaman + "</p>" +
-        "<p><b>Date / Gün Planı:</b> " + ilce + " merkezde buluşma, yürüyüş ve seçilen saat dilimine uygun mekan/ulaşım noktası.</p>";
-
-      document.getElementById("harita").src =
-        "https://maps.google.com/maps?q=" + sorgu + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
-
-      document.getElementById("yolLink").href =
-        "https://www.google.com/maps/dir/?api=1&destination=" + hedef;
-
-      document.getElementById("mekanLink").href =
-        "https://www.google.com/maps/search/?api=1&query=" + sorgu;
-
-      document.getElementById("gelirAlani").innerHTML =
-        "<b>Sponsorlu / İş Ortağı Alanı:</b> " + ilce + " bölgesindeki öne çıkan mekan, rezervasyon veya etkinlik bağlantısı buraya eklenebilir.";
-    }
-    guncelle();
+    fillDistrictSelects();
   </script>
 </body>
 </html>
