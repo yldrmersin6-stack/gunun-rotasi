@@ -1,799 +1,278 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Günün Rotası — Editoryal Şehir, Müze & Date Rehberi</title>
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-color: #F9F7F2;
-            --card-bg: #FFFFFF;
-            --text-main: #1C1B18;
-            --text-muted: #6E6A61;
-            --accent: #B85D3B;
-            --accent-soft: #F7EAE4;
-            --border-color: #E8E3D9;
-            --tag-bg: #F2EFE9;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>500 Seçenekli Arama ve Seçim Sistemi</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f3f4f6;
+      color: #1f2937;
+      line-height: 1.6;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            line-height: 1.6;
-            padding: 20px 16px 70px;
-            max-width: 560px;
-            margin: 0 auto;
-        }
+    /* Üst Menü */
+    header {
+      background-color: #1e293b;
+      color: #ffffff;
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        /* Üst Başlık */
-        header {
-            text-align: center;
-            margin-bottom: 22px;
-            padding-top: 6px;
-        }
+    header h1 {
+      font-size: 20px;
+      font-weight: 700;
+    }
 
-        .eyebrow {
-            font-size: 11px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
+    /* Ana Konteyner */
+    .ana-alan {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 35px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
 
-        h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 42px;
-            font-weight: 600;
-            line-height: 1.1;
-            margin-bottom: 8px;
-        }
+    .ana-alan h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #0f172a;
+    }
 
-        .subtitle {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 17px;
-            color: var(--text-muted);
-        }
+    .ana-alan p {
+      color: #64748b;
+      font-size: 15px;
+      margin-bottom: 25px;
+    }
 
-        /* Ana Mod Seçici */
-        .mode-switcher {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: var(--card-bg);
-            padding: 6px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 18px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-        }
+    /* 500 Seçenekli Arama Kutusu */
+    .arama-kapsayici {
+      position: relative;
+      margin-bottom: 20px;
+    }
 
-        .mode-btn {
-            border: none;
-            background: transparent;
-            padding: 12px;
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
+    .etiket {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #334155;
+    }
 
-        .mode-btn.active {
-            background: var(--text-main);
-            color: #FFFFFF;
-        }
+    #secenek-arama {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
 
-        /* Yatay Kaydırılabilir Kategori Filtreleri */
-        .filter-scroll {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            margin-bottom: 14px;
-            scrollbar-width: none;
-        }
-        .filter-scroll::-webkit-scrollbar { display: none; }
+    #secenek-arama:focus {
+      border-color: #2563eb;
+    }
 
-        .filter-chip {
-            white-space: nowrap;
-            padding: 8px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            background: var(--card-bg);
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+    #secenek-listesi {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      max-height: 280px;
+      overflow-y: auto;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      list-style: none;
+    }
 
-        .filter-chip.active {
-            background: var(--accent);
-            color: #FFFFFF;
-            border-color: var(--accent);
-        }
+    #secenek-listesi li {
+      padding: 12px 16px;
+      font-size: 15px;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+    }
 
-        /* Seçim Kutusu */
-        .selector-card {
-            background: var(--card-bg);
-            padding: 16px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
+    #secenek-listesi li:hover {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 500;
+    }
 
-        .selector-label {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 8px;
-        }
+    /* Seçim Sonucu ve Form Alanı */
+    #secim-karti {
+      display: none;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
 
-        select {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-color);
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-main);
-            outline: none;
-            cursor: pointer;
-        }
+    #secim-karti h3 {
+      font-size: 16px;
+      color: #059669;
+      margin-bottom: 15px;
+    }
 
-        /* Ana Rota Kartı */
-        .route-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 24px 20px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
-        }
+    .form-satir {
+      margin-bottom: 12px;
+    }
 
-        .card-top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
+    .form-satir input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+    }
 
-        .badges {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
+    .onay-btn {
+      width: 100%;
+      padding: 14px;
+      background-color: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+    }
 
-        .badge {
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: var(--tag-bg);
-            color: var(--text-muted);
-        }
+    .onay-btn:hover {
+      background-color: #1d4ed8;
+    }
 
-        .badge.city {
-            background: var(--accent-soft);
-            color: var(--accent);
-        }
+    #basari-bildirimi {
+      display: none;
+      margin-top: 15px;
+      padding: 14px;
+      background-color: #dcfce7;
+      color: #166534;
+      border-radius: 8px;
+      font-weight: 500;
+      text-align: center;
+    }
 
-        .fav-btn {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 16px;
-            transition: transform 0.15s;
-        }
-        .fav-btn:active { transform: scale(0.9); }
-
-        .route-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 30px;
-            font-weight: 600;
-            line-height: 1.2;
-            margin-bottom: 12px;
-        }
-
-        .route-desc {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 18px;
-        }
-
-        /* Küratör İpucu Kutusu */
-        .curator-note {
-            background: var(--accent-soft);
-            border-left: 3px solid var(--accent);
-            padding: 12px 14px;
-            border-radius: 0 12px 12px 0;
-            margin-bottom: 20px;
-            font-size: 13px;
-            color: var(--text-main);
-        }
-        .curator-note strong {
-            color: var(--accent);
-            display: block;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 2px;
-        }
-
-        /* Metrikler */
-        .metrics {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            padding: 14px 0;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 22px;
-            text-align: center;
-        }
-
-        .metric-item span {
-            display: block;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-        }
-
-        .metric-item strong {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        /* Adım Adım Rota Akışı */
-        .timeline-title {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--text-muted);
-            margin-bottom: 14px;
-            font-weight: 600;
-        }
-
-        .step-item {
-            display: flex;
-            gap: 12px;
-            padding: 14px;
-            background: var(--bg-color);
-            border-radius: 14px;
-            margin-bottom: 12px;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .step-item.completed {
-            opacity: 0.55;
-            border-color: var(--border-color);
-        }
-
-        .step-checkbox {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--text-main);
-            margin-top: 3px;
-            cursor: pointer;
-        }
-
-        .step-content {
-            flex: 1;
-        }
-
-        .step-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .step-time {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .step-type {
-            font-size: 10px;
-            background: #FFFFFF;
-            padding: 2px 8px;
-            border-radius: 10px;
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-        }
-
-        .step-name {
-            font-size: 15px;
-            font-weight: 600;
-            margin: 4px 0;
-        }
-
-        .step-tip {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .map-link {
-            display: inline-block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-main);
-            text-decoration: none;
-            border-bottom: 1px solid var(--text-main);
-            padding-bottom: 1px;
-        }
-
-        /* Plansız Date Modu */
-        .spontaneous-box {
-            display: none;
-            text-align: center;
-        }
-
-        .dice-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 12px;
-            transition: transform 0.15s;
-        }
-
-        .dice-btn:active { transform: scale(0.98); }
-
-        /* Paylaşım Butonu */
-        .share-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            background: var(--text-main);
-            color: #FFFFFF;
-            border: none;
-            padding: 15px;
-            border-radius: 14px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 20px;
-            cursor: pointer;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 32px;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-    </style>
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="eyebrow">Editoryal Şehir & Kültür Seçkisi</div>
-        <h1>Günün Rotası</h1>
-        <p class="subtitle">“Deniz kıyısından tarihi avlulara, müzelerden gizli sokaklara”</p>
-    </header>
+  <header>
+    <h1>Hızlı Seçim & Talep Portalı</h1>
+  </header>
 
-    <!-- Mod Değiştirici -->
-    <div class="mode-switcher">
-        <button class="mode-btn active" onclick="switchMode('planned', this)">Kürasyon Rotalar</button>
-        <button class="mode-btn" onclick="switchMode('spontaneous', this)">Plansız Date Modu ✨</button>
+  <main class="ana-alan">
+    <h2>500 Seçenek Arasından Seçiminizi Yapın</h2>
+    <p>Aşağıdaki kutuya yazarak 500 farklı seçenek arasında anında arama yapabilir ve talebinizi iletebilirsiniz.</p>
+
+    <div class="arama-kapsayici">
+      <label class="etiket" for="secenek-arama">Seçenek Ara (1 - 500):</label>
+      <input type="text" id="secenek-arama" placeholder="Örn: Seçenek 42 yazın veya tıklayın..." autocomplete="off">
+      <ul id="secenek-listesi"></ul>
     </div>
 
-    <!-- PLANLI ROTA ALANI -->
-    <div id="planned-section">
-        <!-- Kategori Filtreleri -->
-        <div class="filter-scroll">
-            <button class="filter-chip active" onclick="filterRoutes('all', this)">Tümü (8)</button>
-            <button class="filter-chip" onclick="filterRoutes('deniz', this)">🌊 Deniz Kenarı</button>
-            <button class="filter-chip" onclick="filterRoutes('muze', this)">🎨 Müze & Sanat</button>
-            <button class="filter-chip" onclick="filterRoutes('tarih', this)">🏛️ Tarihi Yerler</button>
-            <button class="filter-chip" onclick="filterRoutes('fav', this)">❤️ Favorilerim</button>
+    <div id="secim-karti">
+      <h3 id="secilen-metin">Seçilen: -</h3>
+      <form id="talep-formu">
+        <div class="form-satir">
+          <input type="text" id="musteri-ad" placeholder="Adınız Soyadınız" required>
         </div>
-
-        <div class="selector-card">
-            <label class="selector-label" for="route-select">Rotanı Seç:</label>
-            <select id="route-select" onchange="loadRoute(this.value)">
-                <!-- Seçenekler JS ile kategoriye göre dolacak -->
-            </select>
+        <div class="form-satir">
+          <input type="tel" id="musteri-tel" placeholder="Telefon Numaranız" required>
         </div>
-
-        <div class="route-card" id="route-display">
-            <!-- Seçili rota detayları buraya gelecek -->
-        </div>
+        <button type="submit" class="onay-btn">Seçimi Onayla ve Gönder</button>
+      </form>
     </div>
 
-    <!-- PLANSIZ DATE MODU ALANI -->
-    <div id="spontaneous-section" class="route-card spontaneous-box">
-        <span class="badge city">Anlık İlham</span>
-        <h2 class="route-title" style="margin-top: 10px;">Şu An Modun Ne?</h2>
-        <p class="route-desc">Konumunu ve istediğin atmosferi seç; senin için tek duraklık nokta atışı bir kaçamak önerelim.</p>
-        
-        <select id="side-select" style="margin-bottom: 10px;">
-            <option value="avrupa">📍 Avrupa Yakası'ndayız</option>
-            <option value="anadolu">📍 Anadolu Yakası'ndayız</option>
-        </select>
-
-        <select id="vibe-select" style="margin-bottom: 10px;">
-            <option value="deniz">🌊 Deniz Havası & Yürüyüş</option>
-            <option value="muze">🎨 Müze, Galeri & Kültür</option>
-            <option value="tarih">🏛️ Tarihi Doku & Nostalji</option>
-        </select>
-
-        <button class="dice-btn" onclick="generateSpontaneous()">Bize Sürpriz Yap 🎲</button>
-
-        <div id="spontaneous-result" style="margin-top: 20px; text-align: left; display: none;"></div>
+    <div id="basari-bildirimi">
+      Talebiniz başarıyla alındı! En kısa sürede dönüş yapılacaktır.
     </div>
+  </main>
 
-    <footer>
-        Günün Rotası • Bağımsız Şehir Kültürü & Keşif Rehberi
-    </footer>
+  <footer>
+    &copy; 2026 Tüm Hakları Saklıdır.
+  </footer>
 
-    <script>
-        // KAPSAMLI ROTA VERİTABANI
-        const routes = {
-            karakoy: {
-                categories: ['deniz', 'muze'],
-                city: "İSTANBUL",
-                tag: "Sahil & Çağdaş Sanat",
-                title: "Karaköy & Galata: Boğaz Esintisi ve Sanat Durakları",
-                desc: "Sabahın erken saatlerinde rıhtımdaki sakinlikten başlayıp çağdaş sanat müzelerine, Galata'nın taş sokaklarına ve gün batımında Haliç manzarasına uzanan dengeli bir yürüyüş.",
-                curatorTip: "İstanbul Modern'in teras katına çıkıp Boğaz ve Tarihi Yarımada'yı aynı karede yakalayabilirsiniz.",
-                duration: "5 Saat",
-                budget: "₺₺ (Orta)",
-                tempo: "Sakin Yürüyüş",
-                steps: [
-                    { time: "10:30", type: "Kahve", name: "Karabatak Karaköy", tip: "Arka bahçedeki sarmaşıkların altında güne filtre kahve ile başlayın.", map: "https://google.com" },
-                    { time: "12:00", type: "Müze", name: "İstanbul Modern & Resim Heykel Müzesi", tip: "Galataport sahil hattındaki bu iki dev müzeden birini seçip güncel sergileri gezin.", map: "https://google.com" },
-                    { time: "14:30", type: "Sokak Keşfi", name: "Kamondo Merdivenleri & Serdar-ı Ekrem", tip: "Tarihi merdivenlerde fotoğraf çekip tasarım butiklerinin olduğu sokağa tırmanın.", map: "https://google.com" },
-                    { time: "17:30", type: "Deniz & Manzara", name: "Karaköy İskelesi & Haliç Kıyısı", tip: "Süleymaniye Camii silüetine karşı gün batımını izleyerek günü noktalayın.", map: "https://google.com" }
-                ]
-            },
-            sultanahmet: {
-                categories: ['tarih', 'muze'],
-                city: "İSTANBUL",
-                tag: "Tarihi Yarımada & Müzeler",
-                title: "Sur İçi Mirası: Bizans Sarnıçlarından Gülhane Ağaçlarına",
-                desc: "Yüzyıllık imparatorlukların kalbinde, mistik yer altı sarnıçları, görkemli müzeler ve tarihi parklar arasında zaman yolculuğu.",
-                curatorTip: "Şerefiye Sarnıcı'ndaki saat başı yapılan 360 derece ışık gösterisini mutlaka denk getirin.",
-                duration: "5 - 6 Saat",
-                budget: "₺₺ (Müze Kart Geçerli)",
-                tempo: "Kültür Turu",
-                steps: [
-                    { time: "10:00", type: "Tarihi Yapı", name: "Şerefiye veya Yerebatan Sarnıcı", tip: "Sabah kalabalığı artmadan suyun içindeki antik sütunların mistik atmosferini soluyun.", map: "https://google.com" },
-                    { time: "12:00", type: "Müze", name: "İstanbul Arkeoloji Müzeleri", tip: "İskender Lahdi'ni görün ve müzenin huzurlu avlusundaki tarihi kafede soluklanın.", map: "https://google.com" },
-                    { time: "14:30", type: "Doğa & Tarih", name: "Gülhane Parkı & İslam Bilim Tarihi Müzesi", tip: "Ulu çınarların altında yürüyüp saray surlarına yaslanan müzeyi keşfedin.", map: "https://google.com" },
-                    { time: "16:30", type: "Nostalji", name: "Sirkeci Garı & Tarihi Postane Çevresi", tip: "Orient Express'in son durağı olan tarihi gar binasının vitraylarını inceleyin.", map: "https://google.com" }
-                ]
-            },
-            balat: {
-                categories: ['tarih', 'deniz'],
-                city: "İSTANBUL",
-                tag: "Tarihi Semt & Haliç",
-                title: "Fener & Balat: Kırmızı Mektep, Antikacılar ve Haliç Kıyısı",
-                desc: "Cumbalı renkli evler, yüzyıllık kiliseler, mezat heyecanı ve Haliç'in sakin sahil şeridinde nostaljik bir keşif.",
-                curatorTip: "Vodina Caddesi üzerindeki antikacılarda öğleden sonra yapılan mini mezatlara denk gelebilirsiniz.",
-                duration: "4.5 Saat",
-                budget: "₺ (Ekonomik)",
-                tempo: "Yokuşlu & Keyifli",
-                steps: [
-                    { time: "10:30", type: "Tarih", name: "Fener Rum Erkek Lisesi (Kırmızı Mektep)", tip: "Görkemli kırmızı tuğlalı mimariyi yakından görüp Merdivenli Yokuş'tan aşağı inin.", map: "https://google.com" },
-                    { time: "12:30", type: "Kültür", name: "Sveti Stefan (Demir) Kilise", tip: "Haliç kıyısındaki tamamı dökme demirden yapılmış bu benzersiz kiliseyi ziyaret edin.", map: "https://google.com" },
-                    { time: "14:00", type: "Keşif", name: "Vodina Caddesi Antikacıları", tip: "Eski plaklar, daktilolar ve vintage objeler arasında zamanda yolculuk yapın.", map: "https://google.com" },
-                    { time: "16:30", type: "Deniz Kenarı", name: "Balat Sahil Parkı", tip: "Haliç kıyısında deniz havası alarak yürüyüşü tamamlayın.", map: "https://google.com" }
-                ]
-            },
-            kuzguncuk: {
-                categories: ['deniz', 'tarih'],
-                city: "İSTANBUL",
-                tag: "Boğaz Köyü & Tarihi Evler",
-                title: "Kuzguncuk & Beylerbeyi: Tarihi Bostan ve Saray Kıyısı",
-                desc: "Anadolu Yakası'nın en samimi Boğaz köyünde tarihi ahşap evler, komşuluk kültürü ve deniz sıfır saray bahçeleri.",
-                curatorTip: "Kuzguncuk'taki tarihi Nail Kitabevi'nin üst katındaki pencere kenarı masaları kitap okumak ve kahve içmek için harikadır.",
-                duration: "4 Saat",
-                budget: "₺₺ (Orta)",
-                tempo: "Çok Sakin",
-                steps: [
-                    { time: "10:30", type: "Doğa & Tarih", name: "Kuzguncuk Bostanı & İcadiye Caddesi", tip: "700 yıllık tarihi bostanın yanından yürüyüp rengarenk tarihi evlerin fotoğraflarını çekin.", map: "https://google.com" },
-                    { time: "12:30", type: "Kitap & Kahve", name: "Nail Kitabevi", tip: "Tarihi bir binada kitap kokusu eşliğinde kahve molası verin.", map: "https://google.com" },
-                    { time: "14:30", type: "Saray & Müze", name: "Beylerbeyi Sarayı", tip: "Boğaz'ın hemen kıyısındaki bu zarif 19. yüzyıl yazlık sarayını ve rıhtımını gezin.", map: "https://google.com" }
-                ]
-            },
-            besiktas: {
-                categories: ['muze', 'deniz', 'tarih'],
-                city: "İSTANBUL",
-                tag: "Müze & Boğaz Hattı",
-                title: "Beşiktaş & Akaretler: Deniz Müzesi'nden Sanat Galerilerine",
-                desc: "Osmanlı donanmasının görkemli saltanat kayıklarından modern sanat galerilerine uzanan yüksek kültürlü bir şehir rotası.",
-                curatorTip: "Deniz Müzesi'ndeki tarihi saltanat kayıklarının bulunduğu salon mutlaka görülmesi gereken bir görsel şölen sunar.",
-                duration: "4.5 Saat",
-                budget: "₺₺ (Orta)",
-                tempo: "Dengeli",
-                steps: [
-                    { time: "11:00", type: "Müze & Deniz", name: "İstanbul Deniz Müzesi", tip: "Türkiye'nin en büyük denizcilik müzesinde tarihi kadırgaları ve haritaları inceleyin.", map: "https://google.com" },
-                    { time: "13:00", type: "Tarihi Doku", name: "Akaretler Sıraevler", tip: "Sultan Abdülaziz döneminden kalma tarihi sıraevler boyunca yürüyüp çağdaş sanat galerilerine uğrayın.", map: "https://google.com" },
-                    { time: "15:30", type: "Park & Müze", name: "Ihlamur Kasrı", tip: "Şehrin ortasında gizlenmiş bu masalsı av köşkünün bahçesinde tavus kuşları eşliğinde çay için.", map: "https://google.com" }
-                ]
-            },
-            bebek: {
-                categories: ['deniz', 'tarih'],
-                city: "İSTANBUL",
-                tag: "Boğaz & Tarihi Hisar",
-                title: "Bebek & Rumeli Hisarı: Deniz Kokusu ve Fetih Surları",
-                desc: "Boğaz'ın en dar ve en etkileyici noktasında, bir yanda masmavi akıntı diğer yanda yüzyıllık kale burçları.",
-                curatorTip: "Aşiyan Müzesi'nin (Tevfik Fikret'in evi) bahçesinden Boğaz'a bakmak İstanbul'daki en huzurlu manzaralardan biridir.",
-                duration: "4 Saat",
-                budget: "₺₺ (Orta)",
-                tempo: "Tempolu Sahil Yürüyüşü",
-                steps: [
-                    { time: "10:30", type: "Deniz Kenarı", name: "Bebek Sahili & Aşiyan Yokuşu", tip: "Deniz kenarından yürüyerek şair Tevfik Fikret'in kendi tasarladığı müze evi Aşiyan'a çıkın.", map: "https://google.com" },
-                    { time: "12:30", type: "Tarih & Kale", name: "Rumeli Hisarı", tip: "Boğaz'a hakim burçlara tırmanıp İstanbul'un en görkemli tarihi savunma yapısını keşfedin.", map: "https://google.com" },
-                    { time: "15:00", type: "Lezzet", name: "Arnavutköy Tarihi Sokakları", tip: "Geri dönüş yolunda Arnavutköy'ün tarihi ahşap evleri arasında tatlı molası verin.", map: "https://google.com" }
-                ]
-            },
-            moda: {
-                categories: ['deniz', 'muze'],
-                city: "İSTANBUL",
-                tag: "Sahil & Bohem Kültür",
-                title: "Moda & Yeldeğirmeni: Mural Sokaklar ve Müze Evler",
-                desc: "Anadolu Yakası'nın yaratıcı kalbinde sokak sanatı, tarihi konaklar ve gün batımında sahil huzuru.",
-                curatorTip: "Barış Manço Evi'ni gezdikten sonra hemen alt sokaktaki Moda İskelesi'nin üst katındaki kütüphane/kafede çalışabilir veya dinlenebilirsiniz.",
-                duration: "4.5 Saat",
-                budget: "₺ (Ekonomik)",
-                tempo: "Keyifli",
-                steps: [
-                    { time: "11:00", type: "Sokak Sanatı", name: "Yeldeğirmeni Duvar Resimleri", tip: "Binaların dış cephelerini süsleyen devasa mural çalışmaları keşfederek sokakları gezin.", map: "https://google.com" },
-                    { time: "13:30", type: "Müze Ev", name: "Barış Manço Evi (Moda)", tip: "Sanatçının 19. yüzyıldan kalma tarihi köşkündeki kişisel eşyalarını ve sahne kostümlerini görün.", map: "https://google.com" },
-                    { time: "16:00", type: "Deniz Kenarı", name: "Tarihi Moda İskelesi & Sahil", tip: "Restore edilen tarihi iskelede deniz manzarasına karşı kahvenizi yudumlayın.", map: "https://google.com" }
-                ]
-            },
-            buyukada: {
-                categories: ['deniz', 'tarih', 'muze'],
-                city: "İSTANBUL",
-                tag: "Ada Kaçamağı & Tarih",
-                title: "Büyükada: Vapur Yolculuğu, Tarihi Köşkler ve Ada Müzesi",
-                desc: "Şehirden sadece bir vapur uzaklıkta; arabasız sakin sokaklar, çam ormanları ve mimari harikası ahşap köşkler.",
-                curatorTip: "Vapurda mutlaka açık güvertede oturun; martılara simit atarken şehrin silüetinden uzaklaşmak rotanın ilk adımıdır.",
-                duration: "Tam Gün (6-7 Saat)",
-                budget: "₺₺ (Orta)",
-                tempo: "Doğa & Yürüyüş",
-                steps: [
-                    { time: "10:00", type: "Deniz Yolculuğu", name: "Şehir Hatları Vapur İskelesi", tip: "Kabataş veya Kadıköy'den kalkan vapurla Boğaz ve Marmara havası alarak adaya geçin.", map: "https://google.com" },
-                    { time: "11:30", type: "Tarihi Mimari", name: "Çankaya Caddesi Tarihi Köşkleri", tip: "Sıra sıra dizilmiş görkemli 19. yüzyıl ahşap köşklerin mimarisini inceleyerek yürüyün.", map: "https://google.com" },
-                    { time: "14:00", type: "Müze", name: "Adalar Müzesi", tip: "Adaların tarihini, eski yazlık kültürünü ve göç hikayelerini anlatan bu modern müzeyi gezin.", map: "https://google.com" },
-                    { time: "16:30", type: "Deniz & Manzara", name: "Dilburnu Tabiat Parkı", tip: "Çam ağaçlarının denize indiği koyda gün batımına karşı dinlenin.", map: "https://google.com" }
-                ]
-            }
-        };
+  <script>
+    // 500 Seçenekli Veri Havuzu (Kendi listenizi buraya ekleyebilirsiniz)
+    const secenekler = Array.from({ length: 500 }, (_, i) => `Seçenek #${i + 1} - Hizmet veya Ürün Detayı`);
 
-        // SPONTANE PLAN HAVUZU (Yaka ve Atmosfere Göre)
-        const spontaneousPool = {
-            avrupa: {
-                deniz: [
-                    { title: "Emirgan Sahili & Sakıp Sabancı Müzesi Bahçesi", desc: "Boğaz kıyısında yürüyüp müzenin eşsiz manzaralı bahçesinde kahve molası verin.", map: "https://google.com" },
-                    { title: "Yeniköy Sahil Hattı & Köy İçi", desc: "Tarihi yalıların arasından deniz kenarında yürüyüp Yeniköy'ün sakin kafelerinde oturun.", map: "https://google.com" }
-                ],
-                muze: [
-                    { title: "Pera Müzesi & Tepebaşı Yürüyüşü", desc: "Kaplumbağa Terbiyecisi'ni görüp Pera'nın tarihi otellerinin önünden Galata'ya doğru süzülün.", map: "https://google.com" },
-                    { title: "Arter (Dolapdere) Çağdaş Sanat Turu", desc: "Türkiye'nin en etkileyici modern sanat müzelerinden birinde ilham verici bir öğleden sonra geçirin.", map: "https://google.com" }
-                ],
-                tarih: [
-                    { title: "Çukurcuma Antikacılar & Masumiyet Müzesi", desc: "Arnavut kaldırımlı tarihi sokaklarda antikacıları gezip Orhan Pamuk'un romanından doğan müzeyi ziyaret edin.", map: "https://google.com" },
-                    { title: "Süleymaniye Külliyesi & Tarihi Kuru Fasulyeciler", desc: "Mimar Sinan'ın başyapıtının avlusundan Haliç'i izleyip tarihi sokaklarda yürüyün.", map: "https://google.com" }
-                ]
-            },
-            anadolu: {
-                deniz: [
-                    { title: "Salacak Sahili & Kız Kulesi Karşısı", desc: "Üsküdar'dan Salacak'a doğru yürüyüp denizin ortasındaki Kız Kulesi'ne karşı çay için.", map: "https://google.com" },
-                    { title: "Fenerbahçe Parkı & Kalamış Koyu", desc: "Denizle çevrili yarımadadaki asırlık ağaçların altında yürüyüş yapın.", map: "https://google.com" }
-                ],
-                muze: [
-                    { title: "İstanbul Oyuncak Müzesi (Göztepe)", desc: "Sunay Akın'ın kurduğu tarihi köşkte çocukluğunuza dönüp Göztepe'nin sakin sokaklarını gezin.", map: "https://google.com" },
-                    { title: "Müze Gazhane (Hasanpaşa)", desc: "130 yıllık tarihi hava gazı fabrikasından dönüştürülen bu dev kültür-sanat ve iklim müzesini keşfedin.", map: "https://google.com" }
-                ],
-                tarih: [
-                    { title: "Çengelköy Tarihi Çınaraltı & Ara Sokaklar", desc: "Asırlık çınar ağacının altında Boğaz'a karşı çay içip tarihi Çengelköy sokaklarını gezin.", map: "https://google.com" },
-                    { title: "Anadolu Hisarı & Göksu Deresi", desc: "İstanbul'un en eski Türk yapısı olan hisarı görüp Göksu Deresi kıyısında yürüyüş yapın.", map: "https://google.com" }
-                ]
-            }
-        };
+    const aramaInput = document.getElementById('secenek-arama');
+    const listeUl = document.getElementById('secenek-listesi');
+    const secimKarti = document.getElementById('secim-karti');
+    const secilenMetin = document.getElementById('secilen-metin');
+    const talepFormu = document.getElementById('talep-formu');
+    const basariBildirimi = document.getElementById('basari-bildirimi');
 
-        let currentRouteKey = 'karakoy';
-        let currentFilter = 'all';
-        let favorites = JSON.parse(localStorage.getItem('gununRotasiFavs')) || [];
+    let aktifSecim = "";
 
-        // Başlangıçta dropdown'ı doldur ve ilk rotayı yükle
-        function init() {
-            populateSelect('all');
-            loadRoute('karakoy');
-        }
+    function listeyiGoster(filtre = '') {
+      listeUl.innerHTML = '';
+      const aranan = filtre.toLocaleLowerCase('tr-TR');
+      const sonuclar = secenekler.filter(item => item.toLocaleLowerCase('tr-TR').includes(aranan));
 
-        function filterRoutes(category, btn) {
-            currentFilter = category;
-            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-            btn.classList.add('active');
-            populateSelect(category);
-        }
+      if (sonuclar.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'Eşleşen seçenek bulunamadı.';
+        li.style.color = '#94a3b8';
+        listeUl.appendChild(li);
+      } else {
+        sonuclar.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          li.addEventListener('click', () => {
+            aktifSecim = item;
+            aramaInput.value = item;
+            secilenMetin.textContent = `Seçilen Öğe: ${item}`;
+            listeUl.style.display = 'none';
+            secimKarti.style.display = 'block';
+            basariBildirimi.style.display = 'none';
+          });
+          listeUl.appendChild(li);
+        });
+      }
+      listeUl.style.display = 'block';
+    }
 
-        function populateSelect(category) {
-            const select = document.getElementById('route-select');
-            select.innerHTML = '';
+    aramaInput.addEventListener('focus', () => listeyiGoster(aramaInput.value));
+    aramaInput.addEventListener('input', (e) => listeyiGoster(e.target.value));
 
-            let filteredKeys = Object.keys(routes).filter(key => {
-                if (category === 'all') return true;
-                if (category === 'fav') return favorites.includes(key);
-                return routes[key].categories.includes(category);
-            });
+    document.addEventListener('click', (e) => {
+      if (!document.querySelector('.arama-kapsayici').contains(e.target)) {
+        listeUl.style.display = 'none';
+      }
+    });
 
-            if (filteredKeys.length === 0) {
-                const opt = document.createElement('option');
-                opt.textContent = "Bu kategoride henüz kayıtlı rota yok";
-                select.appendChild(opt);
-                return;
-            }
+    talepFormu.addEventListener('submit', (e) => {
+      e.preventDefault();
+      secimKarti.style.display = 'none';
+      basariBildirimi.style.display = 'block';
+      talepFormu.reset();
+      aramaInput.value = '';
+    });
+  </script>
 
-            filteredKeys.forEach(key => {
-                const opt = document.createElement('option');
-                opt.value = key;
-                opt.textContent = `${routes[key].title.split(':')[0]} (${routes[key].tag})`;
-                select.appendChild(opt);
-            });
-
-            loadRoute(filteredKeys);
-        }
-
-        function loadRoute(key) {
-            if (!routes[key]) return;
-            currentRouteKey = key;
-            const data = routes[key];
-            const container = document.getElementById('route-display');
-            const isFav = favorites.includes(key);
-
-            let stepsHTML = data.steps.map((step, index) => `
-                <div class="step-item" id="step-${index}">
-                    <input type="checkbox" class="step-checkbox" onchange="toggleStep(${index})">
-                    <div class="step-content">
-                        <div class="step-header">
-                            <span class="step-time">${step.time}</span>
-                            <span class="step-type">${step.type}</span>
-                        </div>
-                        <div class="step-name">${step.name}</div>
-                        <div class="step-tip">${step.tip}</div>
-                        <a href="${step.map}" target="_blank" class="map-link">Google Haritalar'da Aç ↗</a>
-                    </div>
-                </div>
-            `).join('');
-
-            container.innerHTML = `
-                <div class="card-top-bar">
-                    <div class="badges">
-                        <span class="badge city">${data.city}</span>
-                        <span class="badge">${data.tag}</span>
-                    </div>
-                    <button class="fav-btn" onclick="toggleFavorite('${key}')" title="Favorilere Ekle">
-                        ${isFav ? '❤️' : '🤍'}
-                    </button>
-                </div>
-
-                <h2 class="route-title">${data.title}</h2>
-                <p class="route-desc">${data.desc}</p>
-
-                <div class="curator-note">
-                    <strong>✨ Küratörün Altın İpucu</strong>
-                    ${data.curatorTip}
-                </div>
-                
-                <div class="metrics">
-                    <div class="metric-item"><span>Süre</span><strong>${data.duration}</strong></div>
-                    <div class="metric-item"><span>Bütçe</span><strong>${data.budget}</strong></div>
-                    <div class="metric-item"><span>Tempo</span><strong>${data.tempo}</strong></div>
-                </div>
-
-                <div class="timeline-title">Adım Adım Rota Akışı (Tamamladıkça İşaretle)</div>
-                ${stepsHTML}
-
-                <button class="share-btn" onclick="shareWhatsApp()">
-                    📲 Bu Planı Partnerine / Arkadaşına Gönder
-                </button>
-            `;
-        }
-
-        function toggleFavorite(key) {
-            if (favorites.includes(key)) {
-                favorites = favorites.filter(item => item !== key);
-            } else {
-                favorites.push(key);
-            }
-            localStorage.setItem('gununRotasiFavs', JSON.stringify(favorites));
-            loadRoute(key);
-        }
-
-        function toggleStep(index) {
-            const el = document.getElementById(`step-${index}`);
-            el.classList.toggle('completed');
-        }
-
-        function switchMode(mode, btn) {
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            if (mode === 'planned') {
-                document.getElementById('planned-section').style.display = 'block';
-                document.getElementById('spontaneous-section').style.display = 'none';
-            } else {
-                document.getElementById('planned-section').style.display = 'none';
-                document.getElementById('spontaneous-section').style.display = 'block';
-            }
-        }
-
-        function generateSpontaneous() {
-            const side = document.getElementById('side-select').value;
-            const vibe = document.getElementById('vibe-select').value;
-            const list = spontaneousPool[side][vibe];
-            const randomIdea = list[Math.floor(Math.random() * list.length)];
-            
-            const resultBox = document.getElementById('spontaneous-result');
-            resultBox.style.display = 'block';
-            resultBox.innerHTML = `
-                <div class="step-item" style="background: var(--bg-color); border: 1px solid var(--border-color);">
-                    <div class="step-content">
-                        <div class="step-header">
-                            <span class="step-time">ANLIK KAÇAMAK ÖNERİSİ ✨</span>
-                            <span class="step-type">${side.toUpperCase()}</span>
-                        </div>
-                        <div class="step-name" style="font-size: 17px; margin-top: 6px;">${randomIdea.title}</div>
-                        <div class="step-tip">${randomIdea.desc}</div>
-                        <a href="${randomIdea.map}" target="_blank" class="map-link">Yol Tarifi Al ↗</a>
-                    </div>
-                </div>
-            `;
-        }
-
-        function shareWhatsApp() {
-            const data = routes[currentRouteKey];
-            const text = `Bugün için harika bir rota buldum! ✨\n\n*${data.title}*\n⏱ Süre: ${data.duration}\n📍 İlk Durak: ${data.steps.name}\n\nDetaylı plan için: ${window.location.href}`;
-            const url = `https://wa.me{encodeURIComponent(text)}`;
-            window.open(url, '_blank');
-        }
-
-        // Uygulamayı başlat
-        init();
-    </script>
 </body>
 </html>
