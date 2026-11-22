@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Günün Rotası — Akıllı Şehir, Ulaşım ve Date Rehberi</title>
+  <title>Günün Rotası — İstanbul 39 İlçe Akıllı Şehir, Ulaşım ve Date Rehberi</title>
   <style>
     :root {
       --bg-page: #F6F4EF;
@@ -40,7 +40,7 @@
     }
 
     .container {
-      max-width: 780px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 28px 18px;
     }
@@ -74,7 +74,7 @@
       font-style: italic;
       font-size: 16px;
       color: var(--text-muted);
-      max-width: 540px;
+      max-width: 560px;
       margin: 0 auto;
     }
 
@@ -423,10 +423,10 @@
       font-weight: 500;
     }
 
-    /* Date Planner Form Grid */
+    /* Form Grid */
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 12px;
       margin-bottom: 14px;
     }
@@ -491,9 +491,9 @@
   <div class="container">
     <!-- HEADER -->
     <header>
-      <div class="eyebrow">EDİTÖRYAL ŞEHİR, ULAŞIM &amp; DATE REHBERİ</div>
+      <div class="eyebrow">İSTANBUL 39 İLÇE • ŞEHİR, ULAŞIM &amp; DATE REHBERİ</div>
       <h1>Günün Rotası</h1>
-      <p class="subtitle">“Deniz kıyısından tarihi avlulara, sabah kahvaltısından gece lezzetlerine, kapıdan kapıya ulaşım ve date planlayıcı”</p>
+      <p class="subtitle">“Avrupa'dan Anadolu'ya İstanbul'un 39 ilçesinde sabah kahvaltısından gece lezzetlerine, kapıdan kapıya ulaşım ve date planlayıcı”</p>
     </header>
 
     <!-- MAIN MODES -->
@@ -506,17 +506,26 @@
     <!-- SECTION 1: KÜRASYON ROTALAR -->
     <div id="section-routes">
       <div class="pills-scroll" id="category-pills">
-        <button class="pill active" onclick="filterCategory('Tümü', this)">Tümü (8)</button>
+        <button class="pill active" onclick="filterCategory('Tümü', this)">Tümü (39 İlçe)</button>
         <button class="pill" onclick="filterCategory('Kahvaltı', this)">🍳 Sabah Kahvaltısı</button>
         <button class="pill" onclick="filterCategory('Gece', this)">🌙 Gece Yemeği</button>
-        <button class="pill" onclick="filterCategory('Deniz', this)">🌊 Deniz Kenarı</button>
+        <button class="pill" onclick="filterCategory('Deniz', this)">🌊 Deniz &amp; Sahil</button>
         <button class="pill" onclick="filterCategory('Sanat', this)">🎨 Müze &amp; Sanat</button>
         <button class="pill" onclick="filterCategory('Tarih', this)">🏛️ Tarih &amp; Avlu</button>
+        <button class="pill" onclick="filterCategory('Doğa', this)">🌲 Park &amp; Doğa</button>
       </div>
 
       <div class="card">
-        <label class="control-label" for="route-select">ROTANI SEÇ:</label>
-        <select id="route-select" onchange="renderSelectedRoute()"></select>
+        <div class="form-grid" style="margin-bottom: 0;">
+          <div>
+            <label class="control-label" for="district-filter">İLÇE FİLTRESİ (39 İLÇE):</label>
+            <select id="district-filter" onchange="populateSelect()"></select>
+          </div>
+          <div>
+            <label class="control-label" for="route-select">ROTANI SEÇ:</label>
+            <select id="route-select" onchange="renderSelectedRoute()"></select>
+          </div>
+        </div>
       </div>
 
       <div class="card" id="route-detail-card"></div>
@@ -526,21 +535,15 @@
     <div id="section-date" class="hidden">
       <div class="card">
         <h2 class="route-title" style="font-size: 22px;">Kişisel Date Programı Oluştur ✨</h2>
-        <p class="route-desc">Saatine, bütçene ve moduna göre adım adım buluşma planı ve Google Haritalar ulaşım rotası çıkar.</p>
+        <p class="route-desc">İstanbul'un 39 ilçesinden birini seç; saatine, bütçene ve moduna göre adım adım buluşma planı ve Google Haritalar ulaşım rotası çıkar.</p>
 
         <div class="form-grid">
           <div>
-            <label class="control-label">BÖLGE SEÇİMİ</label>
-            <select id="date-area">
-              <option value="Karaköy &amp; Galata">Karaköy &amp; Galata</option>
-              <option value="Moda &amp; Kadıköy">Moda &amp; Kadıköy</option>
-              <option value="Beşiktaş &amp; Nişantaşı">Beşiktaş &amp; Nişantaşı</option>
-              <option value="Balat &amp; Fener">Balat &amp; Fener</option>
-              <option value="Bebek &amp; Arnavutköy">Bebek &amp; Arnavutköy</option>
-            </select>
+            <label class="control-label" for="date-area">İLÇE / BÖLGE SEÇİMİ (39 İLÇE)</label>
+            <select id="date-area"></select>
           </div>
           <div>
-            <label class="control-label">ZAMAN DİLİMİ</label>
+            <label class="control-label" for="date-time">ZAMAN DİLİMİ</label>
             <select id="date-time">
               <option value="Sabah Kahvaltısı (09:00 - 13:00)">Sabah Kahvaltısı (09:00 - 13:00)</option>
               <option value="Öğleden Sonra &amp; Kahve (14:00 - 18:00)">Öğleden Sonra &amp; Kahve (14:00 - 18:00)</option>
@@ -549,7 +552,7 @@
             </select>
           </div>
           <div>
-            <label class="control-label">DATE MODU</label>
+            <label class="control-label" for="date-vibe">DATE MODU</label>
             <select id="date-vibe">
               <option value="Romantik &amp; Manzara">Romantik &amp; Manzara</option>
               <option value="Sanat, Müze &amp; Sokak Keşfi">Sanat, Müze &amp; Sokak Keşfi</option>
@@ -558,9 +561,9 @@
             </select>
           </div>
           <div>
-            <label class="control-label">ULAŞIM TERCİHİ</label>
+            <label class="control-label" for="date-transit">ULAŞIM TERCİHİ</label>
             <select id="date-transit">
-              <option value="Toplu Taşıma (Metro / Vapur / Otobüs)">Toplu Taşıma (Metro / Vapur / Otobüs)</option>
+              <option value="Toplu Taşıma (Metro / Metrobüs / Vapur / Otobüs)">Toplu Taşıma (Metro / Metrobüs / Vapur / Otobüs)</option>
               <option value="Taksi &amp; Yürüyüş">Taksi &amp; Yürüyüş</option>
               <option value="Özel Araç (Otopark Uyumlu)">Özel Araç (Otopark Uyumlu)</option>
             </select>
@@ -577,22 +580,30 @@
     <div id="section-transit" class="hidden">
       <div class="card">
         <h2 class="route-title" style="font-size: 22px;">Canlı Ulaşım, Duraklar &amp; Saate Göre Mekan Bul</h2>
-        <p class="route-desc">Bulunduğun yeri veya gitmek istediğin semti yaz; en yakın otobüs duraklarını, taksi duraklarını, sabah kahvaltıcılarını veya gece açık mekanları anında haritada aç.</p>
+        <p class="route-desc">Listeden 39 ilçeden birini seç veya özel semt/mahalle adı yaz; en yakın otobüs duraklarını, taksi duraklarını, sabah kahvaltıcılarını veya gece açık mekanları anında haritada aç.</p>
 
-        <label class="control-label" for="location-input">SEMT / KONUM YAZ (ÖRNEK: KARAKÖY, BEŞİKTAŞ, MODA, ARNAVUTKÖY)</label>
-        <input type="text" id="location-input" value="Karaköy, İstanbul" oninput="updateLiveMap()" />
+        <div class="form-grid">
+          <div>
+            <label class="control-label" for="transit-district-select">HIZLI İLÇE SEÇ (39 İLÇE)</label>
+            <select id="transit-district-select" onchange="selectTransitDistrict()"></select>
+          </div>
+          <div>
+            <label class="control-label" for="location-input">SEMT / MAHALLE YAZ</label>
+            <input type="text" id="location-input" value="Beyoğlu, İstanbul" oninput="updateLiveMap()" />
+          </div>
+        </div>
 
         <div class="action-grid" style="margin-top: 14px;">
           <button class="action-btn primary" onclick="searchMaps('otobüs durağı')">🚏 Otobüs Durakları</button>
           <button class="action-btn primary" onclick="searchMaps('taksi durağı')">🚕 Taksi Durakları</button>
           <button class="action-btn" onclick="searchMaps('sabah kahvaltı mekanları')">🍳 Sabah Kahvaltısı</button>
           <button class="action-btn" onclick="searchMaps('gece açık yemek çorbacı kokoreç')">🌙 Gece Açık Yemek</button>
-          <button class="action-btn" onclick="searchMaps('metro ve vapur iskelesi')">🚇 Metro &amp; Vapur</button>
+          <button class="action-btn" onclick="searchMaps('metro metrobüs vapur iskelesi')">🚇 Metro &amp; Vapur</button>
           <button class="action-btn" onclick="openDirections()">🧭 Yol Tarifi Al</button>
         </div>
 
         <div class="map-box" style="margin-top: 16px;">
-          <iframe id="live-map-iframe" src="https://maps.google.com/maps?q=Karak%C3%B6y%2C%20%C4%B0stanbul&t=&z=14&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+          <iframe id="live-map-iframe" src="https://maps.google.com/maps?q=Beyo%C4%9Flu%2C%20%C4%B0stanbul&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
         </div>
       </div>
 
@@ -605,33 +616,33 @@
           <div class="stop-item">
             <div class="stop-time">07:30</div>
             <div class="stop-info">
-              <h4>Sabah Kahvaltısı &amp; Boğaz Hattı (Beşiktaş Kahvaltıcılar Sokağı / Çengelköy)</h4>
+              <h4>Sabah Kahvaltısı &amp; Boğaz / Kıyı Hattı (Beşiktaş / Çengelköy / Sarıyer)</h4>
               <p>Güne erken başlayanlar için fırından yeni çıkmış börek, menemen ve çay durakları.</p>
-              <span class="transit-badge">🚌 Otobüs: 28, 30D, 15F | 🚕 İskele Taksi Durağı</span>
+              <span class="transit-badge">🚌 Otobüs: 28, 30D, 15F, 25E | 🚕 İskele Taksi Durağı</span>
             </div>
           </div>
           <div class="stop-item">
             <div class="stop-time">13:30</div>
             <div class="stop-info">
-              <h4>Öğle Molası &amp; Sanat Yürüyüşü (Karaköy &amp; Galataport)</h4>
-              <p>Esnaf lokantaları, modern galeriler ve sahil yürüyüş yolu.</p>
-              <span class="transit-badge">🚊 Tramvay: T1 Karaköy | 🚕 Kemankeş Taksi</span>
+              <h4>Öğle Molası &amp; Kültür Yürüyüşü (Karaköy / Bakırköy / Kadıköy)</h4>
+              <p>Esnaf lokantaları, modern galeriler ve sahil yürüyüş yolları.</p>
+              <span class="transit-badge">🚊 Marmaray / T1 Tramvay / M4 Metro | 🚕 Merkez Taksi</span>
             </div>
           </div>
           <div class="stop-item">
             <div class="stop-time">19:30</div>
             <div class="stop-info">
-              <h4>Akşam Yemeği &amp; Gün Batımı (Moda Sahil / Arnavutköy)</h4>
+              <h4>Akşam Yemeği &amp; Gün Batımı (Moda / Arnavutköy / Florya / Büyükçekmece)</h4>
               <p>Deniz kenarında akşam yemeği ve ardından artizan kahve veya tatlı molası.</p>
-              <span class="transit-badge">🚇 Metro: M4 Kadıköy + Nostaljik Tramvay | 🚕 Moda Taksi</span>
+              <span class="transit-badge">🚇 Marmaray &amp; Sahil Hatları | 🚕 Sahil Taksi</span>
             </div>
           </div>
           <div class="stop-item">
             <div class="stop-time">01:30</div>
             <div class="stop-info">
-              <h4>Gece Saati Lezzetleri (Taksim / Kadıköy Rıhtım / Beşiktaş Çarşı)</h4>
+              <h4>Gece Saati Lezzetleri (Taksim / Kadıköy / Beşiktaş / Avcılar / Şişli)</h4>
               <p>Gece yarısından sonra açık tarihi işkembeciler, kokoreççiler, ıslak hamburger ve gece dönercileri.</p>
-              <span class="transit-badge">🚌 Gece Metrosu (Hafta Sonu M2/M4) | 🚕 7/24 Meydan Taksi</span>
+              <span class="transit-badge">🚌 24 Saat Metrobüs &amp; Gece Metrosu (M2/M4) | 🚕 7/24 Taksi</span>
             </div>
           </div>
         </div>
@@ -642,28 +653,208 @@
     <div class="card">
       <div class="badge-group" style="margin-bottom: 8px;">
         <span class="badge-city">HAFTALIK SEÇKİ</span>
-        <span class="badge-tag">Gizli Rotalar &amp; İndirimli Mekanlar</span>
+        <span class="badge-tag">39 İlçeden Gizli Rotalar &amp; Mekan Fırsatları</span>
       </div>
       <h3 class="route-title" style="font-size: 20px; margin-bottom: 6px;">Hafta Sonu Rotalarını Cebine Al</h3>
-      <p class="route-desc" style="margin-bottom: 12px;">Her Cuma seçili kahvaltı, date ve gece lezzet duraklarıyla iş ortağı mekan fırsatlarını e-postana gönderelim.</p>
+      <p class="route-desc" style="margin-bottom: 12px;">Her Cuma İstanbul'un farklı ilçelerinden seçili kahvaltı, date ve gece lezzet duraklarıyla iş ortağı fırsatlarını e-postana gönderelim.</p>
       <form class="newsletter-row" onsubmit="handleSubscribe(event)">
-        <input type="email" id="newsletter-email" placeholder="E-posta adresin (örnek: ad@mail.com)" required />
+        <input type="email" id="newsletter-email" placeholder="E-posta adresin (örnek: ad@mail.com)" requir />
         <button type="submit" class="newsletter-btn">Listeye Katıl</button>
       </form>
       <div id="newsletter-status" class="status-msg hidden"></div>
     </div>
 
     <footer>
-      Günün Rotası • Bazı mekan ve ulaşım bağlantıları iş ortağı (affiliate) veya sponsorlu öneri içerebilir.
+      Günün Rotası • İstanbul 39 İlçe Rehberi • Bazı mekan ve ulaşım bağlantıları iş ortağı (affiliate) veya sponsorlu öneri içerebilir.
     </footer>
   </div>
 
   <script>
-    const routesData = [
-      {
-        id: 1,
-        city: "İSTANBUL",
-        category: "Sanat",
-        tag: "Sahil & Çağdaş Sanat",
-        selectTitle: "Karaköy & Galata (Sahil & Çağdaş Sanat)",
-        title: 
+    // İstanbul'un 39 İlçesi (25 Avrupa + 14 Anadolu)
+    const istanbulDistricts = [
+      // Avrupa Yakası (25)
+      { name: "Arnavutköy", side: "Avrupa", category: "Doğa", spot: "Karaburun Sahil & Tayakadın Orman Yolu", transit: "M11 Arnavutköy Hastane Metrosu • 336 / 336E İETT", taxi: "Arnavutköy Merkez Taksi • Karaburun Taksi", tip: "Karaburun sahilinde gün batımı ve balık restoranları hafta sonu kaçamağı için idealdir." },
+      { name: "Avcılar", side: "Avrupa", category: "Deniz", spot: "Ambarlı Sahil Parkı & Küçükçekmece Göl Kıyısı", transit: "Metrobüs Avcılar Merkez • 76 / 146 İETT", taxi: "Avcılar Meydan Taksi • Ambarlı Sahil Taksi", tip: "Ambarlı sahil yürüyüş yolunda deniz havası alıp Marmara Caddesi'nde gece lezzetlerini deneyebilirsiniz." },
+      { name: "Bağcılar", side: "Avrupa", category: "Gece", spot: "Bağcılar Meydan & Güneşli Lezzet Hattı", transit: "M1B & M3 Kirazlı-Bağcılar Metro • T1 Tramvay", taxi: "Bağcılar Meydan Taksi • Güneşli Taksi", tip: "Kirazlı ve Meydan çevresinde geç saatlere kadar açık kebap ve çorba durakları bulunur." },
+      { name: "Bahçelievler", side: "Avrupa", category: "Kahvaltı", spot: "Talatpaşa Bulvarı & Yayla Kafe Sokağı", transit: "M1A Yenibosna/Bahçelievler Metro • Metrobüs", taxi: "Yayla Meydan Taksi • Şirinevler Taksi", tip: "Yayla bölgesindeki butik kahvaltıcılar ve üçüncü nesil kahveciler hafta sonu sabahları çok keyiflidir." },
+      { name: "Bakırköy", side: "Avrupa", category: "Deniz", spot: "Florya Atatürk Ormanı, Sahil & Yeşilköy", transit: "Marmaray Bakırköy / Yeşilköy • M3 Metro • İDO", taxi: "Bakırköy Özgürlük Meydanı Taksi • Yeşilköy Sahil Taksi", tip: "Yeşilköy sahil hattında yürüyüş yapıp tarihi Rum evleri arasında kahve molası verebilirsiniz." },
+      { name: "Başakşehir", side: "Avrupa", category: "Doğa", spot: "Bahçeşehir Gölet Parkı & Sular Vadisi", transit: "M3 Başakşehir-Kayaşehir Metro • 146T İETT", taxi: "Bahçeşehir Gölet Taksi • Başakşehir Merkez Taksi", tip: "Bahçeşehir Gölet çevresi akşam yürüyüşü ve göl manzaralı restoranlar için oldukça sakindir." },
+      { name: "Bayrampaşa", side: "Avrupa", category: "Gece", spot: "Yıldırım Mahallesi Boşnak Börekçileri & Adapark", transit: "M1A / M1B Sağmalcılar & Kocatepe Metro • T4 Tramvay", taxi: "Bayrampaşa Meydan Taksi • Yıldırım Taksi", tip: "Sabah erken saatlerde Yıldırım Mahallesi'nde taze Boşnak böreği ve mantısı yemeden dönmeyin." },
+      { name: "Beşiktaş", side: "Avrupa", category: "Kahvaltı", spot: "Kahvaltıcılar Sokağı, Yıldız Parkı & Bebek-Ortaköy", transit: "Beşiktaş İskele Vapuru • M7 Yıldız Metro • 22 / 25E / 30D", taxi: "Beşiktaş Meydan Taksi • Bebek Parkı Taksi", tip: "Sabah Beşiktaş'ta kahvaltı yapıp Yıldız Parkı içinden Ortaköy veya Bebek sahiline yürüyebilirsiniz." },
+      { name: "Beylikdüzü", side: "Avrupa", category: "Deniz", spot: "Yaşam Vadisi & West İstanbul Marina (Yakuplu)", transit: "Metrobüs Beylikdüzü Sondurak • 145T İETT", taxi: "Yaşam Vadisi Taksi • Marina Taksi Durağı", tip: "Yaşam Vadisi'nin Japon Bahçesi bölümünde yürüyüş yapıp akşam Yakuplu Marina'da deniz kenarına geçebilirsiniz." },
+      { name: "Beyoğlu", side: "Avrupa", category: "Sanat", spot: "Karaköy Rıhtım, Galata Kulesi, Cihangir & İstiklal", transit: "M2 Şişhane/Taksim Metro • T1 Karaköy • Tünel & Vapur", taxi: "Karaköy Rıhtım Taksi • Taksim Meydan Taksi", tip: "İstanbul Modern terasından Boğaz'ı izleyip Galata'nın ara sokaklarında kahve ve gece lezzetlerini keşfedin." },
+      { name: "Büyükçekmece", side: "Avrupa", category: "Deniz", spot: "Kordonboyu Sahil, Mimar Sinan Köprüsü & Kültürpark", transit: "400A / 401 İETT • Metrobüs Tüyap Bağlantısı", taxi: "Büyükçekmece Kordon Taksi • Mimaroba Taksi", tip: "Tarihi Kanuni Sultan Süleyman Köprüsü'nde gün batımını izlemek İstanbul'un en dingin anlarındandır." },
+      { name: "Çatalca", side: "Avrupa", category: "Doğa", spot: "İnceğiz Mağaraları, Çilingoz & Köy Kahvaltıları", transit: "401 / 401T Çatalca İETT Hatları", taxi: "Çatalca Meydan Taksi • İnceğiz Taksi", tip: "Hafta sonu şehir kalabalığından kaçıp doğa içinde serpme köy kahvaltısı yapmak için birebirdir." },
+      { name: "Esenler", side: "Avrupa", category: "Tarih", spot: "15 Temmuz Millet Bahçesi & Dörtyol Meydanı", transit: "M1B Esenler & Menderes Metro • 33 / 85C İETT", taxi: "Esenler Dörtyol Taksi • Otogar Taksi", tip: "Geniş yürüyüş parkurları ve aile dostu açık alanlarıyla hafta sonu nefes alma noktasıdır." },
+      { name: "Esenyurt", side: "Avrupa", category: "Gece", spot: "Esenyurt Meydan, Necmi Kadıoğlu Parkı & Gece Lezzetleri", transit: "Metrobüs Haramidere/Saadetdere • 142 / 146 İETT", taxi: "Esenyurt Meydan Taksi • Cumhuriyet Meydanı Taksi", tip: "Meydan çevresinde ve Doğan Araslı Bulvarı üzerinde gece geç saatlere kadar açık restoranlar bulunur." },
+      { name: "Eyüpsultan", side: "Avrupa", category: "Tarih", spot: "Pierre Loti Tepesi, Eyüp Sultan Meydanı & Göktürk", transit: "T5 Eminönü-Alibeyköy Tramvay • TF2 Teleferik • Haliç Vapuru", taxi: "Eyüpsultan Meydan Taksi • Göktürk Merkez Taksi", tip: "T5 tramvayı ile Haliç kıyısından gelip teleferikle Pierre Loti'de gün batımı çayı içebilirsiniz." },
+      { name: "Fatih", side: "Avrupa", category: "Tarih", spot: "Süleymaniye, Balat-Fener, Sultanahmet & Eminönü", transit: "T1 Tramvay • Marmaray Sirkeci • M2 Vezneciler • Vapur", taxi: "Süleymaniye Taksi • Balat Sahil Taksi • Eminönü Taksi", tip: "Sabah Balat'ın renkli sokaklarını gezip öğleden sonra Süleymaniye avlularında kuru fasulye ve kahve molası verin." },
+      { name: "Gaziosmanpaşa", side: "Avrupa", category: "Doğa", spot: "Vialand Tema Park & Yıldıztabya Seyir Noktaları", transit: "T4 Topkapı-Mescid-i Selam Tramvay • 36T / 38B İETT", taxi: "Gaziosmanpaşa Meydan Taksi • Vialand Taksi", tip: "Eğlence parkı ve alışveriş caddesiyle enerjik bir gün planı için tercih edilebilir." },
+      { name: "Güngören", side: "Avrupa", category: "Gece", spot: "Merter Tekstil Merkezi & Kale Center Çevresi", transit: "T1 Bağcılar-Kabataş Tramvay • M1A Merter Metro • Metrobüs", taxi: "Merter Metro Taksi • Kale Center Taksi", tip: "Merter çevresindeki esnaf lokantaları ve gece açık kebapçılar lezzet açısından oldukça zengindir." },
+      { name: "Kağıthane", side: "Avrupa", category: "Doğa", spot: "Hasbahçe Mesire Alanı & Sadabad Dere Yolu", transit: "M7 & M11 Kağıthane Metro • 41AT / 62 İETT", taxi: "Kağıthane Merkez Taksi • Hasbahçe Taksi", tip: "M11 ve M7 metro hatlarının kesişiminde yer aldığı için hem havalimanına hem Beşiktaş'a ulaşımı çok hızlıdır." },
+      { name: "Küçükçekmece", side: "Avrupa", category: "Deniz", spot: "Menekşe Sahil Parkı & Küçükçekmece Göl Kıyısı", transit: "Marmaray Küçükçekmece / Mustafa Kemal • Metrobüs", taxi: "Küçükçekmece İskele Taksi • Cennet Mahallesi Taksi", tip: "Göl ile denizin birleştiği Menekşe sahilinde gün batımı yürüyüşü oldukça keyiflidir." },
+      { name: "Sarıyer", side: "Avrupa", category: "Deniz", spot: "Emirgan Korusu, Yeniköy, Tarabya & Kilyos", transit: "M2 Hacıosman Metro • 25E / 40 / 42T İETT • Boğaz Vapuru", taxi: "Emirgan Taksi • Yeniköy İskele Taksi • Sarıyer Merkez Taksi", tip: "Emirgan'da sabah kahvaltısı yapıp Yeniköy-Tarabya sahil hattında Boğaz'a sıfır yürüyüş yapabilirsiniz." },
+      { name: "Silivri", side: "Avrupa", category: "Deniz", spot: "Silivri Sahil Kordonu, Selimpaşa & Yoğurtçu Durakları", transit: "300 / 303 Silivri İETT Ekspres Hatları", taxi: "Silivri Sahil Taksi • Otogar Taksi", tip: "Meşhur Silivri yoğurdu ve sahil boyunca uzanan balık restoranları hafta sonu rotası için idealdir." },
+      { name: "Sultangazi", side: "Avrupa", category: "Doğa", spot: "Sultangazi Kent Ormanı & Mimar Sinan Kent Ormanı", transit: "T4 Cebeci & Mescid-i Selam Tramvay • 36CE İETT", taxi: "Sultangazi Meydan Taksi • Kent Ormanı Taksi", tip: "Seyir kulesi, gölet çevresi ve bisiklet yollarıyla doğa içinde sakin bir sabah geçirebilirsiniz." },
+      { name: "Şişli", side: "Avrupa", category: "Sanat", spot: "Nişantaşı, Teşvikiye, Bomontiada & Maçka Parkı", transit: "M2 Osmanbey & Şişli-Mecidiyeköy Metro • Metrobüs", taxi: "Nişantaşı Valikonağı Taksi • Bomontiada Taksi", tip: "Bomontiada'da sergi ve akşam yemeği, gündüz ise Nişantaşı sokaklarında artizan kahve rotası yapabilirsiniz." },
+      { name: "Zeytinburnu", side: "Avrupa", category: "Tarih", spot: "Kazlıçeşme Sanat, Fişekhane & Merkezefendi", transit: "Marmaray Zeytinburnu / Kazlıçeşme • T1 Tramvay", taxi: "Fişekhane Taksi • Zeytinburnu Meydan Taksi", tip: "Tarihi Fişekhane'nin restore edilmiş taş yapılarında sergi, gastronomi ve sahil yürüyüşünü birleştirin." },
+
+      // Anadolu Yakası (14)
+      { name: "Adalar", side: "Anadolu", category: "Deniz", spot: "Büyükada Aya Yorgi, Heybeliada & Burgazada", transit: "Şehir Hatları & Mavi Marmara Vapurları (Kabataş/Kadıköy/Bostancı)", taxi: "Elektrikli Ada Taksi & Bisiklet Kiralama", tip: "Burgazada Kalpazankaya'da gün batımı veya Büyükada'da sabah bisiklet turu en özel deneyimlerdir." },
+      { name: "Ataşehir", side: "Anadolu", category: "Gece", spot: "Batı Ataşehir Bulvar 216, Watergarden & Küçükbakkalköy", transit: "M8 Bostancı-Parseller Metro • 8A / 19F / 256 İETT", taxi: "Watergarden Taksi • Batı Ataşehir Taksi", tip: "Modern restoranları, su gösterileri ve geç saatlere kadar canlı mekanlarıyla Anadolu Yakası'nın buluşma noktasıdır." },
+      { name: "Beykoz", side: "Anadolu", category: "Doğa", spot: "Anadolu Kavağı, Polonezköy, Kanlıca & Küçüksu", transit: "15 / 15F / 15BK İETT • Boğaz Hattı Vapurları", taxi: "Kanlıca İskele Taksi • Kavacık Taksi • Polonezköy Taksi", tip: "Kanlıca'da pudra şekerli yoğurt yiyip Polonezköy tabiat parkında uzun bir doğa yürüyüşüne çıkabilirsiniz." },
+      { name: "Çekmeköy", side: "Anadolu", category: "Doğa", spot: "Çekmeköy Doğa Parkı & Alemdağ Orman Yürüyüş Yolu", transit: "M5 Üsküdar-Samandıra Metro • 11ÜS / 14A İETT", taxi: "Çekmeköy Merkez Taksi • Madenler Metro Taksi", tip: "M5 metrosu ile kolayca ulaşıp Alemdağ orman havasında kahvaltı yapabilirsiniz." },
+      { name: "Kadıköy", side: "Anadolu", category: "Deniz", spot: "Moda Sahil, Kadıköy Çarşı, Bahariye & Bağdat Caddesi", transit: "M4 Kadıköy Metro • Marmaray • T3 Tramvay • Kadıköy Vapuru", taxi: "Moda Taksi • Kadıköy Rıhtım Taksi • Şaşkınbakkal Taksi", tip: "Moda İskelesi'nde kahve içip gün batımında sahil çimlerinde Tarihi Yarımada manzarasını izleyin." },
+      { name: "Kartal", side: "Anadolu", category: "Deniz", spot: "Dragos Sahil, Kartal Kordonboyu & Aydos Ormanı", transit: "M4 Kartal Metro • Marmaray Kartal & Atalar", taxi: "Kartal Sahil Taksi • Dragos Taksi Durağı", tip: "Aydos Ormanı gölet kenarında sabah yürüyüşü yapıp akşam Dragos sahilinde Adalar manzarasına karşı yemek yiyebilirsiniz." },
+      { name: "Maltepe", side: "Anadolu", category: "Deniz", spot: "Maltepe Orhangazi Şehir Parkı & Küçükyalı Sahil", transit: "M4 Maltepe/Küçükyalı Metro • Marmaray", taxi: "Maltepe Sahil Taksi • Küçükyalı Taksi", tip: "Geniş bisiklet ve yürüyüş parkurları olan Maltepe sahilinde gün batımı çok keyiflidir." },
+      { name: "Pendik", side: "Anadolu", category: "Deniz", spot: "Pendik Marina, Sahil Parkı & Ballıca Köyü", transit: "M4 Pendik/Tavşantepe Metro • Marmaray & YHT • İDO", taxi: "Pendik Marina Taksi • Çarşı Taksi", tip: "Pendik Marina'da deniz kenarı kafelerde oturabilir veya hafta sonu Ballıca'da köy kahvaltısına gidebilirsiniz." },
+      { name: "Sancaktepe", side: "Anadolu", category: "Doğa", spot: "Sancaktepe Kent Parkı & Aydos Kuzey Orman Hattı", transit: "M5 Sancaktepe & Samandıra Merkez Metro • 11ÜS İETT", taxi: "Sancaktepe Meydan Taksi • Samandıra Taksi", tip: "M5 metro hattının uzamasıyla birlikte ulaşımı çok pratikleşen sakin bir hafta sonu rotasıdır." },
+      { name: "Sultanbeyli", side: "Anadolu", category: "Tarih", spot: "Aydos Kalesi, Gölet Parkı & Sultan Korusu", transit: "131T / 132C / KM70 İETT Hatları", taxi: "Sultanbeyli Meydan Taksi • Gölet Taksi", tip: "İstanbul'un fethinden kalma tarihi Aydos Kalesi'ne çıkıp panoramik manzarayı görebilirsiniz." },
+      { name: "Şile", side: "Anadolu", category: "Deniz", spot: "Şile Feneri, Ağva Göksu Deresi & Saklıgöl", transit: "139 / 139A Üsküdar-Şile-Ağva İETT Hatları", taxi: "Şile Meydan Taksi • Ağva Merkez Taksi", tip: "Sabah Saklıgöl'de kahvaltı, öğleden sonra Şile Feneri ve Ağva nehir kıyısında tekne turu yapabilirsiniz." },
+      { name: "Tuzla", side: "Anadolu", category: "Deniz", spot: "Tuzla Marina, Mercan Sahil & Tarihi Tuzla Köftecileri", transit: "Marmaray Tuzla • 130 / 130Ş İETT Hatları", taxi: "Tuzla Marina Taksi • Sahil Taksi", tip: "Sahil boyunca yürüyüp meşhur Tuzla köftecilerinde öğle yemeği ve marina turu planlayabilirsiniz." },
+      { name: "Ümraniye", side: "Anadolu", category: "Doğa", spot: "Ümraniye Millet Bahçesi, Trabzon Park & Meydan", transit: "M5 Ümraniye/Çarşı/Yamanevler Metro • M8 Metro", taxi: "Ümraniye Çarşı Taksi • Meydan AVM Taksi", tip: "M5 ve M8 metro hatlarıyla kolayca ulaşıp Trabzon Park'ın çam ağaçları arasında kahvaltı yapabilirsiniz." },
+      { name: "Üsküdar", side: "Anadolu", category: "Kahvaltı", spot: "Çengelköy Çınaraltı, Kuzguncuk, Kız Kulesi & Salacak", transit: "M5 Üsküdar Metro • Marmaray • Şehir Hatları Vapuru", taxi: "Üsküdar İskele Taksi • Çengelköy Taksi • Kuzguncuk Taksi", tip: "Sabah Çengelköy Çınaraltı'nda börek-çay, öğleden sonra Kuzguncuk sokakları ve akşam Salacak'ta gün batımı yapın." }
+    ];
+
+    // Her ilçe için zengin rota verisi üret
+    const routesData = istanbulDistricts.map((d, idx) => ({
+      id: idx + 1,
+      district: d.name,
+      side: d.side,
+      city: `İSTANBUL • ${d.side.toUpperCase()} YAKASI`,
+      category: d.category,
+      tag: `${d.name} • ${d.category} Rotası`,
+      selectTitle: `${d.name} (${d.side}) — ${d.spot}`,
+      title: `${d.name} Rehberi: ${d.spot}`,
+      desc: `${d.side} Yakası'nın öne çıkan ilçelerinden ${d.name} bölgesinde; sabah kahvaltısından akşam yemeğine, toplu taşıma duraklarından taksi noktalarına kadar adım adım şehir rotası.`,
+      tip: d.tip,
+      promoTitle: `${d.name} Öne Çıkan Mekanlar & Rezervasyon Seçenekleri`,
+      promoDesc: `${d.name} bölgesindeki en yüksek puanlı kahvaltı, akşam yemeği ve kafe duraklarını haritada incele.`,
+      promoUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.name + " İstanbul en iyi restoran kafe kahvaltı")}`,
+      mapQuery: `${d.name} İstanbul`,
+      busStops: d.transit,
+      taxiStops: d.taxi,
+      stops: [
+        { time: "09:30", name: `${d.name} — Sabah Kahvaltısı & İlk Kahve`, detail: `Güne ${d.name} merkez veya sahil hattında taze fırın ürünleri ve kahvaltı ile başlangıç.`, transit: d.transit.split("•")[0].trim() },
+        { time: "13:30", name: `${d.spot}`, detail: `${d.name} ilçesinin simge noktalarında yürüyüş, fotoğraf ve kültür molası.`, transit: "Yürüyüş / Kısa Hat" },
+        { time: "19:30", name: `${d.name} Akşam Yemeği & Gece Durakları`, detail: `Gün batımı sonrası yerel lezzet restoranları, tatlıcılar ve güvenli dönüş noktaları.`, transit: d.taxi.split("•")[0].trim() }
+      ]
+    }));
+
+    let currentCategory = "Tümü";
+    let likedIds = new Set(JSON.parse(localStorage.getItem("gunun_rotasi_likes") || "[]"));
+
+    function saveLikes() {
+      localStorage.setItem("gunun_rotasi_likes", JSON.stringify([...likedIds]));
+    }
+
+    function initDistrictDropdowns() {
+      const avrupa = istanbulDistricts.filter(d => d.side === "Avrupa");
+      const anadolu = istanbulDistricts.filter(d => d.side === "Anadolu");
+
+      const groupedOptions = `
+        <optgroup label="Avrupa Yakası (25 İlçe)">
+          ${avrupa.map(d => `<option value="${d.name}">${d.name}</option>`).join("")}
+        </optgroup>
+        <optgroup label="Anadolu Yakası (14 İlçe)">
+          ${anadolu.map(d => `<option value="${d.name}">${d.name}</option>`).join("")}
+        </optgroup>
+      `;
+
+      // 1. Kürasyon Rotalar ilçe filtresi
+      document.getElementById("district-filter").innerHTML =
+        `<option value="ALL">Tüm İlçeler (39 İlçe)</option>` + groupedOptions;
+
+      // 2. Date Planlayıcı ilçe seçimi
+      document.getElementById("date-area").innerHTML = groupedOptions;
+      document.getElementById("date-area").value = "Beyoğlu";
+
+      // 3. Harita & Durak sekmesi hızlı ilçe seçimi
+      document.getElementById("transit-district-select").innerHTML = groupedOptions;
+      document.getElementById("transit-district-select").value = "Beyoğlu";
+    }
+
+    function switchMode(mode, btn) {
+      document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      document.getElementById("section-routes").classList.add("hidden");
+      document.getElementById("section-date").classList.add("hidden");
+      document.getElementById("section-transit").classList.add("hidden");
+
+      document.getElementById("section-" + mode).classList.remove("hidden");
+    }
+
+    function filterCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      populateSelect();
+    }
+
+    function populateSelect() {
+      const select = document.getElementById("route-select");
+      const selectedDistrict = document.getElementById("district-filter").value;
+
+      let filtered = routesData;
+      if (selectedDistrict !== "ALL") {
+        filtered = filtered.filter(r => r.district === selectedDistrict);
+      }
+      if (currentCategory !== "Tümü") {
+        const byCat = filtered.filter(r => r.category === currentCategory);
+        if (byCat.length > 0) {
+          filtered = byCat;
+        }
+      }
+
+      select.innerHTML = filtered.map(r =>
+        `<option value="${r.id}">${r.selectTitle}</option>`
+      ).join("");
+
+      renderSelectedRoute();
+    }
+
+    function toggleLike(id) {
+      if (likedIds.has(id)) {
+        likedIds.delete(id);
+      } else {
+        likedIds.add(id);
+      }
+      saveLikes();
+      renderSelectedRoute();
+    }
+
+    function renderSelectedRoute() {
+      const id = Number(document.getElementById("route-select").value);
+      const route = routesData.find(r => r.id === id) || routesData[0];
+      const isLiked = likedIds.has(route.id);
+
+      const mapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(route.mapQuery)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+      const gmapsDirect = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(route.mapQuery)}`;
+      const busDirect = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(route.mapQuery + " otobüs durağı")}`;
+      const taxiDirect = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(route.mapQuery + " taksi durağı")}`;
+      const dirDirect = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(route.mapQuery)}`;
+
+      const stopsHtml = route.stops.map(s => `
+        <div class="stop-item">
+          <div class="stop-time">${s.time}</div>
+          <div class="stop-info">
+            <h4>${s.name}</h4>
+            <p>${s.detail}</p>
+            <span class="transit-badge">🧭 Ulaşım: ${s.transit}</span>
+          </div>
+        </div>
+      `).join("");
+
+      document.getElementById("route-detail-card").innerHTML = `
+        <div class="badges-row">
+          <div class="badge-group">
+            <span class="badge-city">${route.city}</span>
+            <span class="badge-tag">${route.tag}</span>
+          </div>
+          <button class="fav-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike(${route.id})" title="Favorilere Ekle">
+            ${isLiked ? '♥' : '♡'}
+          </button>
+        </div>
+
+        <h2 class="route-title">${route.title}</h2>
