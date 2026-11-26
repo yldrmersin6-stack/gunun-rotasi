@@ -1861,5 +1861,261 @@ function addHistoricalStop(idx) {
             renderAll();
         };
     </script>
+<!-- ==================== INSTAGRAM STORY ANI KARTI EKLENTİSİ ==================== -->
+<div id="storyCardFloatingTrigger" style="position:fixed; bottom:20px; right:20px; z-index:9998;">
+  <button onclick="openStoryCardModal()" style="
+    background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: #fff; border: none; border-radius: 999px; padding: 12px 20px;
+    font-family: system-ui, -apple-system, sans-serif; font-weight: 700; font-size: 14px;
+    box-shadow: 0 10px 25px rgba(220, 39, 67, 0.35); cursor: pointer;
+    display: flex; align-items: center; gap: 8px; transition: transform 0.2s ease;">
+    <span>📸</span> Story Anı Kartı İndir
+  </button>
+</div>
+
+<div id="storyCardModal" style="
+  display:none; position:fixed; inset:0; background:rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;
+  font-family: system-ui, -apple-system, sans-serif;">
+  <div style="
+    background:#1e293b; color:#f8fafc; border:1px solid #334155; border-radius:20px;
+    max-width:460px; width:100%; padding:20px; box-shadow:0 25px 50px rgba(0,0,0,0.5);
+    max-height:94vh; overflow-y:auto;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <div>
+        <h3 style="margin:0; font-size:17px; font-weight:700;">📸 Instagram Story Anı Kartı</h3>
+        <p style="margin:2px 0 0; font-size:12px; color:#94a3b8;">1080×1920 px (9:16) yüksek çözünürlüklü PNG</p>
+      </div>
+      <button onclick="closeStoryCardModal()" style="
+        background:#334155; color:#fff; border:none; width:32px; height:32px;
+        border-radius:50%; font-size:16px; cursor:pointer;">✕</button>
+    </div>
+<!-- Tema Seçimi -->
+    <div style="display:flex; gap:8px; margin-bottom:12px;">
+      <button onclick="setStoryTheme('night')" id="stBtn-night" style="flex:1; padding:8px; border-radius:10px; border:1px solid #38bdf8; background:#0f172a; color:#fff; font-size:12px; font-weight:600; cursor:pointer;">🌃 Boğaz Gecesi</button>
+      <button onclick="setStoryTheme('sunset')" id="stBtn-sunset" style="flex:1; padding:8px; border-radius:10px; border:1px solid #334155; background:#0f172a; color:#cbd5e1; font-size:12px; font-weight:600; cursor:pointer;">🌅 Gün Batımı</button>
+      <button onclick="setStoryTheme('light')" id="stBtn-light" style="flex:1; padding:8px; border-radius:10px; border:1px solid #334155; background:#0f172a; color:#cbd5e1; font-size:12px; font-weight:600; cursor:pointer;">🌊 Boğaz Esintisi</button>
+    </div>
+
+    <!-- Canlı Önizleme -->
+    <div style="background:#0f172a; border-radius:14px; padding:10px; display:flex; justify-content:center; margin-bottom:14px;">
+      <canvas id="storyCardCanvas" width="1080" height="1920" style="width:100%; max-width:250px; height:auto; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.4);"></canvas>
+    </div>
+
+    <!-- İndirme Butonu -->
+    <button onclick="downloadStoryCardPNG()" style="
+      width:100%; padding:13px; border:none; border-radius:12px;
+      background: linear-gradient(135deg, #0ea5e9, #2563eb);
+      color:#fff; font-weight:700; font-size:14px; cursor:pointer;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);">
+      ⬇️ PNG Olarak İndir (1080×1920)
+    </button>
+  </div>
+</div>
+
+<script>
+(function() {
+  let currentStoryTheme = 'night';
+
+  const themes = {
+    night: {
+      bg1: '#090d16', bg2: '#132238', card: 'rgba(255,255,255,0.07)',
+      border: 'rgba(255,255,255,0.14)', text: '#f8fafc', muted: '#94a3b8', accent: '#38bdf8'
+    },
+    sunset: {
+      bg1: '#2a1026', bg2: '#7c2d12', card: 'rgba(255,255,255,0.09)',
+      border: 'rgba(251,146,60,0.28)', text: '#fff7ed', muted: '#fed7aa', accent: '#fb923c'
+    },
+    light: {
+      bg1: '#e0f2fe', bg2: '#f8fafc', card: 'rgba(15,23,42,0.05)',
+      border: 'rgba(15,23,42,0.12)', text: '#0f172a', muted: '#475569', accent: '#0284c7'
+    }
+  };
+
+  function collectRouteDataFromPage() {
+    // Sayfadaki mevcut değişkenleri veya DOM elemanlarını otomatik yakalar
+    const districtEl = document.querySelector('#districtSelect, #ilceSec, select[id*="district"], h1, h2');
+    let district = 'İstanbul Rotası';
+    const selectEl = document.querySelector('select');
+    if (selectEl && selectEl.options[selectEl.selectedIndex]) {
+      district = selectEl.options[selectEl.selectedIndex].text.replace(/\(.*?\)/g, '').trim();
+    }
+
+    // Durakları yakala
+    const stopEls = document.querySelectorAll('.timeline-item, [class*="timeline"] li, [class*="stop"] h4, [class*="rota"] li');
+    let stops = [];
+    stopEls.forEach(el => {
+      const txt = el.innerText.replace(/\s+/g, ' ').trim();
+      if (txt && txt.length > 3 && txt.length < 85 && !stops.includes(txt)) {
+        stops.push(txt);
+      }
+    });
+    if (stops.length === 0) {
+      stops = [
+        '11:00 • Sahil Yürüyüşü & Kahve Molası',
+        '13:30 • Tarihi Nokta & Kültür Keşfi',
+        '16:30 • İBB Sosyal Tesis / Akşam Yemeği',
+        '19:30 • Gün Batımı Manzara & Dönüş'
+      ];
+    }
+
+    // Bütçe & KM bilgilerini sayfadan çek veya varsayılan ata
+    const bodyText = document.body.innerText;
+    const budgetMatch = bodyText.match(/(\d[\d.,]*)\s*₺|(\d[\d.,]*)\s*TL/i);
+    const kmMatch = bodyText.match(/(\d+(?:[.,]\d+)?)\s*km/i);
+
+    const totalBudget = budgetMatch ? (budgetMatch[1] || budgetMatch[2]) + ' ₺' : '650 ₺';
+    const totalKm = kmMatch ? kmMatch[1] + ' km' : '18.4 km';
+    const today = new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    return { district, stops: stops.slice(0, 6), totalBudget, totalKm, today };
+  }
+
+  function drawRoundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+window.renderStoryCard = function() {
+    const canvas = document.getElementById('storyCardCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const t = themes[currentStoryTheme];
+    const data = collectRouteDataFromPage();
+
+    // Arka plan gradyanı
+    const grad = ctx.createLinearGradient(0, 0, 1080, 1920);
+    grad.addColorStop(0, t.bg1);
+    grad.addColorStop(1, t.bg2);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1080, 1920);
+
+    // Dekoratif ışık halkası
+    ctx.fillStyle = t.accent + '22';
+    ctx.beginPath();
+    ctx.arc(920, 220, 320, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Üst Marka Rozeti
+    ctx.fillStyle = t.accent;
+    ctx.font = 'bold 30px system-ui, sans-serif';
+    ctx.fillText('📍 GÜNÜN ROTASI • İSTANBUL', 80, 130);
+
+    ctx.fillStyle = t.muted;
+    ctx.font = '500 28px system-ui, sans-serif';
+    ctx.fillText(data.today, 80, 180);
+
+    // Ana Başlık (İlçe)
+    ctx.fillStyle = t.text;
+    ctx.font = '800 84px system-ui, sans-serif';
+    ctx.fillText(data.district, 80, 290);
+
+    // İstatistik Kartları (Toplam KM & Bütçe)
+    const boxY = 350, boxH = 190, boxW = 440;
+    // Sol Kutu: Mesafe
+    ctx.fillStyle = t.card;
+    ctx.strokeStyle = t.border;
+    ctx.lineWidth = 3;
+    drawRoundRect(ctx, 80, boxY, boxW, boxH, 28);
+    ctx.fill(); ctx.stroke();
+
+    ctx.fillStyle = t.muted;
+    ctx.font = '600 26px system-ui, sans-serif';
+    ctx.fillText('TOPLAM MESAFE', 115, boxY + 62);
+    ctx.fillStyle = t.accent;
+    ctx.font = '800 58px system-ui, sans-serif';
+    ctx.fillText(data.totalKm, 115, boxY + 138);
+
+    // Sağ Kutu: Bütçe
+    drawRoundRect(ctx, 560, boxY, boxW, boxH, 28);
+    ctx.fill(); ctx.stroke();
+
+    ctx.fillStyle = t.muted;
+    ctx.font = '600 26px system-ui, sans-serif';
+    ctx.fillText('HARCANAN BÜTÇE', 595, boxY + 62);
+    ctx.fillStyle = t.text;
+    ctx.font = '800 58px system-ui, sans-serif';
+    ctx.fillText(data.totalBudget, 595, boxY + 138);
+
+    // Duraklar Listesi Kutusu
+    const listY = 600, listH = 1040;
+    ctx.fillStyle = t.card;
+    drawRoundRect(ctx, 80, listY, 920, listH, 34);
+    ctx.fill(); ctx.stroke();
+
+    ctx.fillStyle = t.accent;
+    ctx.font = '700 30px system-ui, sans-serif';
+    ctx.fillText('GÜNÜN DURAKLARI', 130, listY + 75);
+
+    data.stops.forEach((stop, i) => {
+      const itemY = listY + 165 + i * 145;
+      // Dikey bağlantı çizgisi
+      if (i < data.stops.length - 1) {
+        ctx.strokeStyle = t.accent + '66';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(155, itemY + 22);
+        ctx.lineTo(155, itemY + 125);
+        ctx.stroke();
+      }
+      // Numara Dairesi
+      ctx.fillStyle = t.accent;
+      ctx.beginPath();
+      ctx.arc(155, itemY, 24, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px system-ui, sans-serif';
+      ctx.fillText(String(i + 1), 148, itemY + 8);
+
+      // Durak Metni
+      ctx.fillStyle = t.text;
+      ctx.font = '600 32px system-ui, sans-serif';
+      const clipped = stop.length > 38 ? stop.slice(0, 38) + '…' : stop;
+      ctx.fillText(clipped, 205, itemY + 10);
+    });
+
+    // Alt Bilgi (Footer)
+    ctx.fillStyle = t.muted;
+    ctx.font = '600 28px system-ui, sans-serif';
+    ctx.fillText('yldrmersin6-stack.github.io/gunun-rotasi', 80, 1780);
+    ctx.fillStyle = t.accent;
+    ctx.font = '700 30px system-ui, sans-serif';
+    ctx.fillText('İstanbul Şehir & Rota Asistanı', 80, 1825);
+  };
+
+  window.openStoryCardModal = function() {
+    document.getElementById('storyCardModal').style.display = 'flex';
+    window.renderStoryCard();
+  };
+
+  window.closeStoryCardModal = function() {
+    document.getElementById('storyCardModal').style.display = 'none';
+  };
+
+  window.setStoryTheme = function(theme) {
+    currentStoryTheme = theme;
+    ['night', 'sunset', 'light'].forEach(t => {
+      const btn = document.getElementById('stBtn-' + t);
+      if (btn) btn.style.borderColor = (t === theme) ? '#38bdf8' : '#334155';
+    });
+    window.renderStoryCard();
+  };
+
+  window.downloadStoryCardPNG = function() {
+    const canvas = document.getElementById('storyCardCanvas');
+    const link = document.createElement('a');
+    link.download = 'gunun-rotasi-story-' + Date.now() + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+})();
+</script>
+<!-- ==================== /INSTAGRAM STORY ANI KARTI EKLENTİSİ ==================== -->
 </body>
 </html>
