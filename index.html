@@ -3219,5 +3219,90 @@ if (leftEl) leftEl = climbToFixed(leftEl);
     setInterval(applySideBySide, 500);
   })();
 </script>
+<style id="gr-safe-bottom-only">
+  html body {
+    padding-bottom: 92px !important;
+  }
+</style>
+
+<script>
+  (function () {
+    // Önceki bozuk kapsayıcı varsa temizle ve elemanları eski yerine döndür
+    var oldWrap = document.getElementById("gr-pair-wrapper");
+    if (oldWrap) {
+      Array.from(oldWrap.children).forEach(function (child) {
+        child.classList.remove("gr-docked-left", "gr-docked-right");
+        child.removeAttribute("style");
+        document.body.appendChild(child);
+      });
+      oldWrap.remove();
+    }
+
+    function keepCleanBottom() {
+      var storyBtn = null;
+      var compactTimer = null;
+
+      document.querySelectorAll("button, a, div, span").forEach(function (el) {
+        if (el.id === "gr-pair-wrapper") return;
+        var txt = (el.innerText || "").trim();
+        if (!txt) return;
+
+        var rect = el.getBoundingClientRect();
+        // Yalnızca buton boyutundaki "Story Anı Kartı İndir" öğesini al
+        if (
+          !storyBtn &&
+          txt.indexOf("Story Anı Kartı İndir") !== -1 &&
+          txt.length < 40 &&
+          rect.height > 0 &&
+          rect.height < 75 &&
+          rect.width < 260
+        ) {
+          storyBtn = el;
+        }
+
+        // Yalnızca alt satırdaki küçük sayaç kutusunu al (büyük panelleri asla alma)
+        if (
+          !compactTimer &&
+          (txt.indexOf("Son Vapur") !== -1 ||
+            txt.indexOf("İskele Hattı") !== -1 ||
+            txt.indexOf("Son Marmaray") !== -1 ||
+            txt.indexOf("Raylı Dönüş") !== -1) &&
+          txt.length < 75 &&
+          rect.height > 0 &&
+          rect.height < 95 &&
+          rect.width < window.innerWidth * 0.75
+        ) {
+          compactTimer = el;
+        }
+      });
+
+      if (storyBtn) {
+        storyBtn.style.setProperty("position", "fixed", "important");
+        storyBtn.style.setProperty("right", "12px", "important");
+        storyBtn.style.setProperty("bottom", "12px", "important");
+        storyBtn.style.setProperty("left", "auto", "important");
+        storyBtn.style.setProperty("top", "auto", "important");
+        storyBtn.style.setProperty("z-index", "9999", "important");
+      }
+
+      if (compactTimer && compactTimer !== storyBtn) {
+        compactTimer.style.setProperty("position", "fixed", "important");
+        compactTimer.style.setProperty("left", "12px", "important");
+        compactTimer.style.setProperty("bottom", "12px", "important");
+        compactTimer.style.setProperty("right", "auto", "important");
+        compactTimer.style.setProperty("top", "auto", "important");
+        compactTimer.style.setProperty("max-width", "calc(100vw - 195px)", "important");
+        compactTimer.style.setProperty("z-index", "9998", "important");
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", keepCleanBottom);
+    } else {
+      keepCleanBottom();
+    }
+    window.addEventListener("load", keepCleanBottom);
+  })();
+</script>
 </body>
 </html>
