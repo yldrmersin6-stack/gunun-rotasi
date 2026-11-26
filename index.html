@@ -2374,5 +2374,116 @@ window.toggleTwoHourMode = function() {
 })();
 </script>
 <!-- ==================== /AKILLI SAYAÇ, 2 SAAT MODU & BAKİYE EKLENTİSİ ==================== -->
+<style id="gr-bottom-bar-fix">
+  body {
+    padding-bottom: 96px !important;
+  }
+
+  #gr-bottom-dock {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2147483647;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    pointer-events: none;
+  }
+
+  #gr-bottom-dock > * {
+    pointer-events: auto;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  #gr-bottom-dock > :first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  #gr-bottom-dock > :last-child {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 390px) {
+    #gr-bottom-dock {
+      left: 8px;
+      right: 8px;
+      bottom: 10px;
+      gap: 6px;
+    }
+
+    #gr-bottom-dock > :last-child {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+      font-size: 12px !important;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    function dockBottomElements() {
+      var dock = document.getElementById("gr-bottom-dock");
+      if (!dock) {
+        dock = document.createElement("div");
+        dock.id = "gr-bottom-dock";
+        document.body.appendChild(dock);
+      }
+
+      var ferryEl = null;
+      var storyEl = null;
+
+      var candidates = Array.from(document.querySelectorAll("body *")).filter(function (el) {
+        return !dock.contains(el) && el.id !== "gr-bottom-bar-fix";
+      });
+
+      for (var i = 0; i < candidates.length; i++) {
+        var el = candidates[i];
+        var text = (el.innerText || "").trim();
+        if (!text || text.length > 140) continue;
+
+        var isInteractiveOrCard =
+          el.tagName === "BUTTON" ||
+          el.tagName === "A" ||
+          el.getAttribute("role") === "button" ||
+          el.children.length <= 4;
+
+        if (!isInteractiveOrCard) continue;
+
+        if (!storyEl && text.indexOf("Story Anı Kartı İndir") !== -1) {
+          storyEl = el;
+        } else if (
+          !ferryEl &&
+          (text.indexOf("Son Vapur") !== -1 || text.indexOf("İskele Hattı") !== -1)
+        ) {
+          ferryEl = el;
+        }
+      }
+
+      if (ferryEl && !dock.contains(ferryEl)) {
+        dock.appendChild(ferryEl);
+      }
+      if (storyEl && !dock.contains(storyEl)) {
+        dock.appendChild(storyEl);
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", dockBottomElements);
+    } else {
+      dockBottomElements();
+    }
+    window.addEventListener("load", dockBottomElements);
+  })();
+</script>
 </body>
 </html>
