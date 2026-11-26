@@ -2485,5 +2485,739 @@ window.toggleTwoHourMode = function() {
     window.addEventListener("load", dockBottomElements);
   })();
 </script>
+<style id="gr-full-heritage-style">
+  body {
+    padding-bottom: 104px !important;
+  }
+
+  #gr-bottom-dock {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2147483647;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    pointer-events: none;
+  }
+
+  #gr-bottom-dock > * {
+    pointer-events: auto;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  #gr-bottom-dock > :first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  #gr-bottom-dock > :last-child {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  #gr-master-heritage-box {
+    margin: 16px 0;
+    padding: 16px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    color: #0f172a;
+    font-family: inherit;
+  }
+
+  .gr-mh-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .gr-mh-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  .gr-mh-count {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #0284c7;
+    color: #ffffff;
+  }
+
+  .gr-mh-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .gr-mh-select,
+  .gr-mh-search {
+    flex: 1 1 160px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    font-size: 13px;
+    background: #f8fafc;
+    color: #0f172a;
+  }
+
+  .gr-mh-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+  }
+
+  .gr-mh-tab {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .gr-mh-tab.active {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+  }
+.gr-mh-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-height: 540px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  .gr-mh-card {
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .gr-mh-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .gr-mh-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .gr-mh-price {
+    font-size: 13px;
+    font-weight: 800;
+    color: #059669;
+    white-space: nowrap;
+  }
+
+  .gr-mh-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .gr-mh-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #334155;
+  }
+
+  .gr-mh-badge.mk {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .gr-mh-desc {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.4;
+  }
+
+  .gr-mh-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+    gap: 8px;
+  }
+
+  .gr-mh-map {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0284c7;
+    text-decoration: none;
+  }
+
+  .gr-mh-add {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: none;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .gr-mh-add.added {
+    background: #059669;
+  }
+</style>
+
+<script>
+  (function () {
+const ISTANBUL_MUSEUMS_AND_HERITAGE = [
+      // BÜYÜKÇEKMECE
+      { district: "Büyükçekmece", area: "Büyükçekmece Merkez", name: "Mimar Sinan Köprüsü (Kanuni Sultan Süleyman Köprüsü)", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Mimar Sinan'ın 1567'de inşa ettiği, göl ile denizi ayıran 636 metrelik anıtsal taş köprü." },
+      { district: "Büyükçekmece", area: "Büyükçekmece Merkez", name: "Kurşunlu Han", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Mimar Sinan eseri olan 16. yüzyıl Osmanlı kervansaray ve han yapısı." },
+      { district: "Büyükçekmece", area: "Büyükçekmece Merkez", name: "Sokullu Mehmet Paşa Camii ve Çeşmesi", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Mimar Sinan döneminden kalan tarihî cami ve meydan çeşmesi kompleksi." },
+      { district: "Büyükçekmece", area: "Büyükçekmece Sahil", name: "Dünya Kostümleri Müzesi", category: "Müze", price: "Ücretsiz", muzekart: false, desc: "Farklı ülkelerin geleneksel kıyafet ve kültür objelerinin sergilendiği tematik müze." },
+      { district: "Büyükçekmece", area: "Mimarsinan", name: "Mimarsinan Tarihî Çarşı & Çeşme Dokusu", category: "Tarihî Alan", price: "Ücretsiz", muzekart: false, desc: "Eski köy yerleşimi ve Osmanlı dönemi sivil mimari kalıntıları." },
+
+      // BEYOĞLU / TAKSİM
+      { district: "Beyoğlu", area: "Taksim / İstiklal", name: "Taksim Cumhuriyet Anıtı ve Meydanı", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "1928'de İtalyan heykeltıraş Pietro Canonica tarafından yapılan Cumhuriyet simgesi." },
+      { district: "Beyoğlu", area: "Taksim / İstiklal", name: "Atatürk Kültür Merkezi (AKM)", category: "Tarihî / Kültür Yapısı", price: "Etkinliğe Göre", muzekart: false, desc: "Taksim Meydanı'nın simge opera, tiyatro ve sergi kompleksi." },
+      { district: "Beyoğlu", area: "Taksim / İstiklal", name: "Maksem ve Taksim Su Müzesi", category: "Müze / Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "1732 tarihli su dağıtım yapısı (Maksem) içinde yer alan su tarihi müzesi." },
+      { district: "Beyoğlu", area: "Taksim / İstiklal", name: "Aya Triada Rum Ortodoks Kilisesi", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "1880 yapımı kubbeli görkemli tarihî kilise." },
+      { district: "Beyoğlu", area: "Taksim / İstiklal", name: "St. Antuan Katolik Kilisesi", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "İstiklal Caddesi üzerindeki neo-gotik üsluptaki en büyük Katolik kilisesi." },
+      { district: "Beyoğlu", area: "Taksim / İstiklal", name: "Çiçek Pasajı ve Tarihî Pasajlar (Atlas, Avrupa, Aznavur)", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "19. yüzyıl Beyoğlu mimarisini yansıtan tarihî pasajlar zinciri." },
+      { district: "Beyoğlu", area: "Taksim / İstiklal", name: "İstanbul Sinema Müzesi (Atlas Pasajı)", category: "Müze", price: "160 TL", muzekart: true, desc: "Türk ve dünya sinema tarihine ait kostüm, ödül ve dijital sergiler." },
+      { district: "Beyoğlu", area: "Taksim / Tepebaşı", name: "Pera Müzesi", category: "Müze", price: "200 TL", muzekart: false, desc: "Osman Hamdi Bey'in Kaplumbağa Terbiyecisi tablosu, Kütahya çinileri ve ağırlık ölçüleri." },
+      { district: "Beyoğlu", area: "Taksim / Çukurcuma", name: "Masumiyet Müzesi", category: "Müze", price: "375 TL", muzekart: false, desc: "Orhan Pamuk'un aynı adlı romanından yola çıkılarak kurulan ödüllü müze." },
+      { district: "Beyoğlu", area: "Galata / Tünel", name: "Galata Mevlevihanesi Müzesi", category: "Müze / Tarihî Yapı", price: "240 TL", muzekart: true, desc: "1491'de kurulan İstanbul'un en eski Mevlevihanesi ve tasavvuf müzesi." },
+      { district: "Beyoğlu", area: "Galata", name: "Galata Kulesi", category: "Tarihî Yapı / Müze", price: "1.000 TL", muzekart: true, desc: "Ceneviz döneminden kalma kule ve İstanbul panoraması." },
+      { district: "Beyoğlu", area: "Karaköy", name: "İstanbul Modern", category: "Müze", price: "450 TL", muzekart: false, desc: "Türkiye'nin ilk modern ve çağdaş sanat müzesi." },
+      { district: "Beyoğlu", area: "Karaköy", name: "SALT Galata (Osmanlı Bankası Müzesi)", category: "Müze / Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Tarihî Osmanlı Bankası binasında yer alan para tarihi müzesi ve kütüphane." },
+      { district: "Beyoğlu", area: "Hasköy", name: "Rahmi M. Koç Müzesi", category: "Müze", price: "350 TL", muzekart: false, desc: "Ulaşım, sanayi ve iletişim tarihine ait klasik otomobil, denizaltı ve uçaklar." },
+// FATİH (TARİHİ YARIMADA)
+      { district: "Fatih", area: "Sultanahmet", name: "Topkapı Sarayı Müzesi", category: "Müze / Saray", price: "1.500 TL", muzekart: true, desc: "Osmanlı İmparatorluğu'nun 400 yıllık yönetim merkezi, Hazine ve Kutsal Emanetler." },
+      { district: "Fatih", area: "Sultanahmet", name: "Ayasofya-i Kebir Cami-i Şerifi & Tarih Müzesi", category: "Tarihî Yapı / Müze", price: "850 TL", muzekart: false, desc: "537 yılında inşa edilen dünya mimarlık tarihinin başyapıtı." },
+      { district: "Fatih", area: "Sultanahmet", name: "Yerebatan Sarnıcı", category: "Tarihî Yapı", price: "800 TL", muzekart: false, desc: "Bizans İmparatoru I. Justinianus tarafından yaptırılan 336 sütunlu yeraltı sarnıcı." },
+      { district: "Fatih", area: "Sultanahmet", name: "İstanbul Arkeoloji Müzeleri", category: "Müze", price: "500 TL", muzekart: true, desc: "İskender Lahdi, Kadeş Antlaşması ve Çinili Köşk'ü barındıran üçlü müze kompleksi." },
+      { district: "Fatih", area: "Sultanahmet", name: "Türk ve İslam Eserleri Müzesi", category: "Müze", price: "450 TL", muzekart: true, desc: "İbrahim Paşa Sarayı içinde yer alan halı, hat ve el yazması koleksiyonları." },
+      { district: "Fatih", area: "Sultanahmet", name: "Sultanahmet Camii (Mavi Cami)", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "6 minareli ve mavi İznik çinileriyle ünlü klasik Osmanlı eseri." },
+      { district: "Fatih", area: "Sultanahmet", name: "Büyük Saray Mozaikleri Müzesi", category: "Müze", price: "220 TL", muzekart: true, desc: "Doğu Roma Büyük Sarayı'ndan günümüze ulaşan taban mozaikleri." },
+      { district: "Fatih", area: "Süleymaniye", name: "Süleymaniye Camii ve Külliyesi", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Mimar Sinan'ın kalfalık eseri olan görkemli külliye ve Haliç manzarası." },
+      { district: "Fatih", area: "Beyazıt / Eminönü", name: "Kapalıçarşı ve Mısır Çarşısı", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Dünyanın en eski ve en büyük tarihî kapalı çarşı kompleksleri." },
+      { district: "Fatih", area: "Topkapı", name: "Panorama 1453 Tarih Müzesi", category: "Müze", price: "180 TL", muzekart: false, desc: "İstanbul'un fethini 360 derece panoramik deneyimle sunan müze." },
+      { district: "Fatih", area: "Edirnekapı", name: "Kariye Camii ve Müzesi", category: "Tarihî Yapı", price: "650 TL", muzekart: false, desc: "Bizans mozaik ve fresk sanatının en seçkin örneklerinin bulunduğu tarihî yapı." },
+      { district: "Fatih", area: "Fener / Balat", name: "Fener Rum Patrikhanesi ve Kırmızı Mektep", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Balat-Fener hattının simge tarihî yapıları." },
+
+      // BEŞİKTAŞ
+      { district: "Beşiktaş", area: "Dolmabahçe", name: "Dolmabahçe Sarayı", category: "Tarihî Yapı / Saray", price: "1.050 TL", muzekart: true, desc: "Boğaz kıyısında Osmanlı'nın son dönem saray mimarisi ve Atatürk'ün odası." },
+      { district: "Beşiktaş", area: "Beşiktaş Merkez", name: "İstanbul Deniz Müzesi", category: "Müze", price: "160 TL", muzekart: true, desc: "Tarihî saltanat kayıkları ve Türk denizcilik koleksiyonu." },
+      { district: "Beşiktaş", area: "Yıldız", name: "Yıldız Sarayı Müzesi", category: "Müze / Saray", price: "450 TL", muzekart: true, desc: "Sultan II. Abdülhamid döneminin yönetim merkezi olan saray köşkleri." },
+      { district: "Beşiktaş", area: "Nişantaşı / Ihlamur", name: "Ihlamur Kasırları", category: "Tarihî Yapı", price: "200 TL", muzekart: true, desc: "Merasim ve Maiyet köşklerinden oluşan 19. yüzyıl kasır kompleksi." },
+      { district: "Beşiktaş", area: "Ortaköy", name: "Büyük Mecidiye Camii (Ortaköy Camii)", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Boğaziçi Köprüsü'nün hemen altında yer alan neobarok cami." },
+
+      // ÜSKÜDAR
+      { district: "Üsküdar", area: "Salacak", name: "Kız Kulesi", category: "Tarihî Yapı / Müze", price: "550 TL", muzekart: true, desc: "Boğaz'ın ortasında efsanelere konu olmuş tarihî kule ve seyir terası." },
+      { district: "Üsküdar", area: "Beylerbeyi", name: "Beylerbeyi Sarayı", category: "Tarihî Yapı / Saray", price: "450 TL", muzekart: true, desc: "Boğaz'ın Anadolu yakasındaki en görkemli yazlık saray yapısı." },
+      { district: "Üsküdar", area: "Altunizade", name: "Adile Sultan Kasrı", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Validebağ Korusu içinde yer alan Hababam Sınıfı çekimlerinin yapıldığı tarihî kasır." },
+      { district: "Üsküdar", area: "Üsküdar Sahil", name: "Şemsi Paşa Camii ve Mihrimah Sultan Camii", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Mimar Sinan'ın Üsküdar sahil hattındaki iki başyapıtı." },
+      { district: "Üsküdar", area: "Çengelköy / Kuleli", name: "Kuleli Askerî Lisesi Tarihî Binası", category: "Tarihî Yapı", price: "Dış Görünüm", muzekart: false, desc: "Boğaz kıyısının iki kuleli anıtsal tarihî yapısı." },
+
+      // KADIKÖY
+      { district: "Kadıköy", area: "Göztepe", name: "İstanbul Oyuncak Müzesi", category: "Müze", price: "240 TL", muzekart: false, desc: "Sunay Akın tarafından kurulan 1700'lerden günümüze oyuncak tarihi müzesi." },
+      { district: "Kadıköy", area: "Moda", name: "Barış Manço Evi Müzesi", category: "Müze", price: "120 TL", muzekart: false, desc: "Sanatçının Moda'daki tarihî köşkünde sahne kostümleri ve kişisel eşyaları." },
+      { district: "Kadıköy", area: "Bahariye", name: "Süreyya Operası", category: "Tarihî Yapı", price: "Etkinliğe Göre", muzekart: false, desc: "1927 açılışlı art deco ve neoklasik çizgili tarihî opera binası." },
+      { district: "Kadıköy", area: "Rıhtım", name: "Haydarpaşa Garı", category: "Tarihî Yapı", price: "Dış Görünüm", muzekart: false, desc: "1908 yapımı Anadolu demiryollarının başlangıç noktası olan simge gar." },
+// SARIYER
+      { district: "Sarıyer", area: "Emirgan", name: "Sakıp Sabancı Müzesi", category: "Müze", price: "300 TL", muzekart: false, desc: "Atlı Köşk içinde hat sanatı, resim koleksiyonları ve uluslararası sergiler." },
+      { district: "Sarıyer", area: "Rumelihisarı", name: "Rumeli Hisarı Müzesi", category: "Tarihî Yapı / Müze", price: "350 TL", muzekart: true, desc: "Fatih Sultan Mehmet'in 1452'de 4 ayda inşa ettirdiği boğaz hisarı." },
+      { district: "Sarıyer", area: "Büyükdere", name: "Sadberk Hanım Müzesi", category: "Müze", price: "200 TL", muzekart: false, desc: "Arkeolojik eserler ve Osmanlı dönemi sanat koleksiyonlarını barındıran özel müze." },
+      { district: "Sarıyer", area: "Tarabya / Yeniköy", name: "Sait Halim Paşa Yalısı", category: "Tarihî Yapı", price: "Etkinliğe Göre", muzekart: false, desc: "Boğaz kıyısının en seçkin 19. yüzyıl ahşap yalılarından biri." },
+
+      // BEYKOZ
+      { district: "Beykoz", area: "Beykoz Merkez", name: "Beykoz Cam ve Billur Müzesi", category: "Müze", price: "220 TL", muzekart: true, desc: "Tarihî Abraham Paşa Korusu içindeki köşkte Osmanlı ve Avrupa cam eserleri." },
+      { district: "Beykoz", area: "Göksu", name: "Küçüksu Kasrı", category: "Tarihî Yapı", price: "200 TL", muzekart: true, desc: "Göksu Deresi kıyısında yer alan süslemeli Osmanlı av ve dinlenme kasrı." },
+      { district: "Beykoz", area: "Anadoluhisarı", name: "Anadolu Hisarı Müzesi", category: "Tarihî Yapı", price: "150 TL", muzekart: true, desc: "Yıldırım Bayezid tarafından 1395'te yaptırılan İstanbul'un en eski Türk yapısı." },
+
+      // EYÜPSULTAN
+      { district: "Eyüpsultan", area: "Eyüp Merkez", name: "Eyüp Sultan Camii ve Türbesi", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Haliç kıyısında İstanbul'un en önemli tarihî külliye ve ziyaret noktası." },
+      { district: "Eyüpsultan", area: "Feshane", name: "Artİstanbul Feshane", category: "Müze / Kültür Yapısı", price: "Ücretsiz", muzekart: false, desc: "1833 tarihli fes fabrikasından dönüştürülen dev sergi ve kültür kompleksi." },
+
+      // BAKIRKÖY
+      { district: "Bakırköy", area: "Yeşilköy", name: "İstanbul Havacılık Müzesi", category: "Müze", price: "150 TL", muzekart: false, desc: "Türk havacılık tarihine ait gerçek savaş ve yolcu uçaklarının sergilendiği müze." },
+      { district: "Bakırköy", area: "Florya", name: "Florya Atatürk Deniz Köşkü", category: "Müze / Tarihî Yapı", price: "200 TL", muzekart: true, desc: "Deniz üzerine kazıklar üstünde inşa edilen Bauhaus tarzı tarihî köşk." },
+
+      // ZEYTİNBURNU
+      { district: "Zeytinburnu", area: "Kazlıçeşme", name: "Kazlıçeşme Sanat ve Mozaik Alanı", category: "Müze / Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Tarihî askeri yapı içinde Roma/Bizans dönemi mozaik kalıntıları ve sergi salonu." },
+      { district: "Zeytinburnu", area: "Merkezefendi", name: "Yenikapı Mevlevihanesi ve Merkezefendi Külliyesi", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "16. yüzyıldan kalma tarihî külliye, şifahane ve mevlevihane kompleksi." },
+
+      // ADALAR
+      { district: "Adalar", area: "Büyükada", name: "Adalar Müzesi ve Aya Yorgi Manastırı", category: "Müze / Tarihî Yapı", price: "120 TL", muzekart: false, desc: "Prens Adaları'nın tarihini anlatan müze ve adanın zirvesindeki tarihî manastır." },
+      { district: "Adalar", area: "Heybeliada", name: "İsmet İnönü Evi Müzesi", category: "Müze", price: "Ücretsiz", muzekart: false, desc: "Heybeliada'da yer alan tarihî köşk ve anı müzesi." },
+
+      // ŞİŞLİ
+      { district: "Şişli", area: "Harbiye", name: "Harbiye Askerî Müze ve Kültür Sitesi", category: "Müze", price: "200 TL", muzekart: false, desc: "Mehter konserleri, tarihî çadırlar ve silah koleksiyonlarıyla kapsamlı müze." },
+      { district: "Şişli", area: "Pangaltı", name: "Atatürk Müzesi (Şişli Evi)", category: "Müze", price: "Ücretsiz", muzekart: false, desc: "Mustafa Kemal Atatürk'ün Samsun'a çıkmadan önce yaşadığı tarihî ev." },
+
+      // ŞİLE & ÇATALCA & SİLİVRİ
+      { district: "Şile", area: "Şile Merkez", name: "Şile Feneri ve Ocaklı Ada Kalesi", category: "Tarihî Yapı / Müze", price: "100 TL", muzekart: false, desc: "1859 yapımı Türkiye'nin en büyük aktif deniz feneri ve tarihi ada kalesi." },
+      { district: "Çatalca", area: "Çatalca Merkez", name: "Mübadele Müzesi ve İnceğiz Mağaraları", category: "Müze / Tarihî Alan", price: "Ücretsiz", muzekart: false, desc: "Türkiye'nin ilk mübadele müzesi ve antik dönem kaya yerleşimleri." },
+      { district: "Silivri", area: "Silivri Merkez", name: "Silivri Kalesi ve Mimar Sinan Köprüsü", category: "Tarihî Yapı", price: "Ücretsiz", muzekart: false, desc: "Bizans sur kalıntıları ve Osmanlı dönemi taş köprü mirası." }
+    ];
+const DISTRICT_TIPS = {
+      "Büyükçekmece": "Büyükçekmece seçildi: Mimar Sinan Köprüsü, Kurşunlu Han ve Sokullu Mehmet Paşa Camii aynı yürüyüş hattında yer alır; sahil tarafında Dünya Kostümleri Müzesi rotaya eklenebilir.",
+      "Beyoğlu": "Taksim & Beyoğlu seçildi: Taksim Meydanı'nda Cumhuriyet Anıtı, AKM ve Maksem Su Müzesi ile başlayıp İstiklal Caddesi boyunca St. Antuan Kilisesi, Pera Müzesi, Masumiyet Müzesi, Galata Mevlevihanesi ve Galata Kulesi'ne inen kesintisiz bir tarih rotası yapabilirsiniz.",
+      "Taksim": "Taksim seçildi: Cumhuriyet Anıtı, Maksem Su Müzesi, Aya Triada Kilisesi, İstiklal Caddesi tarihî pasajları, Pera Müzesi ve Galata Kulesi yürüme mesafesindedir.",
+      "Fatih": "Fatih (Tarihi Yarımada) seçildi: Topkapı Sarayı, Ayasofya, Yerebatan Sarnıcı, Arkeoloji Müzeleri ve Süleymaniye Külliyesi Türkiye'nin en yoğun müze ve tarih bölgesini oluşturur.",
+      "Beşiktaş": "Beşiktaş seçildi: Dolmabahçe Sarayı ve İstanbul Deniz Müzesi sahil hattında yan yanadır; devamında Yıldız Sarayı ve Ihlamur Kasırları gezilebilir.",
+      "Üsküdar": "Üsküdar seçildi: Kız Kulesi, Şemsi Paşa Camii, Beylerbeyi Sarayı ve Adile Sultan Kasrı Boğaz hattı boyunca sıralanır.",
+      "Kadıköy": "Kadıköy seçildi: Haydarpaşa Garı, Süreyya Operası, Moda Barış Manço Evi ve Göztepe İstanbul Oyuncak Müzesi öne çıkan duraklardır.",
+      "Sarıyer": "Sarıyer seçildi: Emirgan'da Sakıp Sabancı Müzesi, Rumeli Hisarı ve Büyükdere'de Sadberk Hanım Müzesi Boğaz hattında birleştirilebilir.",
+      "Beykoz": "Beykoz seçildi: Küçüksu Kasrı, Anadolu Hisarı ve Beykoz Cam ve Billur Müzesi yarım günlük kültür rotası için uygundur."
+    };
+
+    let currentFilter = "ALL";
+    let currentDistrict = "ALL";
+    let searchQuery = "";
+
+    function findFloatingWrapper(targetEl, dock) {
+      let cur = targetEl;
+      while (cur && cur !== document.body && cur.parentElement !== document.body) {
+        const cs = window.getComputedStyle(cur);
+        if (cs.position === "fixed" || cs.position === "sticky") return cur;
+        cur = cur.parentElement;
+      }
+      if (cur && cur.parentElement === document.body && cur !== dock) {
+        const csBodyChild = window.getComputedStyle(cur);
+        if (csBodyChild.position === "fixed" || parseInt(csBodyChild.zIndex || "0", 10) >= 50) return cur;
+      }
+      return targetEl;
+    }
+
+    function fixBottomBar() {
+      let dock = document.getElementById("gr-bottom-dock");
+      if (!dock) {
+        dock = document.createElement("div");
+        dock.id = "gr-bottom-dock";
+        document.body.appendChild(dock);
+      }
+
+      let transitEl = null;
+      let storyEl = null;
+
+      const allEls = Array.from(document.querySelectorAll("body *")).filter(
+        (el) => !dock.contains(el) && el.id !== "gr-full-heritage-style"
+      );
+
+      for (const el of allEls) {
+        const txt = (el.innerText || "").trim();
+        if (!txt || txt.length > 180) continue;
+
+        if (!storyEl && txt.includes("Story Anı Kartı İndir") && el.children.length <= 3) {
+          storyEl = findFloatingWrapper(el, dock);
+        } else if (
+          !transitEl &&
+          (txt.includes("Son Marmaray") ||
+            txt.includes("Raylı Dönüş") ||
+            txt.includes("Son Vapur") ||
+            txt.includes("İskele Hattı")) &&
+          el.children.length <= 6
+        ) {
+          transitEl = findFloatingWrapper(el, dock);
+        }
+      }
+
+      if (transitEl && !dock.contains(transitEl)) dock.appendChild(transitEl);
+      if (storyEl && !dock.contains(storyEl)) dock.appendChild(storyEl);
+    }
+
+    function detectPageDistrict() {
+      const activeNodes = document.querySelectorAll(
+        '[aria-selected="true"], [aria-pressed="true"], .active, .selected'
+      );
+      const districts = [...new Set(ISTANBUL_MUSEUMS_AND_HERITAGE.map((x) => x.district))];
+
+      for (const node of activeNodes) {
+        const t = (node.innerText || "").replace(/\(.*?\)/g, "").trim();
+        if (t.toLowerCase().includes("taksim")) return "Beyoğlu";
+        const found = districts.find((d) => d.toLowerCase() === t.toLowerCase());
+        if (found) return found;
+      }
+      return null;
+    }
+
+    function renderMasterHeritageBox() {
+      let box = document.getElementById("gr-master-heritage-box");
+      if (!box) {
+        box = document.createElement("section");
+        box.id = "gr-master-heritage-box";
+
+        const anchor = Array.from(document.querySelectorAll("h1, h2, h3, div")).find((el) =>
+          (el.innerText || "").includes("İstanbul Tarihi Noktalar & Müzekart Rehberi")
+        );
+
+        if (anchor && anchor.parentElement) {
+          anchor.parentElement.insertAdjacentElement("afterend", box);
+        } else {
+          document.body.appendChild(box);
+        }
+      }
+const districts = [...new Set(ISTANBUL_MUSEUMS_AND_HERITAGE.map((i) => i.district))].sort((a, b) =>
+        a.localeCompare(b, "tr")
+      );
+
+      let filtered = ISTANBUL_MUSEUMS_AND_HERITAGE.filter((item) => {
+        if (currentDistrict !== "ALL") {
+          if (currentDistrict === "TAKSIM_SPECIAL") {
+            if (!item.area.toLowerCase().includes("taksim") && item.district !== "Beyoğlu") return false;
+          } else if (item.district !== currentDistrict) {
+            return false;
+          }
+        }
+        if (currentFilter === "MUZE" && !item.category.toLowerCase().includes("müze")) return false;
+        if (currentFilter === "TARIHI" && !item.category.toLowerCase().includes("tarih")) return false;
+        if (currentFilter === "MUZEKART" && !item.muzekart) return false;
+
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          const hay = `${item.name} ${item.district} ${item.area} ${item.desc}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      const activeLabel =
+        currentDistrict === "TAKSIM_SPECIAL"
+          ? "Taksim"
+          : currentDistrict === "ALL"
+          ? "Tüm İstanbul"
+          : currentDistrict;
+
+      const tipText =
+        DISTRICT_TIPS[activeLabel] ||
+        (currentDistrict === "ALL"
+          ? `İstanbul genelinde ${ISTANBUL_MUSEUMS_AND_HERITAGE.length} ana müze, saray, kasır ve tarihî yapı listeleniyor. Yukarıdan "Büyükçekmece" veya "Taksim (Beyoğlu)" seçerek sadece gideceğiniz bölgedeki önerileri görebilirsiniz.`
+          : `${activeLabel} bölgesi için öne çıkan müze ve tarihî yapılar aşağıda listelenmiştir.`);
+
+      box.innerHTML = `
+        <div class="gr-mh-header">
+          <h3 class="gr-mh-title">🏛️ İstanbul Tüm Müzeler & Tarihî Yapılar Rehberi</h3>
+          <span class="gr-mh-count">${filtered.length} / ${ISTANBUL_MUSEUMS_AND_HERITAGE.length} Nokta</span>
+        </div>
+
+        <div class="gr-mh-controls">
+          <select id="gr-mh-district-select" class="gr-mh-select">
+            <option value="ALL" ${currentDistrict === "ALL" ? "selected" : ""}>📍 Tüm İstanbul (Hepsini Göster)</option>
+            <option value="Büyükçekmece" ${currentDistrict === "Büyükçekmece" ? "selected" : ""}>🌊 Büyükçekmece (Seçili Bölge)</option>
+            <option value="TAKSIM_SPECIAL" ${currentDistrict === "TAKSIM_SPECIAL" ? "selected" : ""}>🎭 Taksim & Beyoğlu Hattı</option>
+            ${districts
+              .filter((d) => d !== "Büyükçekmece")
+              .map(
+                (d) =>
+                  `<option value="${d}" ${currentDistrict === d ? "selected" : ""}>${d}</option>`
+              )
+              .join("")}
+          </select>
+
+          <input
+            id="gr-mh-search-input"
+            class="gr-mh-search"
+            type="text"
+            placeholder="Müze, saray, Taksim, Büyükçekmece ara..."
+            value="${searchQuery.replace(/"/g, "&quot;")}"
+          />
+        </div>
+
+        <div class="gr-mh-tabs">
+          <button type="button" class="gr-mh-tab ${currentFilter === "ALL" ? "active" : ""}" data-tab="ALL">Tümü (${ISTANBUL_MUSEUMS_AND_HERITAGE.length})</button>
+          <button type="button" class="gr-mh-tab ${currentFilter === "MUZE" ? "active" : ""}" data-tab="MUZE">🏛️ Sadece Müzeler</button>
+          <button type="button" class="gr-mh-tab ${currentFilter === "TARIHI" ? "active" : ""}" data-tab="TARIHI">🏰 Tarihî Yapılar</button>
+          <button type="button" class="gr-mh-tab ${currentFilter === "MUZEKART" ? "active" : ""}" data-tab="MUZEKART">💳 Müzekart Geçerli</button>
+        </div>
+
+        <div class="gr-mh-suggestion">${tipText}</div>
+
+        <div class="gr-mh-grid">
+          ${
+            filtered.length === 0
+              ? `<div class="gr-mh-card"><div class="gr-mh-desc">Aramanıza uygun müze veya tarihî yapı bulunamadı.</div></div>`
+              : filtered
+                  .map(
+                    (item) => `
+              <div class="gr-mh-card">
+                <div class="gr-mh-card-top">
+                  <span class="gr-mh-name">${item.name}</span>
+                  <span class="gr-mh-price">${item.price}</span>
+                </div>
+                <div class="gr-mh-badges">
+                  <span class="gr-mh-badge">📍 ${item.district} • ${item.area}</span>
+                  <span class="gr-mh-badge">${item.category}</span>
+                  ${item.muzekart ? `<span class="gr-mh-badge mk">💳 Müzekart Geçerli</span>` : ""}
+                </div>
+                <div class="gr-mh-desc">${item.desc}</div>
+                <div class="gr-mh-actions">
+                  <a
+                    class="gr-mh-map"
+                    href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      item.name + " " + item.district + " İstanbul"
+                    )}"
+                    target="_blank"
+                    rel="noopener"
+                  >Haritada Gör ↗</a>
+                  <button
+                    type="button"
+                    class="gr-mh-add"
+                    data-place="${item.name.replace(/"/g, "&quot;")}"
+                    data-district="${item.district}"
+                  >+ Rotaya Ekle</button>
+                </div>
+              </div>
+            `
+                  )
+                  .join("")
+          }
+        </div>
+      `;
+box.querySelector("#gr-mh-district-select").addEventListener("change", (e) => {
+        currentDistrict = e.target.value;
+        renderMasterHeritageBox();
+      });
+
+      const searchInput = box.querySelector("#gr-mh-search-input");
+      searchInput.addEventListener("input", (e) => {
+        searchQuery = e.target.value;
+        renderMasterHeritageBox();
+        const freshInput = document.getElementById("gr-mh-search-input");
+        if (freshInput) {
+          freshInput.focus();
+          freshInput.setSelectionRange(freshInput.value.length, freshInput.value.length);
+        }
+      });
+
+      box.querySelectorAll(".gr-mh-tab").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          currentFilter = btn.getAttribute("data-tab");
+          renderMasterHeritageBox();
+        });
+      });
+
+      box.querySelectorAll(".gr-mh-add").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const placeName = btn.getAttribute("data-place");
+          const distName = btn.getAttribute("data-district");
+          const stopInput = document.querySelector('input[placeholder*="Yeni durak"]');
+          const locInput = document.querySelector('input[placeholder*="Mekan / Konum"]');
+          if (stopInput && locInput) {
+            stopInput.value = placeName;
+            stopInput.dispatchEvent(new Event("input", { bubbles: true }));
+            locInput.value = `${distName}, İstanbul`;
+            locInput.dispatchEvent(new Event("input", { bubbles: true }));
+          }
+          btn.textContent = "✓ Rotaya Aktarıldı";
+          btn.classList.add("added");
+        });
+      });
+    }
+
+    function init() {
+      fixBottomBar();
+      const detected = detectPageDistrict();
+      if (detected) currentDistrict = detected;
+      renderMasterHeritageBox();
+
+      document.addEventListener("click", (e) => {
+        if (e.target.closest("#gr-master-heritage-box")) return;
+        setTimeout(() => {
+          fixBottomBar();
+          const newlyDetected = detectPageDistrict();
+          if (newlyDetected && newlyDetected !== currentDistrict) {
+            currentDistrict = newlyDetected;
+            renderMasterHeritageBox();
+          }
+        }, 150);
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+    window.addEventListener("load", fixBottomBar);
+  })();
+</script>
+<style id="gr-force-side-by-side">
+  html body {
+    padding-bottom: 108px !important;
+  }
+
+  /* Ekranın en altındaki sabit bar/butonları tek satırda yan yana zorlar */
+  .gr-docked-pair {
+    position: fixed !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    top: auto !important;
+    z-index: 2147483647 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    transform: none !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  .gr-docked-left {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    top: auto !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: calc(100% - 170px) !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  .gr-docked-right {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    top: auto !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    transform: none !important;
+    white-space: nowrap !important;
+  }
+</style>
+
+<script>
+  (function () {
+    function locateTargets() {
+      var leftEl = null;
+      var rightEl = null;
+
+      var nodes = Array.from(document.querySelectorAll("body *")).filter(function (el) {
+        return (
+          el.id !== "gr-force-side-by-side" &&
+          el.tagName !== "SCRIPT" &&
+          el.tagName !== "STYLE"
+        );
+      });
+
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        var txt = (el.innerText || "").trim();
+        if (!txt || txt.length > 200) continue;
+
+        if (
+          !rightEl &&
+          txt.indexOf("Story Anı Kartı İndir") !== -1 &&
+          el.children.length <= 3
+        ) {
+          rightEl = el;
+        } else if (
+          !leftEl &&
+          (txt.indexOf("Son Marmaray") !== -1 ||
+            txt.indexOf("Raylı Dönüş") !== -1 ||
+            txt.indexOf("Son Vapur") !== -1 ||
+            txt.indexOf("İskele Hattı") !== -1) &&
+          el.children.length <= 8
+        ) {
+          leftEl = el;
+        }
+      }
+
+      function climbToFixed(el) {
+        var cur = el;
+        while (cur && cur !== document.body) {
+          var cs = window.getComputedStyle(cur);
+          if (cs.position === "fixed" || cs.position === "sticky") {
+            return cur;
+          }
+          cur = cur.parentElement;
+        }
+        return el;
+      }
+if (leftEl) leftEl = climbToFixed(leftEl);
+      if (rightEl) rightEl = climbToFixed(rightEl);
+
+      return { leftEl: leftEl, rightEl: rightEl };
+    }
+
+    function applySideBySide() {
+      var found = locateTargets();
+      var leftEl = found.leftEl;
+      var rightEl = found.rightEl;
+      if (!leftEl || !rightEl) return;
+
+      var wrap = document.getElementById("gr-pair-wrapper");
+      if (!wrap) {
+        wrap = document.createElement("div");
+        wrap.id = "gr-pair-wrapper";
+        wrap.className = "gr-docked-pair";
+        document.body.appendChild(wrap);
+      }
+
+      leftEl.classList.add("gr-docked-left");
+      rightEl.classList.add("gr-docked-right");
+
+      if (leftEl.parentElement !== wrap) {
+        wrap.appendChild(leftEl);
+      }
+      if (rightEl.parentElement !== wrap) {
+        wrap.appendChild(rightEl);
+      }
+
+      // Sağ butonun genişliğine göre sol kutunun taşmasını kesin engelle
+      var rRect = rightEl.getBoundingClientRect();
+      var rightWidth = rRect && rRect.width ? Math.ceil(rRect.width) + 14 : 175;
+      leftEl.style.setProperty("max-width", "calc(100% - " + rightWidth + "px)", "important");
+      leftEl.style.setProperty("position", "static", "important");
+      rightEl.style.setProperty("position", "static", "important");
+      wrap.style.setProperty("display", "flex", "important");
+      wrap.style.setProperty("position", "fixed", "important");
+      wrap.style.setProperty("bottom", "12px", "important");
+      wrap.style.setProperty("left", "12px", "important");
+      wrap.style.setProperty("right", "12px", "important");
+      wrap.style.setProperty("z-index", "2147483647", "important");
+    }
+
+    applySideBySide();
+    window.addEventListener("load", applySideBySide);
+    window.addEventListener("resize", applySideBySide);
+    setInterval(applySideBySide, 500);
+  })();
+</script>
 </body>
 </html>
