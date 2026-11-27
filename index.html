@@ -44,7 +44,7 @@
   </style>
 </head>
 <body>
-<aside class="sidebar">
+  <aside class="sidebar">
     <div class="header">
       <h1>🧭 Günün Rotası</h1>
       <div style="display:flex;gap:6px;">
@@ -102,7 +102,7 @@
             <button class="chip" onclick="applyDate('Üsküdar','Sarıyer')">🌊 Boğaz Hattı</button>
             <button class="chip" onclick="applyDate('Fatih','Bakırköy')">🏛 Tarihi Yarımada</button>
           </div>
-</div>
+        </div>
         <div class="card">
           <span class="label">📍 ÖNERİLEN YOL ÜSTÜ DURAKLAR</span>
           <div id="stopsBox" style="font-size:0.82rem;line-height:1.6;"></div>
@@ -167,7 +167,8 @@
       dGrid.innerHTML += `<button class="chip" onclick="tSel.value=${i};openTab('rota',document.querySelector('.tab'));calc()">${x.n}</button>`;
     });
     fSel.value = 9; tSel.value = 22;
-async function calc() {
+
+    async function calc() {
       const a = D[fSel.value], b = D[tSel.value];
       layer.clearLayers();
       L.marker([a.lat, a.lng]).addTo(layer).bindPopup(a.n);
