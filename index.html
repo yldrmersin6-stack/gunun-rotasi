@@ -618,5 +618,286 @@ time: `${depTime} - ${arrivalTime}`,
       updateAll();
     });
   </script>
+<!-- GÜNÜN ROTASI - DATE PLANLA MODÜLÜ -->
+<section id="date-planla-modulu" style="max-width: 1050px; margin: 24px auto; padding: 16px; font-family: system-ui, -apple-system, sans-serif;">
+  <style>
+    .dp-header {
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      color: #fff;
+      padding: 22px;
+      border-radius: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(30, 27, 75, 0.18);
+    }
+    .dp-title h2 { margin: 0 0 6px 0; font-size: 1.35rem; }
+    .dp-title p { margin: 0; font-size: 0.92rem; opacity: 0.88; }
+    .dp-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .dp-select, .dp-date {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 0.92rem;
+      outline: none;
+    }
+    .dp-select option { color: #111827; background: #fff; }
+    .dp-btn-main {
+      background: #f59e0b;
+      color: #111827;
+      font-weight: 700;
+      border: none;
+      padding: 11px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .dp-btn-main:hover { background: #fbbf24; transform: translateY(-1px); }
+    .dp-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+    .dp-grid.aktif { display: grid; }
+    .dp-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .dp-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.09); }
+    .dp-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .badge-uygun { background: #dcfce7; color: #166534; }
+    .badge-orta { background: #dbeafe; color: #1e40af; }
+    .badge-yuksek { background: #fef3c7; color: #92400e; }
+    .dp-card h3 { margin: 0 0 8px 0; font-size: 1.15rem; color: #111827; }
+    .dp-meta { font-size: 0.85rem; color: #6b7280; margin-bottom: 14px; }
+    .dp-steps { list-style: none; padding: 0; margin: 0 0 18px 0; }
+    .dp-steps li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 10px;
+      font-size: 0.92rem;
+      color: #374151;
+      line-height: 1.45;
+    }
+    .dp-steps li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #4f46e5;
+      font-weight: bold;
+    }
+    .dp-actions { display: flex; gap: 8px; margin-top: auto; }
+    .dp-map-btn {
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      background: #111827;
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .dp-map-btn:hover { background: #374151; }
+    .dp-refresh-btn {
+      background: #f3f4f6;
+      color: #111827;
+      border: 1px solid #d1d5db;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .dp-refresh-btn:hover { background: #e5e7eb; }
+  </style>
+ <!-- Üst Kontrol Alanı -->
+  <div class="dp-header">
+    <div class="dp-title">
+      <h2>Date Planla</h2>
+      <p>İlçe ve gününü seç, bütçene göre 3 hazır buluşma rotası anında çıksın.</p>
+    </div>
+
+    <div class="dp-controls">
+      <select id="dp-ilce" class="dp-select" aria-label="İlçe Seçin">
+        <option value="Kadıköy">Kadıköy</option>
+        <option value="Beşiktaş">Beşiktaş</option>
+        <option value="Beyoğlu">Beyoğlu</option>
+        <option value="Üsküdar">Üsküdar</option>
+        <option value="Bakırköy">Bakırköy</option>
+        <option value="Sarıyer">Sarıyer</option>
+        <option value="Fatih">Fatih</option>
+        <option value="Şişli">Şişli</option>
+        <option value="Başakşehir">Başakşehir</option>
+        <option value="İstanbul Geneli">Tüm İstanbul</option>
+      </select>
+
+      <input type="date" id="dp-tarih" class="dp-date" aria-label="Tarih Seçin" />
+
+      <button type="button" id="dp-baslat-btn" class="dp-btn-main">Date Planla</button>
+    </div>
+  </div>
+
+  <!-- 3 Seçenekli Kart Alanı (Uygun / Orta / Yüksek) -->
+  <div id="dp-sonuclar" class="dp-grid"></div>
+
+  <script>
+    (function () {
+      const tarihInput = document.getElementById("dp-tarih");
+      const ilceSelect = document.getElementById("dp-ilce");
+      const baslatBtn = document.getElementById("dp-baslat-btn");
+      const sonuclarAlani = document.getElementById("dp-sonuclar");
+
+      // Bugünün tarihini varsayılan yap
+      const bugun = new Date().toISOString().split("T")[0];
+      tarihInput.value = bugun;
+
+      // Bütçe seviyelerine göre örnek rota havuzu
+      const rotaHavuzu = {
+        uygun: [
+          {
+            baslik: "Samimi Kahve & Sahil Yürüyüşü",
+            sure: "2 - 3 Saat • Öğleden Sonra",
+            duraklar: [
+              "Butik bir kahvecide filtre kahve & tatlı molası",
+              "Sahil hattı veya parkta gün batımı yürüyüşü",
+              "Sokak lezzeti veya sıcak içecek ile kapanış"
+            ],
+            arama: "kahve ve sahil yürüyüşü"
+          },
+          {
+            baslik: "Semt Keşfi & Kitap-Kafe Rotası",
+            sure: "2.5 Saat • Gündüz",
+            duraklar: [
+              "Sakin bir arka sokak kafesinde sohbet",
+              "Yerel sahaflar ve tasarım dükkanları gezisi",
+              "Manzaralı bank veya seyir noktasında mola"
+            ],
+            arama: "butik kafe ve sahaf"
+          }
+        ],
+        orta: [
+          {
+            baslik: "Keyifli Akşam Yemeği & Tatlı Durağı",
+            sure: "3 - 4 Saat • Akşam",
+            duraklar: [
+              "Merkezi bir bistrodan özenli akşam yemeği",
+              "Kısa semt turu ve fotoğraf noktası",
+              "Özel tatlıcı veya kokteyl mekanında kapanış"
+            ],
+            arama: "bistro restoran ve tatlı"
+          },
+          {
+            baslik: "Kültür-Sanat & Akşamüstü Buluşması",
+            sure: "3.5 Saat • Öğleden Sonra - Akşam",
+            duraklar: [
+              "Sergi, müze veya tiyatro etkinliği",
+              "Etkinlik sonrası sıcak atmosferli bir restoranda yemek",
+              "Canlı müzikli sakin bir mekanda içecek"
+            ],
+            arama: "sanat galerisi ve restoran"
+          }
+        ],
+        yuksek: [
+          {
+            baslik: "Manzaralı Özel Akşam & Teras Deneyimi",
+            sure: "4+ Saat • Özel Akşam",
+            duraklar: [
+              "Boğaz veya şehir manzaralı şık restoranda akşam yemeği",
+              "Özel teras veya lounge mekanda imza içecekler",
+              "Gece manzarası eşliğinde özel araç/sahil turu"
+            ],
+            arama: "manzaralı fine dining restoran"
+          },
+          {
+            baslik: "Gastronomi & Özel Etkinlik Gecesi",
+            sure: "4 Saat • Hafta Sonu Akşam",
+            duraklar: [
+              "Şef menüsü sunan konsept restoranda rezervasyon",
+              "Konser, akustik performans veya özel gösteri",
+              "Gece sonu butik tatlı & kahve deneyimi"
+            ],
+            arama: "şef restoranı ve konser"
+          }
+        ]
+      };
+
+      let seciliIndex = { uygun: 0, orta: 0, yuksek: 0 };
+
+      function tarihFormatla(tarihStr) {
+        if (!tarihStr) return "Bugün";
+        const parcalar = tarihStr.split("-");
+        return `${parcalar[2]}.${parcalar[1]}.${parcalar[0]}`;
+      }
+
+      function kartlariCiz() {
+        const ilce = ilceSelect.value;
+        const tarih = tarihFormatla(tarihInput.value);
+
+        const kategoriler = [
+          { key: "uygun", etiket: "Uygun Bütçe", sinif: "badge-uygun" },
+          { key: "orta", etiket: "Orta Bütçe", sinif: "badge-orta" },
+          { key: "yuksek", etiket: "Yüksek Bütçe", sinif: "badge-yuksek" }
+        ];
+
+        sonuclarAlani.innerHTML = kategoriler.map(kat => {
+          const liste = rotaHavuzu[kat.key];
+          const aktifRota = liste[seciliIndex[kat.key] % liste.length];
+          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ilce + " " + aktifRota.arama)}`;
+
+          return `
+            <article class="dp-card">
+              <div>
+                <span class="dp-badge ${kat.sinif}">${kat.etiket}</span>
+                <h3>${aktifRota.baslik}</h3>
+                <div class="dp-meta">📍 ${ilce} • 📅 ${tarih}<br>⏱ ${aktifRota.sure}</div>
+                <ul class="dp-steps">
+                  ${aktifRota.duraklar.map(d => `<li>${d}</li>`).join("")}
+                </ul>
+              </div>
+              <div class="dp-actions">
+                <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="dp-map-btn">Haritada Aç</a>
+                <button type="button" class="dp-refresh-btn" data-kategori="${kat.key}">Değiştir</button>
+              </div>
+            </article>
+          `;
+        }).join("");
+
+        sonuclarAlani.classList.add("aktif");
+
+        // Her karttaki "Değiştir" butonuna alternatif rota geçişi bağla
+        sonuclarAlani.querySelectorAll(".dp-refresh-btn").forEach(btn => {
+          btn.addEventListener("click", function () {
+            const kat = this.getAttribute("data-kategori");
+            seciliIndex[kat] += 1;
+            kartlariCiz();
+          });
+        });
+      }
+
+      baslatBtn.addEventListener("click", kartlariCiz);
+    })();
+  </script>
+</section>
 </body>
 </html>
