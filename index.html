@@ -899,5 +899,305 @@ time: `${depTime} - ${arrivalTime}`,
     })();
   </script>
 </section>
+<!-- GÜNÜN ROTASI - DATE PLANLA MODÜLÜ (KOMPAKT + SAAT SAAT + FİYAT + MEKAN İSİMLİ) -->
+<section id="date-planla-modulu" style="max-width: 960px; margin: 16px auto; padding: 0 12px; font-family: system-ui, -apple-system, sans-serif;">
+  <style>
+    .dp-box {
+      background: #141824;
+      color: #f9fafb;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
+    }
+    .dp-top {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dp-heading h2 { margin: 0; font-size: 1.2rem; }
+    .dp-heading p { margin: 3px 0 0; font-size: 0.85rem; color: #9ca3af; }
+    .dp-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .dp-input {
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: #1f2937;
+      color: #fff;
+      font-size: 0.88rem;
+    }
+    .dp-btn {
+      background: #f59e0b;
+      color: #111827;
+      font-weight: 700;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .dp-btn:hover { background: #fbbf24; }
+    .dp-panel {
+      display: none;
+      margin-top: 14px;
+      background: #ffffff;
+      color: #111827;
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .dp-panel.acik { display: block; }
+    .dp-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .dp-tab {
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      color: #374151;
+      padding: 9px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+      text-align: center;
+    }
+    .dp-tab.aktif-uygun { background: #dcfce7; border-color: #16a34a; color: #14532d; }
+    .dp-tab.aktif-orta { background: #dbeafe; border-color: #2563eb; color: #1e3a8a; }
+    .dp-tab.aktif-yuksek { background: #fef3c7; border-color: #d97706; color: #78350f; }
+    .dp-ozet {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .dp-rota-adi { margin: 0; font-size: 1.05rem; color: #111827; }
+    .dp-fiyat {
+      background: #111827;
+      color: #fbbf24;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .dp-saat-liste {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px 0;
+    }
+    .dp-saat-liste li {
+      display: grid;
+      grid-template-columns: 98px 1fr;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px dashed #e5e7eb;
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+    .dp-saat-liste li:last-child { border-bottom: none; }
+    .dp-saat { font-weight: 700; color: #4338ca; font-size: 0.84rem; }
+    .dp-mekan { font-weight: 600; color: #111827; }
+    .dp-not { color: #4b5563; }
+    .dp-alt {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .dp-link {
+      text-decoration: none;
+      background: #111827;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 9px;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+    .dp-degistir {
+      background: #f3f4f6;
+      color: #111827;
+      border: 1px solid #d1d5db;
+      padding: 8px 12px;
+      border-radius: 9px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    @media (max-width: 540px) {
+      .dp-saat-liste li { grid-template-columns: 1fr; gap: 2px; }
+    }
+  </style>
+
+  <div class="dp-box">
+    <div class="dp-top">
+      <div class="dp-heading">
+        <h2>Date Planla</h2>
+        <p>Uygun, Orta ve Yüksek bütçeye göre saat saat rota ve mekan önerisi.</p>
+      </div>
+      <div class="dp-form">
+        <select id="dp2-ilce" class="dp-input" aria-label="İlçe">
+          <option value="Kadıköy">Kadıköy</option>
+          <option value="Beşiktaş">Beşiktaş</option>
+          <option value="Karaköy">Karaköy</option>
+          <option value="Üsküdar">Üsküdar</option>
+          <option value="Bakırköy">Bakırköy</option>
+        </select>
+        <input type="date" id="dp2-tarih" class="dp-input" aria-label="Tarih" />
+        <button type="button" id="dp2-ac" class="dp-btn">Date Planla</button>
+      </div>
+    </div>
+
+    <div id="dp2-panel" class="dp-panel">
+      <div class="dp-tabs">
+        <button type="button" class="dp-tab aktif-uygun" data-butce="uygun">Uygun</button>
+        <button type="button" class="dp-tab" data-butce="orta">Orta</button>
+        <button type="button" class="dp-tab" data-butce="yuksek">Yüksek</button>
+      </div>
+      <div id="dp2-icerik"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const ilceEl = document.getElementById("dp2-ilce");
+      const tarihEl = document.getElementById("dp2-tarih");
+      const acBtn = document.getElementById("dp2-ac");
+      const panelEl = document.getElementById("dp2-panel");
+      const icerikEl = document.getElementById("dp2-icerik");
+      const tablar = panelEl.querySelectorAll(".dp-tab");
+
+      tarihEl.value = new Date().toISOString().split("T")[0];
+
+      const planlar = {
+        uygun: [
+          {
+            ad: "Kahve, Sahil & Gün Batımı",
+            fiyat: "Tahmini 350 - 650 TL (2 kişi)",
+            saatler: [
+              { saat: "15:00 - 16:30", mekan: "Walter's Coffee Roastery / Moda Sahil Kafeleri", not: "Kahve ve atıştırmalık molası" },
+              { saat: "16:30 - 18:00", mekan: "Moda Sahil Parkı", not: "Yürüyüş ve deniz kenarı sohbeti" },
+              { saat: "18:00 - 19:00", mekan: "Kuzguncuk / Kadıköy Çarşı Tatlıcıları", not: "Sıcak içecek veya tatlı ile kapanış" }
+            ],
+            harita: "kahve ve sahil yürüyüşü"
+          },
+          {
+            ad: "Sakin Sokak & Kitap-Kafe Akışı",
+            fiyat: "Tahmini 300 - 600 TL (2 kişi)",
+            saatler: [
+              { saat: "14:00 - 15:30", mekan: "Kuzguncuk / Beşiktaş Arka Sokak Kafeleri", not: "Sakin başlangıç ve sohbet" },
+              { saat: "15:30 - 17:00", mekan: "Semt Sahafları ve Yürüyüş Hattı", not: "Keyifli keşif turu" },
+              { saat: "17:00 - 18:30", mekan: "Sahil Bankları / Çay Bahçesi", not: "Düşük bütçeli akşamüstü molası" }
+            ],
+            harita: "kafe ve sahaf"
+          }
+        ],
+        orta: [
+          {
+            ad: "Bistro Akşamı & Kokteyl/Tatlı",
+            fiyat: "Tahmini 1.200 - 2.200 TL (2 kişi)",
+            saatler: [
+              { saat: "17:30 - 18:45", mekan: "Karaköy / Kadıköy Butik Kahve & Galeri", not: "Buluşma ve kısa ısınma" },
+              { saat: "19:00 - 21:00", mekan: "Basta! Street Food / Lokal Bistro", not: "Ana yemek ve sohbet" },
+              { saat: "21:15 - 22:30", mekan: "Semt Kokteyl Bar veya Tatlıcı", not: "Akşam kapanışı" }
+            ],
+            harita: "bistro restoran ve tatlı"
+          },
+          {
+            ad: "Kültür-Sanat & Akşam Yemeği",
+            fiyat: "Tahmini 1.100 - 2.000 TL (2 kişi)",
+            saatler: [
+              { saat: "16:00 - 17:30", mekan: "İstanbul Modern / Pera & Bölge Galerileri", not: "Sergi veya kültür gezisi" },
+              { saat: "18:00 - 20:00", mekan: "Karaköy / Beşiktaş Esnaf & Bistro", not: "Akşam yemeği" },
+              { saat: "20:15 - 21:30", mekan: "Sahil veya Meydan Yürüyüşü", not: "Hafif akşam yürüyüşü" }
+            ],
+            harita: "sanat galerisi ve restoran"
+          }
+        ],
+        yuksek: [
+          {
+            ad: "Özel Akşam Yemeği & Manzara",
+            fiyat: "Tahmini 3.500 - 6.500+ TL (2 kişi)",
+            saatler: [
+              { saat: "18:00 - 19:15", mekan: "Boğaz Hattı Lounge / Teras Noktası", not: "Gün batımı karşılama" },
+              { saat: "19:30 - 21:45", mekan: "Nusr-Et / Sunset / Bölge Fine Dining", not: "Özel akşam yemeği" },
+              { saat: "22:00 - 23:30", mekan: "Manzaralı Kokteyl veya Tatlı Durağı", not: "Gece kapanışı" }
+            ],
+            harita: "manzaralı restoran"
+          },
+          {
+            ad: "Gastronomi & Gece Deneyimi",
+            fiyat: "Tahmini 3.000 - 5.800+ TL (2 kişi)",
+            saatler: [
+              { saat: "17:30 - 18:45", mekan: "Nişantaşı / Bebek Özel Kahve & Bakery", not: "Buluşma başlangıcı" },
+              { saat: "19:00 - 21:15", mekan: "Şef Mutfağı / Konsept Restoran", not: "Özel menü deneyimi" },
+              { saat: "21:30 - 23:00", mekan: "Akustik / Canlı Müzik veya Teras", not: "Gece programı" }
+            ],
+            harita: "konsept restoran"
+          }
+        ]
+      };
+
+      let aktifButce = "uygun";
+      let indeks = { uygun: 0, orta: 0, yuksek: 0 };
+
+      function ciz() {
+        const ilce = ilceEl.value;
+        const liste = planlar[aktifButce];
+        const secili = liste[indeks[aktifButce] % liste.length];
+        const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ilce + " " + secili.harita)}`;
+
+        tablar.forEach(t => {
+          t.classList.remove("aktif-uygun", "aktif-orta", "aktif-yuksek");
+          if (t.dataset.butce === aktifButce) {
+            t.classList.add("aktif-" + aktifButce);
+          }
+        });
+
+        icerikEl.innerHTML = `
+          <div class="dp-ozet">
+            <h3 class="dp-rota-adi">${secili.ad} (${ilce})</h3>
+            <span class="dp-fiyat">${secili.fiyat}</span>
+          </div>
+          <ul class="dp-saat-liste">
+            ${secili.saatler.map(s => `
+              <li>
+                <span class="dp-saat">${s.saat}</span>
+                <div><span class="dp-mekan">${s.mekan}</span> <span class="dp-not">— ${s.not}</span></div>
+              </li>
+            `).join("")}
+          </ul>
+          <div class="dp-alt">
+            <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="dp-link">Haritada Ara</a>
+            <button type="button" id="dp2-degistir" class="dp-degistir">Başka Rota Öner</button>
+          </div>
+        `;
+
+        document.getElementById("dp2-degistir").addEventListener("click", function () {
+          indeks[aktifButce] += 1;
+          ciz();
+        });
+      }
+
+      acBtn.addEventListener("click", function () {
+        panelEl.classList.add("acik");
+        ciz();
+      });
+
+      tablar.forEach(tab => {
+        tab.addEventListener("click", function () {
+          aktifButce = this.dataset.butce;
+          panelEl.classList.add("acik");
+          ciz();
+        });
+      });
+    })();
+  </script>
+</section>
 </body>
 </html>
