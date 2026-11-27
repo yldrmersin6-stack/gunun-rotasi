@@ -1,119 +1,622 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#102b25">
-  <meta name="description" content="İstanbul'da bütçene uygun gezi ve buluşma rotaları oluştur.">
-  <title>Günün Rotası | İstanbul'u bütçene göre keşfet</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Günün Rotası — İstanbul 39 İlçe Akıllı Rota & Şehir Rehberi</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    :root {
+      --bg: #0b1018;
+      --panel: #131b27;
+      --panel-2: #192434;
+      --text: #f3f6fb;
+      --muted: #9fb0c7;
+      --accent: #3b82f6;
+      --accent-2: #10b981;
+      --border: rgba(255, 255, 255, 0.1);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(180deg, #090d14 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 16px 56px;
+    }
+    header.hero {
+      background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(16,185,129,0.14));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+    header.hero h1 { margin: 0 0 6px; font-size: 24px; }
+    header.hero p { margin: 0; color: var(--muted); font-size: 14px; }
+    .badge {
+      background: rgba(59,130,246,0.18);
+      border: 1px solid rgba(59,130,246,0.45);
+      color: #dbeafe;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+    .grid-main {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 920px) {
+      .grid-main { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+.card h2, .card h3 { margin: 0 0 12px; font-size: 17px; }
+    .field { margin-bottom: 12px; }
+    .field label {
+      display: block;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    select, input[type="time"], input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 14px;
+    }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 11px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn-sm {
+      width: auto;
+      padding: 6px 11px;
+      font-size: 12px;
+      border-radius: 8px;
+      background: rgba(16,185,129,0.2);
+      border: 1px solid rgba(16,185,129,0.5);
+      color: #a7f3d0;
+    }
+    #map {
+      width: 100%;
+      height: 360px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      z-index: 1;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    @media (max-width: 680px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    .stat-box {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    .stat-label { font-size: 11.5px; color: var(--muted); }
+    .stat-val { font-size: 15px; font-weight: 700; margin-top: 2px; }
+    .timeline { display: flex; flex-direction: column; gap: 10px; }
+    .stop-item {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .stop-time { font-weight: 700; color: #93c5fd; font-size: 13px; }
+    .stop-title { font-weight: 600; font-size: 14.5px; }
+    .stop-meta { color: var(--muted); font-size: 12.5px; }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .tab-btn {
+      padding: 8px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 12.5px;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      font-weight: 600;
+    }
+    .places-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .place-card {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+.tr-card {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .tr-card h4 { margin: 0 0 6px; font-size: 14.5px; }
+    .tr-card p { margin: 4px 0; font-size: 13px; color: var(--muted); }
+    .tr-card strong { color: var(--text); }
+    .ai-note {
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 13.5px;
+      color: #d1fae5;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="#"><span class="brand-mark">↗</span><span>günün<span class="brand-light">rotası</span><small>İSTANBUL'U KEŞFET</small></span></a>
-  <nav><a href="#kesfet">Keşfet</a><a href="#rota">Rota oluştur</a><a href="#ogrenci">Öğrenci</a></nav>
-  <button class="theme-btn" id="themeBtn" aria-label="Tema değiştir">☾</button>
-</header>
+  <div class="container">
+    <header class="hero">
+      <div>
+        <h1>Günün Rotası — İstanbul 39 İlçe Akıllı Rota Asistanı</h1>
+        <p>İlçe, bütçe, kişi sayısı, gezi modu ve saatlere göre harita, mekân ve ulaşım planı</p>
+      </div>
+      <div class="badge">39 İlçe • Harita + Mekân + Ulaşım</div>
+    </header>
 
-<main>
-  <section class="hero">
-    <div class="hero-copy">
-      <div class="eyebrow"><span></span> İSTANBUL'DA HER BÜTÇEYE BİR ROTA</div>
-      <h1>Güzel bir gün<br> geçirmek için <em>çok</em><br> paraya gerek yok.</h1>
-      <p>İstanbul'un 39 ilçesinde keşfedilecek yerleri bul, bütçeni belirle, sana uygun rotayı oluştur.</p>
-      <a class="primary-btn" href="#rota">Rotanı oluşturmaya başla <span>↗</span></a>
-      <div class="hero-note"><span class="avatars">●●●</span> Öğrenciler, arkadaşlar ve çiftler için</div>
-    </div>
-    <div class="hero-art">
-      <div class="art-sun"></div><div class="art-water"></div>
-      <div class="art-building b1"></div><div class="art-building b2"></div><div class="art-building b3"></div>
-      <div class="art-bridge"></div><div class="art-boat">⌁</div>
-      <div class="art-label"><span>✦</span><div><b>İstanbul senin</b><small>Keşfetmeye hazır mısın?</small></div></div>
-      <div class="art-sticker">39<br><small>İLÇE</small></div>
-    </div>
-  </section>
-
-  <section class="quick-stats">
-    <div><b>39</b><span>İstanbul ilçesi</span></div><div><b>₺</b><span>Bütçene göre plan</span></div><div><b>✦</b><span>Ücretsiz keşif noktaları</span></div><div><b>↗</b><span>Sana özel rota fikri</span></div>
-  </section>
-
-  <section class="section" id="rota">
-    <div class="section-heading"><div><div class="eyebrow">BİRKAÇ ADIMDA</div><h2>Bugünün rotasını oluştur</h2></div><p>Nasıl bir gün hayal ettiğini söyle,<br> seçenekleri birlikte şekillendirelim.</p></div>
-    <div class="planner">
-      <div class="planner-form">
-        <div class="field-grid">
-          <label>Hangi ilçede gezelim?
-            <select id="district"><option value="Kadıköy">Kadıköy</option></select>
-          </label>
-          <label>Kimlerle?
-            <select id="company"><option value="Çift">Sevgilimle</option><option value="Arkadaş">Arkadaşlarımla</option><option value="Tek başıma">Tek başıma</option><option value="Ailemle">Ailemle</option></select>
-          </label>
-          <label>Gün / zaman
-            <select id="daytime"><option>Gündüz</option><option>Akşam</option><option>Tüm gün</option></select>
-          </label>
-          <label>Gezi tarzı
-            <select id="style"><option value="Karışık">Karışık keşif</option><option value="Tarih">Tarih ve kültür</option><option value="Doğa">Doğa ve deniz</option><option value="Yeme içme">Yeme içme</option><option value="Ücretsiz">Ücretsiz / çok düşük bütçe</option></select>
-          </label>
+    <div class="grid-main">
+      <aside>
+        <div class="card">
+          <h2>Rota Ayarları</h2>
+          <div class="field">
+            <label for="startDistrict">Kalkış İlçesi</label>
+            <select id="startDistrict"></select>
+          </div>
+          <div class="field">
+            <label for="endDistrict">Varış İlçesi</label>
+            <select id="endDistrict"></select>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label for="peopleCount">Kişi Sayısı</label>
+              <input id="peopleCount" type="number" min="1" max="15" value="2" />
+            </div>
+            <div class="field">
+              <label for="departureTime">Yola Çıkış Saati</label>
+              <input id="departureTime" type="time" value="13:30" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="moodSelect">Gezi / Gün Modu</label>
+            <select id="moodSelect">
+              <option value="arkadas">Arkadaş / Günlük Gezi</option>
+              <option value="date">Romantik Date</option>
+              <option value="kapali">Kapalı / Yağmurlu Gün</option>
+              <option value="kultur">Tarih & Kültür</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="budgetTier">Bütçe Tercihi</label>
+            <select id="budgetTier">
+              <option value="uygun">Uygun Fiyatlı (Sosyal Tesis / Kafe)</option>
+              <option value="dengeli" selected>Dengeli</option>
+              <option value="luks">Lüks / Özel Mekân</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="customNote">Yapay Zeka İsteği / Not</label>
+            <input id="customNote" type="text" placeholder="Örn: Sahil yürüyüşü, akşam yemeği, erken dönüş..." />
+          </div>
+          <button id="generateBtn" class="btn" type="button">Rotayı & Haritayı Güncelle</button>
+          <div id="aiSummaryBox" class="ai-note"></div>
         </div>
-        <div class="budget-head"><label for="budget">Toplam bütçeniz</label><strong id="budgetValue">₺1.000</strong></div>
-        <input id="budget" type="range" min="0" max="10000" step="100" value="1000">
-        <div class="range-labels"><span>₺0</span><span>₺10.000+</span></div>
-        <div class="field-grid lower-fields">
-          <label>Kişi sayısı<input id="people" type="number" min="1" max="20" value="2"></label>
-          <label class="check-label"><input id="student" type="checkbox" checked> Öğrenci bütçesini önceliklendir</label>
+      </aside>
+
+      <main>
+        <div class="card">
+          <h2>Canlı Güzergah Haritası</h2>
+          <div id="map"></div>
+          <div class="stats">
+            <div class="stat-box">
+              <div class="stat-label">Mesafe & Süre</div>
+              <div id="statDistTime" class="stat-val">-</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Tahmini Toplam Bütçe</div>
+              <div id="statBudget" class="stat-val">-</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Dönüş Saati</div>
+              <div id="statReturn" class="stat-val">-</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Yaka Durumu</div>
+              <div id="statSide" class="stat-val">-</div>
+            </div>
+          </div>
         </div>
-        <button class="primary-btn full" id="generateBtn">Bana rota öner <span>✦</span></button>
-        <p class="disclaimer">Öneriler örnek planlama verileridir. Gitmeden önce ücretleri, açık olma durumunu ve ulaşımı ilgili kurumdan kontrol et.</p>
-      </div>
-      <div class="planner-aside">
-        <div class="aside-icon">✦</div><h3>Günün güzel geçsin,<br> bütçen zorlanmasın.</h3>
-        <p>Ücretsiz sahillerden tarihi sokaklara, İBB tesislerinden yeşil alanlara kadar farklı seçenekleri bir araya getir.</p>
-        <div class="mini-tags"><span>Ücretsiz yerler</span><span>Öğrenci dostu</span><span>Ulaşım bilgisi</span></div>
-        <div class="aside-foot">✳ Her bütçeye göre keşif</div>
-      </div>
-    </div>
-    <div class="route-result hidden" id="routeResult">
-      <div class="result-top"><div><div class="eyebrow">SANA ÖZEL ÖNERİ</div><h3 id="resultTitle">Kadıköy'de güzel bir gün</h3></div><button class="outline-btn" id="shareBtn">↗ Rotayı paylaş</button></div>
-      <div class="route-stops" id="routeStops"></div>
-      <div class="result-bottom"><span id="resultCost"></span><a id="routeMap" target="_blank" rel="noopener">Haritada rotayı aç ↗</a></div>
-    </div>
-  </section>
 
-  <section class="section discover" id="kesfet">
-    <div class="section-heading"><div><div class="eyebrow">İSTANBUL'UN HER KÖŞESİ</div><h2>Ne keşfetmek istersin?</h2></div><p>İlçeni seç, ilgini çeken kategorideki<br> yerleri incele.</p></div>
-    <div class="discover-controls">
-      <select id="browseDistrict" aria-label="İlçe seç"></select>
-      <div class="chips" id="categoryChips">
-        <button class="chip active" data-category="Hepsi">Tümü</button><button class="chip" data-category="Tarih">Tarihi yerler</button><button class="chip" data-category="Sokak">Sokaklar & meydanlar</button><button class="chip" data-category="İBB">İBB tesisleri</button><button class="chip" data-category="Sahil">Sahil & plaj</button><button class="chip" data-category="Doğa">Orman & park</button><button class="chip" data-category="Otel">Oteller</button><button class="chip" data-category="Yeme içme">Yeme içme</button><button class="chip" data-category="Ücretsiz">Ücretsiz</button>
-      </div>
+  <div class="card">
+          <h3>Saatlik Durak Planı</h3>
+          <div id="timelineList" class="timeline"></div>
+        </div>
+
+        <div class="card">
+          <h3>Mekân Rehberi (AVM, Tarihi, Orman, Uygun & Lüks)</h3>
+          <div class="tabs" id="categoryTabs">
+            <button type="button" class="tab-btn active" data-cat="all">Tümü</button>
+            <button type="button" class="tab-btn" data-cat="avm">AVM'ler</button>
+            <button type="button" class="tab-btn" data-cat="tarihi">Tarihi Mekânlar</button>
+            <button type="button" class="tab-btn" data-cat="orman">Ormanlık Alanlar</button>
+            <button type="button" class="tab-btn" data-cat="uygun">Uygun Fiyatlı</button>
+            <button type="button" class="tab-btn" data-cat="luks">Lüks Mekânlar</button>
+          </div>
+          <div id="placesGrid" class="places-grid"></div>
+        </div>
+
+        <div class="card">
+          <h3>Ulaşım, Ücret & Geliş-Gidiş Saatleri</h3>
+          <div id="transportGrid" class="transport-list"></div>
+        </div>
+      </main>
     </div>
-    <div class="place-grid" id="placeGrid"></div>
-    <p class="data-note">Örnek içerik gösterilmektedir; tüm İstanbul noktalarının eksiksiz ve doğrulanmış envanteri değildir.</p>
-  </section>
+  </div>
 
-  <section class="student-band" id="ogrenci">
-    <div class="student-graphic">₺<span>✦</span></div>
-    <div><div class="eyebrow">ÖĞRENCİ DOSTU İSTANBUL</div><h2>Öğrenciysen, İstanbul'u<br> daha hesaplı keşfet.</h2><p>Ücretsiz etkinlikleri, indirimli seçenekleri ve toplu ulaşım alternatiflerini önceliklendir.</p></div>
-    <a href="#rota" class="light-btn">Öğrenci rotası oluştur ↗</a>
-  </section>
+  <script>
+    const DISTRICTS = {
+"Adalar": { coords: [40.8763, 29.0889], side: "Anadolu" },
+      "Arnavutköy": { coords: [41.1833, 28.7400], side: "Avrupa" },
+      "Ataşehir": { coords: [40.9833, 29.1200], side: "Anadolu" },
+      "Avcılar": { coords: [40.9792, 28.7214], side: "Avrupa" },
+      "Bağcılar": { coords: [41.0386, 28.8567], side: "Avrupa" },
+      "Bahçelievler": { coords: [41.0000, 28.8600], side: "Avrupa" },
+      "Bakırköy": { coords: [40.9800, 28.8772], side: "Avrupa" },
+      "Başakşehir": { coords: [41.0936, 28.8019], side: "Avrupa" },
+      "Bayrampaşa": { coords: [41.0456, 28.9000], side: "Avrupa" },
+      "Beşiktaş": { coords: [41.0422, 29.0094], side: "Avrupa" },
+      "Beykoz": { coords: [41.1322, 29.0922], side: "Anadolu" },
+      "Beylikdüzü": { coords: [41.0028, 28.6411], side: "Avrupa" },
+      "Beyoğlu": { coords: [41.0369, 28.9850], side: "Avrupa" },
+      "Büyükçekmece": { coords: [41.0186, 28.5897], side: "Avrupa" },
+      "Çatalca": { coords: [41.1436, 28.4619], side: "Avrupa" },
+      "Çekmeköy": { coords: [41.0333, 29.1833], side: "Anadolu" },
+      "Esenler": { coords: [41.0431, 28.8756], side: "Avrupa" },
+      "Esenyurt": { coords: [41.0342, 28.6800], side: "Avrupa" },
+      "Eyüpsultan": { coords: [41.0481, 28.9339], side: "Avrupa" },
+      "Fatih": { coords: [41.0186, 28.9397], side: "Avrupa" },
+      "Gaziosmanpaşa": { coords: [41.0667, 28.9125], side: "Avrupa" },
+      "Güngören": { coords: [41.0167, 28.8833], side: "Avrupa" },
+      "Kadıköy": { coords: [40.9909, 29.0256], side: "Anadolu" },
+      "Kağıthane": { coords: [41.0806, 28.9706], side: "Avrupa" },
+      "Kartal": { coords: [40.8889, 29.1856], side: "Anadolu" },
+      "Küçükçekmece": { coords: [41.0050, 28.7794], side: "Avrupa" },
+      "Maltepe": { coords: [40.9356, 29.1306], side: "Anadolu" },
+      "Pendik": { coords: [40.8781, 29.2333], side: "Anadolu" },
+      "Sancaktepe": { coords: [40.9897, 29.2311], side: "Anadolu" },
+      "Sarıyer": { coords: [41.1667, 29.0500], side: "Avrupa" },
+      "Silivri": { coords: [41.0736, 28.2464], side: "Avrupa" },
+      "Sultanbeyli": { coords: [40.9608, 29.2675], side: "Anadolu" },
+      "Sultangazi": { coords: [41.1069, 28.8678], side: "Avrupa" },
+      "Şile": { coords: [41.1756, 29.6133], side: "Anadolu" },
+      "Şişli": { coords: [41.0603, 28.9878], side: "Avrupa" },
+      "Tuzla": { coords: [40.8167, 29.3000], side: "Anadolu" },
+      "Ümraniye": { coords: [41.0167, 29.1167], side: "Anadolu" },
+      "Üsküdar": { coords: [41.0234, 29.0152], side: "Anadolu" },
+      "Zeytinburnu": { coords: [41.0053, 28.9025], side: "Avrupa" }
+    };
+const PLACES = [
+      { id: 1, cat: "avm", name: "Akasya AVM", district: "Üsküdar", coords: [41.0018, 29.0537], costPerPerson: 650, note: "Açık/kapalı alanlar, yeme-içme ve kolay metro bağlantısı." },
+      { id: 2, cat: "avm", name: "İstinyePark", district: "Sarıyer", coords: [41.1112, 29.0334], costPerPerson: 1400, note: "Geniş marka yelpazesi, pazar yeri ve özel restoran seçenekleri." },
+      { id: 3, cat: "avm", name: "Cevahir AVM", district: "Şişli", coords: [41.0634, 28.9932], costPerPerson: 600, note: "M2 metro çıkışıyla doğrudan erişim ve kapalı gün alternatifi." },
+      { id: 4, cat: "tarihi", name: "Galata Kulesi & Karaköy Hattı", district: "Beyoğlu", coords: [41.0256, 28.9741], costPerPerson: 750, note: "Tarihi silüet, ara sokak yürüyüşü ve boğaz hattı." },
+      { id: 5, cat: "tarihi", name: "Sultanahmet & Gülhane Çevresi", district: "Fatih", coords: [41.0086, 28.9802], costPerPerson: 550, note: "Tarihi yarımada mirası, yürüyüş rotaları ve klasik duraklar." },
+      { id: 6, cat: "orman", name: "Belgrad Ormanı & Atatürk Kent Ormanı", district: "Sarıyer", coords: [41.1830, 28.9780], costPerPerson: 220, note: "Yürüyüş parkurları, temiz hava ve doğa molası." },
+      { id: 7, cat: "orman", name: "Fethipaşa Korusu", district: "Üsküdar", coords: [41.0315, 29.0312], costPerPerson: 320, note: "Boğaz manzaralı yürüyüş yolları ve sosyal tesis imkânı." },
+      { id: 8, cat: "orman", name: "Aydos Ormanı & Göleti", district: "Kartal", coords: [40.9285, 29.2435], costPerPerson: 240, note: "Yüksek rakım, gölet çevresi yürüyüş ve doğa atmosferi." },
+      { id: 9, cat: "uygun", name: "İBB Florya & Çamlıca Sosyal Tesisleri", district: "Bakırköy", coords: [40.9735, 28.7865], costPerPerson: 310, note: "Ekonomik menüler, manzaralı teraslar ve aile/arkadaş dostu yapı." },
+      { id: 10, cat: "uygun", name: "Moda Sahili & Kadıköy Çarşı", district: "Kadıköy", coords: [40.9876, 29.0268], costPerPerson: 380, note: "Uygun bütçeli kafe/lokanta alternatifleri ve sahil yürüyüşü." },
+      { id: 11, cat: "luks", name: "Boğaz Hattı Fine Dining & Oteller", district: "Beşiktaş", coords: [41.0475, 29.0355], costPerPerson: 2400, note: "Özel gün ve romantik akşam kurguları için yüksek segment duraklar." },
+      { id: 12, cat: "luks", name: "Bebek - Yeniköy Sahil Restoranları", district: "Sarıyer", coords: [41.0778, 29.0432], costPerPerson: 2100, note: "Deniz kenarı ambiyans, özel menüler ve akşam buluşmaları." }
+    ];
 
-  <section class="section practical">
-    <div class="section-heading"><div><div class="eyebrow">YOLA ÇIKMADAN ÖNCE</div><h2>Ulaşım ve dönüş planı</h2></div><p>Güzel bir gezi kadar güvenli<br>bir dönüş de önemli.</p></div>
-    <div class="practical-grid">
-      <article class="info-card"><span class="info-icon">◷</span><h3>Gece eve dönüş</h3><p>Son metro, vapur ve otobüs saatlerini yolculuk gününde resmi kanallardan kontrol et.</p><a href="https://www.metro.istanbul/" target="_blank" rel="noopener">Metro İstanbul ↗</a></article>
-      <article class="info-card"><span class="info-icon">⌖</span><h3>Toplu ulaşım</h3><p>Hat, aktarma ve sefer bilgileri için güncel ulaşım planlayıcısını kullan.</p><a href="https://iett.istanbul/" target="_blank" rel="noopener">İETT ↗</a></article>
-      <article class="info-card"><span class="info-icon">₺</span><h3>Taksi ücretini hesapla</h3><p>Taksi ücretleri tarife ve mesafeye göre değişir. Tahmini ücret için güncel tarifeyi kontrol et.</p><a href="https://tuhim.ibb.gov.tr/" target="_blank" rel="noopener">İBB Ulaşım ↗</a></article>
-      <article class="info-card"><span class="info-icon">♧</span><h3>İBB sosyal tesisleri</h3><p>Menü, fiyat ve hizmet saatleri tesise göre değişebilir; gitmeden önce resmi listeye bak.</p><a href="https:// sosyaltesisler.ibb.istanbul/" target="_blank" rel="noopener">İBB Sosyal Tesisleri ↗</a></article>
-    </div>
-  </section>
+    let map, routeLayer, extraStops = [], activeCategory = "all";
 
-  <section class="closing">
-    <div class="eyebrow">İSTANBUL'DA HERKES İÇİN</div><h2>Bir rota, güzel bir anı,<br><em>ulaşılabilir bir bütçe.</em></h2><a class="primary-btn" href="#rota">Hadi plan yapalım ↗</a>
-  </section>
-</main>
-<footer><a class="brand footer-brand" href="#"><span class="brand-mark">↗</span><span>günün<span class="brand-light">rotası</span><small>İSTANBUL'U KEŞFET</small></span></a><span>İstanbul'u herkes için keşfedilebilir kılmak için.</span><span>© 2026 Günün Rotası</span></footer>
-<script src="app.js"></script>
-</body></html>
+    function populateDistricts() {
+      const sSel = document.getElementById("startDistrict");
+      const eSel = document.getElementById("endDistrict");
+      Object.keys(DISTRICTS).forEach((name) => {
+        sSel.add(new Option(name, name));
+        eSel.add(new Option(name, name));
+      });
+      sSel.value = "Kadıköy";
+      eSel.value = "Beşiktaş";
+    }
+
+    function calcDistanceKm(c1, c2) {
+      const R = 6371;
+      const toRad = (d) => (d * Math.PI) / 180;
+      const dLat = toRad(c2[0] - c1[0]);
+      const dLon = toRad(c2[1] - c1[1]);
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(c1[0])) * Math.cos(toRad(c2[0])) * Math.sin(dLon / 2) ** 2;
+      return Number((R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 1.25).toFixed(1));
+    }
+
+    function addMinutesToTime(timeStr, mins) {
+      const [h, m] = (timeStr || "13:30").split(":").map(Number);
+      const total = ((h * 60 + m + mins) % (24 * 60) + (24 * 60)) % (24 * 60);
+      const hh = String(Math.floor(total / 60)).padStart(2, "0");
+      const mm = String(total % 60).padStart(2, "0");
+      return `${hh}:${mm}`;
+    }
+
+    function initMap() {
+      const start = DISTRICTS["Kadıköy"].coords;
+      map = L.map("map").setView(start, 12);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(map);
+      routeLayer = L.layerGroup().addTo(map);
+    }
+
+    function renderPlaces() {
+      const grid = document.getElementById("placesGrid");
+      const list = activeCategory === "all" ? PLACES : PLACES.filter((p) => p.cat === activeCategory);
+      const labels = {
+        avm: "AVM",
+        tarihi: "Tarihi Mekân",
+        orman: "Ormanlık Alan",
+        uygun: "Uygun Fiyatlı",
+        luks: "Lüks Mekân"
+      };
+      grid.innerHTML = list.map((p) => `
+        <div class="place-card">
+          <div>
+            <span class="place-tag">${labels[p.cat] || p.cat} • ${p.district}</span>
+            <div class="stop-title">${p.name}</div>
+            <div class="stop-meta">${p.note}</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+            <span class="stop-meta">~${p.costPerPerson} TL/kişi</span>
+            <button type="button" class="btn btn-sm" onclick="addPlaceToRoute(${p.id})">+ Rotaya Ekle</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    window.addPlaceToRoute = function (id) {
+      const found = PLACES.find((p) => p.id === id);
+      if (found && !extraStops.some((s) => s.id === found.id)) {
+        extraStops.push(found);
+        updateAll();
+      }
+    };
+window.addPlaceToRoute = function (id) {
+      const found = PLACES.find((p) => p.id === id);
+      if (found && !extraStops.some((s) => s.id === found.id)) {
+        extraStops.push(found);
+        updateAll();
+      }
+    };
+
+    window.removeExtraStop = function (id) {
+      extraStops = extraStops.filter((s) => s.id !== id);
+      updateAll();
+    };
+
+    function renderTransport(km, crossSide, people, depTime) {
+      const busMin = Math.max(25, Math.round(km * (crossSide ? 4.9 : 3.6) + (crossSide ? 15 : 8)));
+      const dolmusMin = Math.max(20, Math.round(km * 3.8 + 6));
+      const taxiMin = Math.max(15, Math.round(km * 2.5 + (crossSide ? 12 : 5)));
+      const taxiFare = Math.round(85 + km * 48 + (crossSide ? 120 : 0));
+
+      document.getElementById("transportGrid").innerHTML = `
+        <div class="tr-card">
+          <h4>Otobüs / İETT & Raylı Hatlar</h4>
+          <p><strong>Tahmini Süre:</strong> ~${busMin} dk</p>
+          <p><strong>Geliş-Gidiş Saatleri:</strong> 06:00 – 23:55 (Gece hatları 00:00–06:00 arası 30–60 dk sıklıkla)</p>
+          <p><strong>Kalkış / Dönüş Örneği:</strong> ${depTime} gidiş • ${addMinutesToTime(depTime, 300)} dönüş</p>
+        </div>
+        <div class="tr-card">
+          <h4>Dolmuş / Minibüs</h4>
+          <p><strong>Tahmini Süre:</strong> ~${dolmusMin} dk (Aynı yaka / hat güzergâhı)</p>
+          <p><strong>Geliş-Gidiş Saatleri:</strong> 06:30 – 23:30 (Yoğun saatlerde 5–12 dk aralıkla)</p>
+          <p><strong>Not:</strong> Ara duraklarda esnek inme-binme avantajı sağlar.</p>
+        </div>
+        <div class="tr-card">
+          <h4>Taksi (${people} Kişi)</h4>
+          <p><strong>Tahmini Süre:</strong> ~${taxiMin} dk (Trafiğe göre değişir)</p>
+          <p><strong>Tahmini Tek Yön Ücret:</strong> ~${taxiFare} TL (00:00–06:00 gece tarifesinde artış olabilir)</p>
+          <p><strong>Geliş-Gidiş Saatleri:</strong> 24 saat kesintisiz hizmet</p>
+        </div>
+      `;
+    }
+
+    function updateAll() {
+      const sName = document.getElementById("startDistrict").value;
+      const eName = document.getElementById("endDistrict").value;
+      const people = Math.max(1, parseInt(document.getElementById("peopleCount").value || "2", 10));
+      const depTime = document.getElementById("departureTime").value || "13:30";
+      const mood = document.getElementById("moodSelect").value;
+      const budgetTier = document.getElementById("budgetTier").value;
+      const note = (document.getElementById("customNote").value || "").trim();
+
+      const sData = DISTRICTS[sName];
+      const eData = DISTRICTS[eName];
+      const crossSide = sData.side !== eData.side;
+      const km = calcDistanceKm(sData.coords, eData.coords);
+      const travelMin = Math.max(20, Math.round(km * (crossSide ? 4.5 : 3.2) + (crossSide ? 12 : 6)));
+
+      const basePerPerson = budgetTier === "uygun" ? 360 : budgetTier === "luks" ? 1850 : 720;
+      const moodMult = mood === "date" ? 1.25 : 1.0;
+      const stopsExtraPerPerson = extraStops.reduce((acc, item) => acc + item.costPerPerson, 0);
+      const totalBudget = Math.round((basePerPerson * moodMult + stopsExtraPerPerson + (crossSide ? 90 : 45)) * people);
+
+      const arrivalTime = addMinutesToTime(depTime, travelMin);
+      const totalStayMin = 240 + extraStops.length * 60;
+      const returnStart = addMinutesToTime(arrivalTime, totalStayMin);
+      const homeArrival = addMinutesToTime(returnStart, travelMin);
+
+      document.getElementById("statDistTime").textContent = `~${km} km • ~${travelMin} dk`;
+      document.getElementById("statBudget").textContent = `~${totalBudget.toLocaleString("tr-TR")} TL`;
+      document.getElementById("statReturn").textContent = `${returnStart} çıkış → ${homeArrival} varış`;
+      document.getElementById("statSide").textContent = crossSide
+        ? `${sData.side} → ${eData.side} (Yaka Geçişi)`
+        : `${sData.side} Yakası İçi`;
+
+      const moodText = {
+        arkadas: "Arkadaş / günlük gezi kurgusu",
+        date: "Romantik date kurgusu",
+        kapali: "Kapalı/yağmurlu gün kurgusu",
+        kultur: "Tarih ve kültür ağırlıklı kurgu"
+      }[mood];
+
+      document.getElementById("aiSummaryBox").textContent =
+        `Yapay Zeka Özeti: ${sName} → ${eName} için ${moodText} hazırlandı (${people} kişi). ` +
+        (crossSide ? "İki yaka arası geçişte vapur/Marmaray/Metrobüs saatlerini kontrol et. " : "Aynı yaka içi ulaşım seçildi. ") +
+        (note ? `Notun dikkate alındı: "${note}".` : "");
+
+      // Harita çizimi
+      routeLayer.clearLayers();
+      const points = [sData.coords];
+      L.marker(sData.coords).addTo(routeLayer).bindPopup(`<b>Kalkış:</b> ${sName}`);
+
+      extraStops.forEach((st) => {
+        points.push(st.coords);
+        L.marker(st.coords).addTo(routeLayer).bindPopup(`<b>Durak:</b> ${st.name} (${st.district})`);
+      });
+
+      points.push(eData.coords);
+      L.marker(eData.coords).addTo(routeLayer).bindPopup(`<b>Varış:</b> ${eName}`);
+
+      L.polyline(points, { color: "#3b82f6", weight: 4, dashArray: "6,8" }).addTo(routeLayer);
+      map.fitBounds(L.latLngBounds(points).pad(0.25));
+      setTimeout(() => map.invalidateSize(), 120);
+
+      // Saatlik zaman çizelgesi
+      let curMin = 0;
+      const timelineItems = [
+        {
+time: `${depTime} - ${arrivalTime}`,
+          title: `${sName} → ${eName} Geçiş`,
+          meta: `Tahmini ~${travelMin} dk • ${crossSide ? "Yaka geçişi" : "Aynı yaka"}`,
+          removableId: null
+        }
+      ];
+
+      curMin = travelMin;
+      extraStops.forEach((st) => {
+        const startT = addMinutesToTime(depTime, curMin);
+        curMin += 75;
+        const endT = addMinutesToTime(depTime, curMin);
+        timelineItems.push({
+          time: `${startT} - ${endT}`,
+          title: `${st.name} (${st.district})`,
+          meta: `${st.note} • ~${st.costPerPerson} TL/kişi`,
+          removableId: st.id
+        });
+      });
+
+      const actStart = addMinutesToTime(depTime, curMin);
+      const actEnd = returnStart;
+      timelineItems.push({
+        time: `${actStart} - ${actEnd}`,
+        title: `${eName} Ana Program & Mola`,
+        meta: `${moodText} • Seçili bütçe: ${budgetTier}`,
+        removableId: null
+      });
+
+      timelineItems.push({
+        time: `${returnStart} - ${homeArrival}`,
+        title: `Dönüş Yolu (${eName} → ${sName})`,
+        meta: `Tahmini eve varış: ~${homeArrival}`,
+        removableId: null
+      });
+
+      document.getElementById("timelineList").innerHTML = timelineItems.map((item) => `
+        <div class="stop-item">
+          <div>
+            <div class="stop-time">${item.time}</div>
+            <div class="stop-title">${item.title}</div>
+            <div class="stop-meta">${item.meta}</div>
+          </div>
+          ${item.removableId ? `<button type="button" class="btn btn-sm" onclick="removeExtraStop(${item.removableId})">Kaldır</button>` : ""}
+        </div>
+      `).join("");
+
+      renderTransport(km, crossSide, people, depTime);
+    }
+
+    document.getElementById("categoryTabs").addEventListener("click", (e) => {
+      const btn = e.target.closest(".tab-btn");
+      if (!btn) return;
+      document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeCategory = btn.getAttribute("data-cat");
+      renderPlaces();
+    });
+
+    document.getElementById("generateBtn").addEventListener("click", updateAll);
+    ["startDistrict", "endDistrict", "peopleCount", "departureTime", "moodSelect", "budgetTier"].forEach((id) => {
+      document.getElementById(id).addEventListener("change", updateAll);
+    });
+
+    window.addEventListener("load", () => {
+      populateDistricts();
+      initMap();
+      renderPlaces();
+      updateAll();
+    });
+  </script>
+</body>
+</html>
