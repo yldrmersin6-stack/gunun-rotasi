@@ -1,224 +1,195 @@
 <!DOCTYPE html>
 <html lang="tr" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Günün Rotası — İstanbul 39 İlçe Akıllı Rota</title>
-  <link href="https://googleapis.com" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com" />
-  <style>
-    :root { --bg: #0b0f19; --panel: #111827; --card: #1e293b; --text: #f8fafc; --muted: #94a3b8; --border: rgba(255,255,255,0.1); --primary: #38bdf8; }
-    [data-theme="light"] { --bg: #f1f5f9; --panel: #ffffff; --card: #f8fafc; --text: #0f172a; --muted: #64748b; --border: rgba(0,0,0,0.1); --primary: #0284c7; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { display: flex; height: 100vh; overflow: hidden; background: var(--bg); color: var(--text); }
-    .sidebar { width: 420px; max-width: 100vw; height: 100vh; background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 1000; }
-    .header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-    .header h1 { font-size: 1.15rem; font-weight: 800; color: var(--primary); }
-    .btn-sm { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
-    .tabs { display: flex; border-bottom: 1px solid var(--border); }
-    .tab { flex: 1; padding: 10px; background: none; border: none; color: var(--muted); font-weight: 700; font-size: 0.8rem; cursor: pointer; border-bottom: 2px solid transparent; }
-    .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
-    .content { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
-    .pane { display: none; flex-direction: column; gap: 12px; }
-    .pane.active { display: flex; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
-    .label { font-size: 0.72rem; font-weight: 700; color: var(--muted); margin-bottom: 8px; display: block; }
-    select, input { width: 100%; padding: 9px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-weight: 600; margin-bottom: 6px; }
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-    .chip { padding: 8px 4px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.75rem; font-weight: 600; cursor: pointer; text-align: center; }
-    .chip.active { background: var(--primary); color: #0f172a; border-color: var(--primary); }
-    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .stat { background: var(--bg); padding: 10px; border-radius: 10px; border: 1px solid var(--border); }
-    .stat b { font-size: 1.1rem; color: var(--primary); display: block; }
-    .btn-main { width: 100%; padding: 11px; border-radius: 10px; border: none; background: var(--primary); color: #0f172a; font-weight: 800; cursor: pointer; }
-    .map-area { flex: 1; position: relative; }
-    #map { width: 100%; height: 100%; }
-    .fab { position: absolute; bottom: 20px; right: 20px; z-index: 900; background: #6366f1; color: #fff; border: none; padding: 12px 18px; border-radius: 30px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
-    .modal { position: absolute; bottom: 75px; right: 20px; width: 320px; background: var(--panel); border: 1px solid var(--border); border-radius: 14px; z-index: 1100; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    .modal.open { display: flex; }
-    .chat-box { height: 200px; overflow-y: auto; padding: 10px; font-size: 0.8rem; display: flex; flex-direction: column; gap: 8px; }
-    .msg { padding: 8px 10px; border-radius: 10px; background: var(--card); max-width: 85%; }
-    .msg.user { background: var(--primary); color: #0f172a; align-self: flex-end; font-weight: 600; }
-    .dist-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-height: 360px; overflow-y: auto; }
-    @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; height: 55vh; } .map-area { height: 45vh; } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Günün Rotası — İstanbul 39 İlçe</title>
+<link rel="stylesheet" href="https://unpkg.com">
+<style>
+:root{--bg:#0b0f19;--p:#111827;--c:#1e293b;--t:#f8fafc;--m:#94a3b8;--b:rgba(255,255,255,.1);--a:#38bdf8}
+[data-theme=light]{--bg:#f1f5f9;--p:#fff;--c:#f8fafc;--t:#0f172a;--m:#64748b;--b:rgba(0,0,0,.1);--a:#0284c7}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+body{display:flex;height:100vh;overflow:hidden;background:var(--bg);color:var(--t)}
+aside{width:400px;max-width:100vw;background:var(--p);border-right:1px solid var(--b);display:flex;flex-direction:column;z-index:999}
+header{padding:14px;border-bottom:1px solid var(--b);display:flex;justify-content:space-between;align-items:center}
+h1{font-size:1.1rem;color:var(--a)}
+.btn{background:var(--c);border:1px solid var(--b);color:var(--t);padding:6px 10px;border-radius:8px;cursor:pointer;font-size:.8rem}
+.tabs{display:flex;border-bottom:1px solid var(--b)}
+.tab{flex:1;padding:10px;background:none;border:none;color:var(--m);font-weight:700;cursor:pointer;border-bottom:2px solid transparent}
+.tab.active{color:var(--a);border-bottom-color:var(--a)}
+.box{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.pane{display:none;flex-direction:column;gap:12px}.pane.active{display:flex}
+.card{background:var(--c);border:1px solid var(--b);border-radius:12px;padding:12px}
+select,input{width:100%;padding:9px;border-radius:8px;border:1px solid var(--b);background:var(--bg);color:var(--t);margin-bottom:6px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.chip{padding:8px 4px;border-radius:8px;border:1px solid var(--b);background:var(--bg);color:var(--t);font-size:.75rem;text-align:center;cursor:pointer}
+.chip.active{background:var(--a);color:#0f172a;font-weight:700}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{background:var(--bg);padding:10px;border-radius:10px;border:1px solid var(--b)}
+.stat b{font-size:1.1rem;color:var(--a);display:block}
+.main-btn{width:100%;padding:11px;border-radius:10px;border:none;background:var(--a);color:#0f172a;font-weight:800;cursor:pointer}
+main{flex:1;position:relative}#map{width:100%;height:100%}
+.fab{position:absolute;bottom:20px;right:20px;z-index:900;background:#6366f1;color:#fff;border:none;padding:12px 18px;border-radius:30px;font-weight:700;cursor:pointer}
+.modal{position:absolute;bottom:75px;right:20px;width:310px;background:var(--p);border:1px solid var(--b);border-radius:12px;z-index:1100;display:none;flex-direction:column}
+.modal.open{display:flex}
+@media(max-width:768px){body{flex-direction:column}aside{width:100%;height:55vh}main{height:45vh}}
+</style>
 </head>
 <body>
-  <aside class="sidebar">
-    <div class="header">
-      <h1>🧭 Günün Rotası</h1>
-      <div style="display:flex;gap:6px;">
-        <button class="btn-sm" onclick="surprise()">🎲 Sürpriz</button>
-        <button class="btn-sm" onclick="toggleTheme()">🌓 Tema</button>
+<aside>
+  <header>
+    <h1>🧭 Günün Rotası</h1>
+    <div><button class="btn" onclick="surprise()">🎲</button> <button class="btn" onclick="theme()">🌓</button></div>
+  </header>
+  <div class="tabs">
+    <button class="tab active" onclick="tab('r',this)">📍 Rota</button>
+    <button class="tab" onclick="tab('d',this)">💑 Date</button>
+    <button class="tab" onclick="tab('i',this)">🏙 39 İlçe</button>
+  </div>
+  <div class="box">
+    <div id="r" class="pane active">
+      <div class="card">
+        <select id="fSel" onchange="calc()"></select>
+        <button class="btn" style="width:100%;margin-bottom:6px" onclick="swap()">⇅ Yer Değiştir</button>
+        <select id="tSel" onchange="calc()"></select>
       </div>
+      <div class="card">
+        <div class="grid" id="mGrp" style="margin-bottom:8px">
+          <div class="chip active" data-m="transit" onclick="setM(this)">🚇 Toplu Taşıma</div>
+          <div class="chip" data-m="ferry" onclick="setM(this)">⛴ Vapur</div>
+          <div class="chip" data-m="taxi" onclick="setM(this)">🚕 Taksi</div>
+        </div>
+        <div class="grid" id="pGrp">
+          <div class="chip active" data-p="1" onclick="setP(this)">1 Kişi</div>
+          <div class="chip" data-p="2" onclick="setP(this)">2 Kişi</div>
+          <div class="chip" data-p="4" onclick="setP(this)">4 Kişi</div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>MESAFE & SÜRE</small><b id="dOut">0 km</b><small id="tOut">0 dk</small></div>
+        <div class="stat"><small>TAHMİNİ BÜTÇE</small><b id="cOut">0 ₺</b><small id="sOut">Kişi başı: 0 ₺</small></div>
+      </div>
+      <div class="card" style="font-size:.78rem;line-height:1.5">
+        <b>⛴ Gece Dönüşü:</b> Son vapur 23:30 • Metro 00:00 (Cuma-Cmt 24 saat) • Gece otobüsü 15F / E-10
+      </div>
+      <button class="main-btn" onclick="wa()">💬 WhatsApp'ta Paylaş</button>
     </div>
-    <div class="tabs">
-      <button class="tab active" onclick="openTab('rota',this)">📍 Rota</button>
-      <button class="tab" onclick="openTab('date',this)">💑 Date & Durak</button>
-      <button class="tab" onclick="openTab('ilce',this)">🏙 39 İlçe</button>
+    <div id="d" class="pane">
+      <div class="card grid" style="grid-template-columns:1fr 1fr">
+        <button class="chip" onclick="dt('Beşiktaş','Kadıköy')">🌅 Vapur & Gün Batımı</button>
+        <button class="chip" onclick="dt('Beyoğlu','Fatih')">🏛 Tarihi Yarımada</button>
+        <button class="chip" onclick="dt('Üsküdar','Sarıyer')">🌊 Boğaz Hattı</button>
+        <button class="chip" onclick="dt('Kadıköy','Adalar')">🏝 Ada Kaçamağı</button>
+      </div>
+      <div class="card" id="stopBox" style="font-size:.82rem;line-height:1.5"></div>
     </div>
-    <div class="content">
-      <div id="rota" class="pane active">
-        <div class="card">
-          <span class="label">BAŞLANGIÇ & VARIŞ</span>
-          <select id="fromSel" onchange="calc()"></select>
-          <button class="btn-sm" style="width:100%;margin-bottom:6px;" onclick="swap()">⇅ Yer Değiştir</button>
-          <select id="toSel" onchange="calc()"></select>
-        </div>
-        <div class="card">
-          <span class="label">ULAŞIM & KİŞİ SAYISI</span>
-          <div class="grid" id="modeGrp" style="margin-bottom:8px;">
-            <div class="chip active" data-m="transit" onclick="setMode(this)">🚇 Toplu Taşıma</div>
-            <div class="chip" data-m="ferry" onclick="setMode(this)">⛴ Vapur</div>
-            <div class="chip" data-m="taxi" onclick="setMode(this)">🚕 Taksi</div>
-          </div>
-          <div class="grid" id="pplGrp">
-            <div class="chip active" data-p="1" onclick="setPpl(this)">1 Kişi</div>
-            <div class="chip" data-p="2" onclick="setPpl(this)">2 Kişi</div>
-            <div class="chip" data-p="4" onclick="setPpl(this)">4 Kişi</div>
-          </div>
-        </div>
-        <div class="stats">
-          <div class="stat"><span class="label">MESAFE & SÜRE</span><b id="distOut">0 km</b><small id="timeOut">0 dk</small></div>
-          <div class="stat"><span class="label">TAHMİNİ BÜTÇE</span><b id="costOut">0 ₺</b><small id="subCost">Kişi başı: 0 ₺</small></div>
-        </div>
-        <div class="card">
-          <span class="label">⛴ GECE DÖNÜŞ & SON SEFER BİLGİSİ</span>
-          <div style="font-size:0.78rem;line-height:1.5;">
-            • <b>Şehir Hatları:</b> Son vapur 23:30<br>
-            • <b>Metro/Marmaray:</b> 00:00 (Cuma-Cmt 24 saat)<br>
-            • <b>Gece Otobüsü:</b> 15F / E-10 (00:00 - 05:30)
-          </div>
-        </div>
-        <button class="btn-main" onclick="shareWA()">💬 WhatsApp'ta Rotayı Paylaş</button>
-      </div>
-
-      <div id="date" class="pane">
-        <div class="card">
-          <span class="label">💑 HAZIR DATE KONSEPTLERİ</span>
-          <div class="grid" style="grid-template-columns:1fr 1fr;">
-            <button class="chip" onclick="applyDate('Beşiktaş','Kadıköy')">🌅 Vapur & Gün Batımı</button>
-            <button class="chip" onclick="applyDate('Karaköy','Beyoğlu')">☕ Kahve & Galata</button>
-            <button class="chip" onclick="applyDate('Üsküdar','Sarıyer')">🌊 Boğaz Hattı</button>
-            <button class="chip" onclick="applyDate('Fatih','Bakırköy')">🏛 Tarihi Yarımada</button>
-          </div>
-        </div>
-        <div class="card">
-          <span class="label">📍 ÖNERİLEN YOL ÜSTÜ DURAKLAR</span>
-          <div id="stopsBox" style="font-size:0.82rem;line-height:1.6;"></div>
-        </div>
-      </div>
-
-      <div id="ilce" class="pane">
-        <div class="card">
-          <span class="label">İSTANBUL 39 İLÇE (VARIŞ SEÇ)</span>
-          <div class="dist-list" id="distGrid"></div>
-        </div>
-      </div>
+    <div id="i" class="pane">
+      <div class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:360px;overflow-y:auto" id="iGrid"></div>
     </div>
-  </aside>
+  </div>
+</aside>
+<main>
+  <div id="map"></div>
+  <button class="fab" onclick="document.getElementById('ai').classList.toggle('open')">✨ AI Asistan</button>
+  <div class="modal" id="ai">
+    <header><b>✨ AI Asistan</b><button class="btn" onclick="document.getElementById('ai').classList.remove('open')">✕</button></header>
+    <div id="cBox" style="height:180px;overflow-y:auto;padding:10px;font-size:.8rem">Rota hakkında soru sorabilirsin!</div>
+    <div style="padding:8px;display:flex;gap:4px"><input id="aiIn" placeholder="Soru yaz..." style="margin:0"><button class="btn" onclick="ask()">Sor</button></div>
+  </div>
+</main>
+<link rel="stylesheet" href="https://unpkg.com" />
+<script src="https://unpkg.com"></script>
+<script>
+const D = [
+  {n:"Adalar",lat:40.876,lng:29.091,s:"Büyükada Sahil, Aya Yorgi"},{n:"Arnavutköy",lat:41.184,lng:28.740,s:"Karaburun Sahil"},
+  {n:"Ataşehir",lat:40.983,lng:29.128,s:"Watergarden, Nezahat Gökyiğit Parkı"},{n:"Avcılar",lat:40.979,lng:28.721,s:"Avcılar Sahil Parkı"},
+  {n:"Bağcılar",lat:41.039,lng:28.856,s:"Güneşli Meydan"},{n:"Bahçelievler",lat:41.002,lng:28.860,s:"Milli Egemenlik Parkı"},
+  {n:"Bakırköy",lat:40.980,lng:28.872,s:"Florya Sahil, Yeşilköy"},{n:"Başakşehir",lat:41.093,lng:28.802,s:"Sular Vadisi"},
+  {n:"Bayrampaşa",lat:41.046,lng:28.912,s:"Şehir Parkı"},{n:"Beşiktaş",lat:41.042,lng:29.007,s:"Ortaköy, Bebek Sahili"},
+  {n:"Beykoz",lat:41.135,lng:29.095,s:"Anadolu Kavağı, Kanlıca"},{n:"Beylikdüzü",lat:41.001,lng:28.641,s:"Yaşam Vadisi, Gürpınar Sahil"},
+  {n:"Beyoğlu",lat:41.037,lng:28.977,s:"Galata Kulesi, Karaköy, İstiklal"},{n:"Büyükçekmece",lat:41.020,lng:28.585,s:"Kordonboyu Sahil"},
+  {n:"Çatalca",lat:41.143,lng:28.461,s:"İnceğiz Mağaraları"},{n:"Çekmeköy",lat:41.033,lng:29.179,s:"Alemdağ Ormanı"},
+  {n:"Esenler",lat:41.043,lng:28.876,s:"15 Temmuz Millet Bahçesi"},{n:"Esenyurt",lat:41.034,lng:28.680,s:"Gaziler Parkı"},
+  {n:"Eyüpsultan",lat:41.048,lng:28.933,s:"Pierre Loti Tepesi, Eyüp Meydan"},{n:"Fatih",lat:41.018,lng:28.949,s:"Sultanahmet, Balat, Eminönü"},
+  {n:"Gaziosmanpaşa",lat:41.065,lng:28.912,s:"Meydan Parkı"},{n:"Güngören",lat:41.023,lng:28.872,s:"Merter"},
+  {n:"Kadıköy",lat:40.990,lng:29.029,s:"Moda Sahil, Bahariye, Bağdat Cd."},{n:"Kağıthane",lat:41.081,lng:28.972,s:"Hasbahçe"},
+  {n:"Kartal",lat:40.888,lng:29.185,s:"Aydos Ormanı, Kartal Sahil"},{n:"Küçükçekmece",lat:41.000,lng:28.780,s:"Göl Kenarı Sosyal Tesisler"},
+  {n:"Maltepe",lat:40.935,lng:29.131,s:"Orhangazi Şehir Parkı Sahil"},{n:"Pendik",lat:40.875,lng:29.233,s:"Pendik Marina"},
+  {n:"Sancaktepe",lat:41.002,lng:29.231,s:"Damatris Sarayı"},{n:"Sarıyer",lat:41.166,lng:29.050,s:"Emirgan Korusu, Rumeli Hisarı"},
+  {n:"Silivri",lat:41.073,lng:28.246,s:"Silivri Sahil"},{n:"Sultanbeyli",lat:40.960,lng:29.270,s:"Aydos Kalesi"},
+  {n:"Sultangazi",lat:41.106,lng:28.867,s:"Mimar Sinan Kent Ormanı"},{n:"Şile",lat:41.175,lng:29.613,s:"Ağva, Şile Feneri"},
+  {n:"Şişli",lat:41.060,lng:28.987,s:"Nişantaşı, Bomontiada"},{n:"Tuzla",lat:40.816,lng:29.301,s:"Tuzla Viaport Marina"},
+  {n:"Ümraniye",lat:41.016,lng:29.124,s:"Trabzon Park"},{n:"Üsküdar",lat:41.023,lng:29.015,s:"Kız Kulesi, Kuzguncuk, Çengelköy"},
+  {n:"Zeytinburnu",lat:40.994,lng:28.904,s:"Kazlıçeşme Sahil, Panorama 1453"}
+];
 
-  <main class="map-area">
-    <div id="map"></div>
-    <button class="fab" onclick="document.getElementById('aiBox').classList.toggle('open')">✨ AI Asistan</button>
-    <div class="modal" id="aiBox">
-      <div class="header"><b>✨ Rota AI Asistanı</b><button class="btn-sm" onclick="document.getElementById('aiBox').classList.remove('open')">✕</button></div>
-      <div class="chat-box" id="chatBox"><div class="msg">Merhaba! Seçtiğin rota için ulaşım ve mekan önerisi sorabilirsin.</div></div>
-      <div style="padding:8px;display:flex;gap:4px;">
-        <input id="aiIn" placeholder="Örn: Nerede kahve içelim?" style="margin:0;">
-        <button class="btn-sm" onclick="askAI()">Sor</button>
-      </div>
-    </div>
-  </main>
+let mode = 'transit', ppl = 1, summary = '';
+const map = L.map('map').setView([41.03, 28.98], 11);
+let tile = L.tileLayer('https://{s}{z}/{x}/{y}{r}.png').addTo(map);
+let layer = L.layerGroup().addTo(map);
 
-  <script src="https://unpkg.com"></script>
-  <script>
-    const D = [
-      {n:"Adalar",lat:40.876,lng:29.091,s:"Büyükada Sahil, Aya Yorgi"},{n:"Arnavutköy",lat:41.184,lng:28.740,s:"Karaburun Sahil"},
-      {n:"Ataşehir",lat:40.983,lng:29.128,s:"Watergarden, Nezahat Gökyiğit Parkı"},{n:"Avcılar",lat:40.979,lng:28.721,s:"Avcılar Sahil Parkı"},
-      {n:"Bağcılar",lat:41.039,lng:28.856,s:"Güneşli Meydan"},{n:"Bahçelievler",lat:41.002,lng:28.860,s:"Milli Egemenlik Parkı"},
-      {n:"Bakırköy",lat:40.980,lng:28.872,s:"Florya Sahil, Yeşilköy"},{n:"Başakşehir",lat:41.093,lng:28.802,s:"Sular Vadisi"},
-      {n:"Bayrampaşa",lat:41.046,lng:28.912,s:"Şehir Parkı"},{n:"Beşiktaş",lat:41.042,lng:29.007,s:"Ortaköy, Bebek Sahili"},
-      {n:"Beykoz",lat:41.135,lng:29.095,s:"Anadolu Kavağı, Kanlıca"},{n:"Beylikdüzü",lat:41.001,lng:28.641,s:"Yaşam Vadisi, Gürpınar Sahil"},
-      {n:"Beyoğlu",lat:41.037,lng:28.977,s:"Galata Kulesi, Karaköy, İstiklal"},{n:"Büyükçekmece",lat:41.020,lng:28.585,s:"Kordonboyu Sahil"},
-      {n:"Çatalca",lat:41.143,lng:28.461,s:"İnceğiz Mağaraları"},{n:"Çekmeköy",lat:41.033,lng:29.179,s:"Alemdağ Ormanı"},
-      {n:"Esenler",lat:41.043,lng:28.876,s:"15 Temmuz Millet Bahçesi"},{n:"Esenyurt",lat:41.034,lng:28.680,s:"Gaziler Parkı"},
-      {n:"Eyüpsultan",lat:41.048,lng:28.933,s:"Pierre Loti Tepesi, Eyüp Meydan"},{n:"Fatih",lat:41.018,lng:28.949,s:"Sultanahmet, Balat, Eminönü"},
-      {n:"Gaziosmanpaşa",lat:41.065,lng:28.912,s:"Meydan Parkı"},{n:"Güngören",lat:41.023,lng:28.872,s:"Merter"},
-      {n:"Kadıköy",lat:40.990,lng:29.029,s:"Moda Sahil, Bahariye, Bağdat Cd."},{n:"Kağıthane",lat:41.081,lng:28.972,s:"Hasbahçe"},
-      {n:"Kartal",lat:40.888,lng:29.185,s:"Aydos Ormanı, Kartal Sahil"},{n:"Küçükçekmece",lat:41.000,lng:28.780,s:"Göl Kenarı Sosyal Tesisler"},
-      {n:"Maltepe",lat:40.935,lng:29.131,s:"Orhangazi Şehir Parkı Sahil"},{n:"Pendik",lat:40.875,lng:29.233,s:"Pendik Marina"},
-      {n:"Sancaktepe",lat:41.002,lng:29.231,s:"Damatris Sarayı"},{n:"Sarıyer",lat:41.166,lng:29.050,s:"Emirgan Korusu, Rumeli Hisarı"},
-      {n:"Silivri",lat:41.073,lng:28.246,s:"Silivri Sahil"},{n:"Sultanbeyli",lat:40.960,lng:29.270,s:"Aydos Kalesi"},
-      {n:"Sultangazi",lat:41.106,lng:28.867,s:"Mimar Sinan Kent Ormanı"},{n:"Şile",lat:41.175,lng:29.613,s:"Ağva, Şile Feneri"},
-      {n:"Şişli",lat:41.060,lng:28.987,s:"Nişantaşı, Bomontiada"},{n:"Tuzla",lat:40.816,lng:29.301,s:"Tuzla Viaport Marina"},
-      {n:"Ümraniye",lat:41.016,lng:29.124,s:"Trabzon Park"},{n:"Üsküdar",lat:41.023,lng:29.015,s:"Kız Kulesi, Kuzguncuk, Çengelköy"},
-      {n:"Zeytinburnu",lat:40.994,lng:28.904,s:"Kazlıçeşme Sahil, Panorama 1453"}
-    ];
+const fSel = document.getElementById('fSel'), tSel = document.getElementById('tSel'), iGrid = document.getElementById('iGrid');
+D.forEach((x, i) => {
+  fSel.add(new Option(x.n, i));
+  tSel.add(new Option(x.n, i));
+  iGrid.innerHTML += `<button class="chip" onclick="tSel.value=${i};tab('r',document.querySelector('.tab'));calc()">${x.n}</button>`;
+});
+fSel.value = 9; tSel.value = 22;
 
-    let mode = 'transit', ppl = 1, summary = '';
-    const map = L.map('map').setView([41.03, 28.98], 11);
-    let tile = L.tileLayer('https://{s}{z}/{x}/{y}{r}.png').addTo(map);
-    let layer = L.layerGroup().addTo(map);
-
-    const fSel = document.getElementById('fromSel'), tSel = document.getElementById('toSel'), dGrid = document.getElementById('distGrid');
-    D.forEach((x, i) => {
-      fSel.add(new Option(x.n, i)); tSel.add(new Option(x.n, i));
-      dGrid.innerHTML += `<button class="chip" onclick="tSel.value=${i};openTab('rota',document.querySelector('.tab'));calc()">${x.n}</button>`;
-    });
-    fSel.value = 9; tSel.value = 22;
-
-    async function calc() {
-      const a = D[fSel.value], b = D[tSel.value];
-      layer.clearLayers();
-      L.marker([a.lat, a.lng]).addTo(layer).bindPopup(a.n);
-      L.marker([b.lat, b.lng]).addTo(layer).bindPopup(b.n);
-      let km = +(map.distance([a.lat, a.lng], [b.lat, b.lng]) / 1000 * 1.3).toFixed(1);
-      let min = Math.round(km * (mode === 'taxi' ? 2.2 : 3.5) + 15);
-      try {
-        const r = await fetch(`https://project-osrm.org{a.lng},${a.lat};${b.lng},${b.lat}?overview=full&geometries=geojson`);
-        const j = await r.json();
-        if (j.routes?.[0]) {
-          km = +(j.routes[0].distance / 1000).toFixed(1);
-          min = Math.round(j.routes[0].duration / 60);
-          L.polyline(j.routes[0].geometry.coordinates.map(c => [c[1], c[0]]), { color: '#38bdf8', weight: 5 }).addTo(layer);
-        }
-      } catch { L.polyline([[a.lat, a.lng], [b.lat, b.lng]], { color: '#38bdf8', dashArray: '6,6' }).addTo(layer); }
-      map.fitBounds([[a.lat, a.lng], [b.lat, b.lng]], { padding: [50, 50] });
-
-      const tCost = mode === 'taxi' ? Math.round(120 + km * 28) : (mode === 'ferry' ? 65 * ppl : 54 * ppl);
-      const total = tCost + (350 * ppl);
-      document.getElementById('distOut').innerText = `${km} km`;
-      document.getElementById('timeOut').innerText = `Yol: ${min} dk + Gezi`;
-      document.getElementById('costOut').innerText = `${total} ₺`;
-      document.getElementById('subCost').innerText = `Kişi başı: ${Math.round(total / ppl)} ₺`;
-      document.getElementById('stopsBox').innerHTML = `<b>${a.n} Durakları:</b> ${a.s}<br><br><b>${b.n} Durakları:</b> ${b.s}`;
-      summary = `📍 Günün Rotası: ${a.n} → ${b.n}\n📏 Mesafe: ${km} km (${min} dk)\n💰 Tahmini Bütçe (${ppl} Kişi): ${total} ₺\n✨ Duraklar: ${b.s}`;
+async function calc() {
+  const a = D[fSel.value], b = D[tSel.value];
+  layer.clearLayers();
+  L.marker([a.lat, a.lng]).addTo(layer).bindPopup(a.n);
+  L.marker([b.lat, b.lng]).addTo(layer).bindPopup(b.n);
+  let km = +(map.distance([a.lat, a.lng], [b.lat, b.lng]) / 1000 * 1.3).toFixed(1);
+  let min = Math.round(km * (mode === 'taxi' ? 2.2 : 3.5) + 15);
+  try {
+    const r = await fetch(`https://project-osrm.org{a.lng},${a.lat};${b.lng},${b.lat}?overview=full&geometries=geojson`);
+    const j = await r.json();
+    if (j.routes && j.routes[0]) {
+      km = +(j.routes[0].distance / 1000).toFixed(1);
+      min = Math.round(j.routes[0].duration / 60);
+      L.polyline(j.routes[0].geometry.coordinates.map(c => [c[1], c[0]]), { color: '#38bdf8', weight: 5 }).addTo(layer);
     }
+  } catch {
+    L.polyline([[a.lat, a.lng], [b.lat, b.lng]], { color: '#38bdf8', dashArray: '6,6' }).addTo(layer);
+  }
+  map.fitBounds([[a.lat, a.lng], [b.lat, b.lng]], { padding: [40, 40] });
 
-    function openTab(id, el) {
-      document.querySelectorAll('.tab,.pane').forEach(x => x.classList.remove('active'));
-      el.classList.add('active'); document.getElementById(id).classList.add('active');
-    }
-    function setMode(el) { document.querySelectorAll('#modeGrp .chip').forEach(x => x.classList.remove('active')); el.classList.add('active'); mode = el.dataset.m; calc(); }
-    function setPpl(el) { document.querySelectorAll('#pplGrp .chip').forEach(x => x.classList.remove('active')); el.classList.add('active'); ppl = +el.dataset.p; calc(); }
-    function swap() { [fSel.value, tSel.value] = [tSel.value, fSel.value]; calc(); }
-    function surprise() { fSel.value = Math.floor(Math.random()*39); tSel.value = Math.floor(Math.random()*39); calc(); }
-    function applyDate(x, y) { fSel.value = D.findIndex(i => i.n.includes(x)); tSel.value = D.findIndex(i => i.n.includes(y)); openTab('rota', document.querySelector('.tab')); calc(); }
-    function shareWA() { window.open(`https://wa.me{encodeURIComponent(summary)}`, '_blank'); }
-    function toggleTheme() {
-      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
-      tile.setUrl(dark ? 'https://{s}{z}/{x}/{y}{r}.png' : 'https://{s}{z}/{x}/{y}{r}.png');
-    }
-    function askAI() {
-      const inp = document.getElementById('aiIn'), box = document.getElementById('chatBox');
-      if (!inp.value.trim()) return;
-      const b = D[tSel.value];
-      box.innerHTML += `<div class="msg user">${inp.value}</div><div class="msg"><b>${b.n}</b> rotası için mutlaka <b>${b.s}</b> noktalarına uğramalısın. Dönüşte 23:30 son vapur saatini unutma!</div>`;
-      inp.value = ''; box.scrollTop = box.scrollHeight;
-    }
-    calc();
-  </script>
+  const tCost = mode === 'taxi' ? Math.round(120 + km * 28) : (mode === 'ferry' ? 65 * ppl : 54 * ppl);
+  const total = tCost + (350 * ppl);
+  document.getElementById('dOut').innerText = `${km} km`;
+  document.getElementById('tOut').innerText = `Yol: ${min} dk`;
+  document.getElementById('cOut').innerText = `${total} ₺`;
+  document.getElementById('sOut').innerText = `Kişi başı: ${Math.round(total / ppl)} ₺`;
+  document.getElementById('stopBox').innerHTML = `<b>${a.n}:</b> ${a.s}<br><br><b>${b.n}:</b> ${b.s}`;
+  summary = `📍 Günün Rotası: ${a.n} → ${b.n}\n📏 Mesafe: ${km} km (${min} dk)\n💰 Bütçe (${ppl} Kişi): ${total} ₺\n✨ Duraklar: ${b.s}`;
+}
+
+function tab(id, el) {
+  document.querySelectorAll('.tab,.pane').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+function setM(el) { document.querySelectorAll('#mGrp .chip').forEach(x => x.classList.remove('active')); el.classList.add('active'); mode = el.dataset.m; calc(); }
+function setP(el) { document.querySelectorAll('#pGrp .chip').forEach(x => x.classList.remove('active')); el.classList.add('active'); ppl = +el.dataset.p; calc(); }
+function swap() { [fSel.value, tSel.value] = [tSel.value, fSel.value]; calc(); }
+function surprise() { fSel.value = Math.floor(Math.random()*39); tSel.value = Math.floor(Math.random()*39); calc(); }
+function dt(x, y) { fSel.value = D.findIndex(i => i.n.includes(x)); tSel.value = D.findIndex(i => i.n.includes(y)); tab('r', document.querySelector('.tab')); calc(); }
+function wa() { window.open(`https://wa.me{encodeURIComponent(summary)}`, '_blank'); }
+function theme() {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+  tile.setUrl(dark ? 'https://{s}{z}/{x}/{y}{r}.png' : 'https://{s}{z}/{x}/{y}{r}.png');
+}
+function ask() {
+  const inp = document.getElementById('aiIn'), box = document.getElementById('cBox');
+  if (!inp.value.trim()) return;
+  const b = D[tSel.value];
+  box.innerHTML += `<div style="margin:6px 0;color:var(--a)"><b>Sen:</b> ${inp.value}</div><div><b>AI:</b> ${b.n} için <b>${b.s}</b> noktalarını gezebilirsin. Son vapur 23:30!</div>`;
+  inp.value = ''; box.scrollTop = box.scrollHeight;
+}
+calc();
+</script>
 </body>
 </html>
