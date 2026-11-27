@@ -1,144 +1,119 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#087aa8">
-<title>Günün Rotası | İstanbul'u Keşfet</title>
-<style>
-:root{--blue:#087eaa;--navy:#102b43;--orange:#ff9c55;--ink:#20242a;--muted:#69737d;--line:#e6e9ed;--bg:#f4f6f8;--green:#0a936f}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-button,input,select{font:inherit}button{cursor:pointer;border:0}
-header{position:sticky;top:0;z-index:10;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav{max-width:1100px;margin:auto;padding:13px 20px;display:flex;align-items:center;gap:12px}.logo{display:flex;align-items:center;gap:10px;font-weight:850;font-size:19px;margin-right:auto}.logo-mark{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#0ba4c9,#07558a);display:grid;place-items:center;color:white;font-weight:900;box-shadow:0 5px 14px #087eaa30}
-.nav button,.pill{border-radius:14px;padding:11px 15px;font-weight:750}.route-btn{background:#fff1e6;color:#b95d20;border:1px solid #ffd1ad}.share-btn{background:var(--blue);color:white}.moon{background:#f4f5f7;font-size:18px;width:42px;height:42px}
-.subnav{max-width:1100px;margin:auto;padding:0 20px 12px;display:flex;align-items:center;gap:8px;overflow:auto}.toggle{background:#f0f2f4;color:#59616b;padding:9px 14px;border-radius:12px;font-weight:700;white-space:nowrap}.toggle.active{background:#e4f4fa;color:#076c96}.budget-tabs{margin-left:auto;display:flex;gap:5px}.budget-tabs button{background:transparent;padding:8px 12px;border-radius:10px;font-weight:750;color:#555}.budget-tabs button.active{background:var(--blue);color:white}
-main{max-width:1100px;margin:24px auto;padding:0 20px}.hero{background:linear-gradient(120deg,#073d60,#087eaa 62%,#12a0bd);border-radius:24px;padding:28px;color:white;display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;box-shadow:0 14px 35px #0a628525}
-.eyebrow{font-size:12px;font-weight:850;letter-spacing:1.2px;color:#b8e9f8}.hero h1{font-size:clamp(27px,4vw,42px);line-height:1.1;margin:10px 0}.hero p{color:#d9edf4;line-height:1.6;max-width:560px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.primary,.secondary{padding:13px 17px;border-radius:13px;font-weight:800}.primary{background:var(--orange);color:#542b12}.secondary{background:#ffffff20;color:white;border:1px solid #ffffff55}
-.hero-side{background:#ffffff15;border:1px solid #ffffff35;border-radius:18px;padding:18px}.hero-side strong{font-size:25px;display:block}.hero-side small{color:#d6edf5}.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.mini-stats div{background:#ffffff14;border-radius:12px;padding:12px}.mini-stats b{display:block;font-size:19px}
-.layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.75fr);gap:20px;margin-top:20px}.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 3px 12px #162b3d08}.panel h2{font-size:20px;margin:0 0 6px}.muted{color:var(--muted);font-size:14px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
-.field{width:100%;border:1px solid #e2e5e9;background:#f7f8fa;border-radius:13px;padding:13px 14px;margin:6px 0;outline:none}.field:focus{border-color:var(--blue);box-shadow:0 0 0 3px #087eaa16}.row-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.add-btn{width:100%;background:var(--blue);color:white;padding:13px;border-radius:13px;font-weight:800;margin-top:8px}
-.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:9px 13px;border:1px solid #e2e5e9;border-radius:12px;background:#fafbfc;font-weight:700;color:#515963}.chip.active{background:#e6f5fb;border-color:#b7e4f2;color:#076c96}
-.category-row{display:flex;gap:8px;overflow:auto;padding:2px 0 12px}.category{white-space:nowrap;border-radius:999px;padding:10px 15px;background:#f1f3f5;color:#5a626b;font-weight:750}.category.active{background:var(--blue);color:white}
-.place{border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}.place-top{display:flex;justify-content:space-between;gap:10px}.place-tag{color:#087aa8;font-size:13px;font-weight:800}.price{color:#087c5e;font-weight:850;white-space:nowrap}.place h3{margin:7px 0;font-size:18px}.place p{margin:8px 0;color:#68727c;line-height:1.5;font-size:14px}.place-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #edf0f2;padding-top:11px;margin-top:10px}.text-link{color:#087aa8;text-decoration:none;font-weight:750}.small-btn{background:#087aa8;color:white;border-radius:10px;padding:9px 12px;font-weight:750}
-.budget-card{position:sticky;top:130px}.people{display:flex;align-items:center;gap:12px;background:#f5f6f7;border-radius:13px;padding:6px}.people button{width:31px;height:31px;border-radius:9px;background:white;font-size:18px;font-weight:800}.people b{min-width:55px;text-align:center}.costs{background:#f8f9fa;border-radius:15px;padding:15px;margin:16px 0}.cost-line{display:flex;justify-content:space-between;gap:12px;padding:7px 0;color:#59616a}.cost-line b{color:#20242a;white-space:nowrap}.total{background:linear-gradient(110deg,#087eaa,#102f49);color:white;border-radius:18px;padding:18px;display:flex;justify-content:space-between;align-items:center}.total small{color:#c4e7f4;font-weight:700}.total strong{font-size:29px;display:block;margin-top:3px}.warning{margin-top:14px;padding:13px;border-radius:14px;background:#fff9e8;border:1px solid #f5e4a2;color:#80501d;font-size:14px;line-height:1.5;font-weight:700}.share-plan{width:100%;margin-top:14px;background:#191919;color:white;padding:14px;border-radius:13px;font-weight:800}
-.districts{margin-top:20px}.district-grid{display:flex;flex-wrap:wrap;gap:8px}.district-search{max-width:220px}.bottom-note{text-align:center;color:#7b858e;font-size:13px;padding:25px 10px}
-.empty{color:#77818a;text-align:center;padding:20px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#172b3d;color:white;padding:12px 18px;border-radius:12px;box-shadow:0 8px 25px #0003;display:none;z-index:30}
-.dark{--bg:#101820;--ink:#edf2f6;--muted:#aab5bf;--line:#2c3944}.dark header,.dark .panel,.dark .place{background:#18232d;border-color:#2b3945}.dark .field,.dark .chip,.dark .people,.dark .costs,.dark .category{background:#202d38;border-color:#34434f;color:#e5edf3}.dark .cost-line,.dark .cost-line b,.dark .place h3{color:#e8edf1}.dark .nav .moon{background:#263744}.dark .toggle{background:#253541;color:#dce5ec}.dark .toggle.active{background:#164c65;color:#d9f5ff}
-@media(max-width:760px){.nav{padding:10px 14px}.logo{font-size:16px}.nav .route-btn{font-size:12px;padding:10px}.nav .share-btn{font-size:12px;padding:10px}.subnav{padding:0 14px 10px}.budget-tabs button{padding:8px}.hero{grid-template-columns:1fr;padding:22px}.hero-side{display:none}main{padding:0 14px;margin:16px auto}.layout{grid-template-columns:1fr}.budget-card{position:static}.panel{padding:17px}.section-head{align-items:flex-start}.district-search{max-width:145px}.row-fields{grid-template-columns:1fr 1fr}}
-@media(max-width:390px){.nav{gap:6px}.logo-mark{width:38px;height:38px}.nav .route-btn{display:none}.row-fields{grid-template-columns:1fr}.total strong{font-size:25px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102b25">
+  <meta name="description" content="İstanbul'da bütçene uygun gezi ve buluşma rotaları oluştur.">
+  <title>Günün Rotası | İstanbul'u bütçene göre keşfet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <div class="nav">
-    <div class="logo"><span class="logo-mark">GR</span><span>Günün Rotası</span></div>
-    <button class="route-btn" onclick="makeRoute()">🧭 Bana Rota Çıkar</button>
-    <button class="share-btn" onclick="sharePlan()">📤 Paylaş</button>
-    <button class="moon" aria-label="Tema değiştir" onclick="document.body.classList.toggle('dark')">🌙</button>
-  </div>
-  <div class="subnav">
-    <button class="toggle active" id="friend" onclick="setMode('friend')">👥 Arkadaş</button>
-    <button class="toggle" id="date" onclick="setMode('date')">💕 Date</button>
-    <div class="budget-tabs">
-      <button onclick="setBudget(1000,this)">1K</button><button class="active" onclick="setBudget(2000,this)">2K</button><button onclick="setBudget(3000,this)">3K</button><button onclick="setBudget(4000,this)">4K</button><button onclick="setBudget(6000,this)">6K</button>
-    </div>
-  </div>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">↗</span><span>günün<span class="brand-light">rotası</span><small>İSTANBUL'U KEŞFET</small></span></a>
+  <nav><a href="#kesfet">Keşfet</a><a href="#rota">Rota oluştur</a><a href="#ogrenci">Öğrenci</a></nav>
+  <button class="theme-btn" id="themeBtn" aria-label="Tema değiştir">☾</button>
 </header>
+
 <main>
   <section class="hero">
-    <div>
-      <div class="eyebrow">İSTANBUL'UN 39 İLÇESİNDE</div>
-      <h1>Günün rotası,<br>senin bütçen. ✨</h1>
-      <p>İster arkadaşlarınla ister sevdiğin kişiyle… İstanbul'u keşfetmenin keyifli ve ulaşılabilir yollarını birlikte bulalım.</p>
-      <div class="hero-actions"><button class="primary" onclick="makeRoute()">🧭 Bana Rota Çıkar</button><button class="secondary" onclick="document.getElementById('districtSection').scrollIntoView()">📍 İlçe Seç</button></div>
+    <div class="hero-copy">
+      <div class="eyebrow"><span></span> İSTANBUL'DA HER BÜTÇEYE BİR ROTA</div>
+      <h1>Güzel bir gün<br> geçirmek için <em>çok</em><br> paraya gerek yok.</h1>
+      <p>İstanbul'un 39 ilçesinde keşfedilecek yerleri bul, bütçeni belirle, sana uygun rotayı oluştur.</p>
+      <a class="primary-btn" href="#rota">Rotanı oluşturmaya başla <span>↗</span></a>
+      <div class="hero-note"><span class="avatars">●●●</span> Öğrenciler, arkadaşlar ve çiftler için</div>
     </div>
-    <div class="hero-side"><small>Planını oluştur, bütçeni önceden gör.</small><strong>Keşfetmek herkesin hakkı.</strong><div class="mini-stats"><div><b>39</b><small>İstanbul ilçesi</small></div><div><b>₺</b><small>Bütçe dostu planlar</small></div></div></div>
+    <div class="hero-art">
+      <div class="art-sun"></div><div class="art-water"></div>
+      <div class="art-building b1"></div><div class="art-building b2"></div><div class="art-building b3"></div>
+      <div class="art-bridge"></div><div class="art-boat">⌁</div>
+      <div class="art-label"><span>✦</span><div><b>İstanbul senin</b><small>Keşfetmeye hazır mısın?</small></div></div>
+      <div class="art-sticker">39<br><small>İLÇE</small></div>
+    </div>
   </section>
 
-  <div class="layout">
-    <div>
-      <section class="panel">
-        <div class="section-head"><div><h2>🗺️ Rotanı Oluştur</h2><div class="muted">İstediğin durakları planına ekle.</div></div><span class="pill" style="background:#e9f6fb;color:#087aa8">2K hedef</span></div>
-        <div class="row-fields"><input class="field" id="stopName" placeholder="Yeni durak (örn: Sahilde Çay)"><input class="field" id="stopPlace" placeholder="Mekân / Konum"></div>
-        <input class="field" id="stopPrice" type="number" min="0" value="120" placeholder="Kişi başı tahmini ücret (TL)">
-        <button class="add-btn" onclick="addCustomStop()">+ Durağı Rotama Ekle</button>
-        <div id="customStops"></div>
-      </section>
+  <section class="quick-stats">
+    <div><b>39</b><span>İstanbul ilçesi</span></div><div><b>₺</b><span>Bütçene göre plan</span></div><div><b>✦</b><span>Ücretsiz keşif noktaları</span></div><div><b>↗</b><span>Sana özel rota fikri</span></div>
+  </section>
 
-      <section class="panel" style="margin-top:18px">
-        <div class="section-head"><div><h2>📍 İstanbul'da Keşfet</h2><div class="muted">İlgi alanına göre yerleri keşfet.</div></div></div>
-        <div class="category-row">
-          <button class="category active" onclick="showCategory('history',this)">🏛️ Tarihi & MüzeKart</button>
-          <button class="category" onclick="showCategory('nature',this)">🌲 Orman & Tabiat</button>
-          <button class="category" onclick="showCategory('food',this)">☕ Kafe & Yemek</button>
-          <button class="category" onclick="showCategory('free',this)">🎟️ Ücretsiz</button>
+  <section class="section" id="rota">
+    <div class="section-heading"><div><div class="eyebrow">BİRKAÇ ADIMDA</div><h2>Bugünün rotasını oluştur</h2></div><p>Nasıl bir gün hayal ettiğini söyle,<br> seçenekleri birlikte şekillendirelim.</p></div>
+    <div class="planner">
+      <div class="planner-form">
+        <div class="field-grid">
+          <label>Hangi ilçede gezelim?
+            <select id="district"><option value="Kadıköy">Kadıköy</option></select>
+          </label>
+          <label>Kimlerle?
+            <select id="company"><option value="Çift">Sevgilimle</option><option value="Arkadaş">Arkadaşlarımla</option><option value="Tek başıma">Tek başıma</option><option value="Ailemle">Ailemle</option></select>
+          </label>
+          <label>Gün / zaman
+            <select id="daytime"><option>Gündüz</option><option>Akşam</option><option>Tüm gün</option></select>
+          </label>
+          <label>Gezi tarzı
+            <select id="style"><option value="Karışık">Karışık keşif</option><option value="Tarih">Tarih ve kültür</option><option value="Doğa">Doğa ve deniz</option><option value="Yeme içme">Yeme içme</option><option value="Ücretsiz">Ücretsiz / çok düşük bütçe</option></select>
+          </label>
         </div>
-        <div id="places"></div>
-      </section>
+        <div class="budget-head"><label for="budget">Toplam bütçeniz</label><strong id="budgetValue">₺1.000</strong></div>
+        <input id="budget" type="range" min="0" max="10000" step="100" value="1000">
+        <div class="range-labels"><span>₺0</span><span>₺10.000+</span></div>
+        <div class="field-grid lower-fields">
+          <label>Kişi sayısı<input id="people" type="number" min="1" max="20" value="2"></label>
+          <label class="check-label"><input id="student" type="checkbox" checked> Öğrenci bütçesini önceliklendir</label>
+        </div>
+        <button class="primary-btn full" id="generateBtn">Bana rota öner <span>✦</span></button>
+        <p class="disclaimer">Öneriler örnek planlama verileridir. Gitmeden önce ücretleri, açık olma durumunu ve ulaşımı ilgili kurumdan kontrol et.</p>
+      </div>
+      <div class="planner-aside">
+        <div class="aside-icon">✦</div><h3>Günün güzel geçsin,<br> bütçen zorlanmasın.</h3>
+        <p>Ücretsiz sahillerden tarihi sokaklara, İBB tesislerinden yeşil alanlara kadar farklı seçenekleri bir araya getir.</p>
+        <div class="mini-tags"><span>Ücretsiz yerler</span><span>Öğrenci dostu</span><span>Ulaşım bilgisi</span></div>
+        <div class="aside-foot">✳ Her bütçeye göre keşif</div>
+      </div>
     </div>
+    <div class="route-result hidden" id="routeResult">
+      <div class="result-top"><div><div class="eyebrow">SANA ÖZEL ÖNERİ</div><h3 id="resultTitle">Kadıköy'de güzel bir gün</h3></div><button class="outline-btn" id="shareBtn">↗ Rotayı paylaş</button></div>
+      <div class="route-stops" id="routeStops"></div>
+      <div class="result-bottom"><span id="resultCost"></span><a id="routeMap" target="_blank" rel="noopener">Haritada rotayı aç ↗</a></div>
+    </div>
+  </section>
 
-    <aside>
-      <section class="panel budget-card">
-        <div class="section-head"><div><h2>🧮 2026 Canlı Bütçe Özeti</h2><div class="muted">Kişi sayısı ve seçilen tarifeye göre</div></div><div class="people"><button onclick="changePeople(-1)">−</button><b id="peopleCount">2 Kişi</b><button onclick="changePeople(1)">+</button></div></div>
-        <div class="costs">
-          <div class="cost-line"><span>Duraklar / Sosyal Tesis / Yemek:</span><b id="foodCost">1.290 TL</b></div>
-          <div class="cost-line"><span>Müze / Tarihi Giriş:</span><b id="museumCost">2.420 TL</b></div>
-          <div class="cost-line"><span>İETT (Tam):</span><b id="transportCost">310 TL</b></div>
-        </div>
-        <div class="total"><div><small>GRUP TOPLAMI</small><strong id="groupTotal">4.020 TL</strong></div><div style="text-align:right"><small>Kişi Başı</small><strong id="perPerson">2.010 TL</strong></div></div>
-        <div class="warning" id="budgetWarning">⚠️ Kişi başı hedefi +1.010 TL aşıyor. İBB Sosyal Tesisi veya ücretsiz seçeneklerle düşürebilirsin.</div>
-        <button class="share-plan" onclick="sharePlan()">📤 Bu Planı Arkadaşla Paylaş</button>
-      </section>
-      <section class="panel districts" id="districtSection">
-        <div class="section-head"><div><h2>📍 Hızlı İlçe Seçimi (39 İlçe)</h2><div class="muted">Rotanı bir ilçeden başlat.</div></div></div>
-        <input class="field district-search" id="districtSearch" placeholder="İlçe ara..." oninput="filterDistricts()">
-        <div class="district-grid" id="districtGrid"></div>
-        <p class="muted" id="selectedDistrict">Seçili ilçe: Beşiktaş</p>
-      </section>
-    </aside>
-  </div>
-  <div class="bottom-note">Günün Rotası · İstanbul'u keşfet, bütçeni önceden planla.<br><small>Gösterilen fiyatlar örnek tahminlerdir; ziyaret öncesi güncel ücretleri kontrol et.</small></div>
+  <section class="section discover" id="kesfet">
+    <div class="section-heading"><div><div class="eyebrow">İSTANBUL'UN HER KÖŞESİ</div><h2>Ne keşfetmek istersin?</h2></div><p>İlçeni seç, ilgini çeken kategorideki<br> yerleri incele.</p></div>
+    <div class="discover-controls">
+      <select id="browseDistrict" aria-label="İlçe seç"></select>
+      <div class="chips" id="categoryChips">
+        <button class="chip active" data-category="Hepsi">Tümü</button><button class="chip" data-category="Tarih">Tarihi yerler</button><button class="chip" data-category="Sokak">Sokaklar & meydanlar</button><button class="chip" data-category="İBB">İBB tesisleri</button><button class="chip" data-category="Sahil">Sahil & plaj</button><button class="chip" data-category="Doğa">Orman & park</button><button class="chip" data-category="Otel">Oteller</button><button class="chip" data-category="Yeme içme">Yeme içme</button><button class="chip" data-category="Ücretsiz">Ücretsiz</button>
+      </div>
+    </div>
+    <div class="place-grid" id="placeGrid"></div>
+    <p class="data-note">Örnek içerik gösterilmektedir; tüm İstanbul noktalarının eksiksiz ve doğrulanmış envanteri değildir.</p>
+  </section>
+
+  <section class="student-band" id="ogrenci">
+    <div class="student-graphic">₺<span>✦</span></div>
+    <div><div class="eyebrow">ÖĞRENCİ DOSTU İSTANBUL</div><h2>Öğrenciysen, İstanbul'u<br> daha hesaplı keşfet.</h2><p>Ücretsiz etkinlikleri, indirimli seçenekleri ve toplu ulaşım alternatiflerini önceliklendir.</p></div>
+    <a href="#rota" class="light-btn">Öğrenci rotası oluştur ↗</a>
+  </section>
+
+  <section class="section practical">
+    <div class="section-heading"><div><div class="eyebrow">YOLA ÇIKMADAN ÖNCE</div><h2>Ulaşım ve dönüş planı</h2></div><p>Güzel bir gezi kadar güvenli<br>bir dönüş de önemli.</p></div>
+    <div class="practical-grid">
+      <article class="info-card"><span class="info-icon">◷</span><h3>Gece eve dönüş</h3><p>Son metro, vapur ve otobüs saatlerini yolculuk gününde resmi kanallardan kontrol et.</p><a href="https://www.metro.istanbul/" target="_blank" rel="noopener">Metro İstanbul ↗</a></article>
+      <article class="info-card"><span class="info-icon">⌖</span><h3>Toplu ulaşım</h3><p>Hat, aktarma ve sefer bilgileri için güncel ulaşım planlayıcısını kullan.</p><a href="https://iett.istanbul/" target="_blank" rel="noopener">İETT ↗</a></article>
+      <article class="info-card"><span class="info-icon">₺</span><h3>Taksi ücretini hesapla</h3><p>Taksi ücretleri tarife ve mesafeye göre değişir. Tahmini ücret için güncel tarifeyi kontrol et.</p><a href="https://tuhim.ibb.gov.tr/" target="_blank" rel="noopener">İBB Ulaşım ↗</a></article>
+      <article class="info-card"><span class="info-icon">♧</span><h3>İBB sosyal tesisleri</h3><p>Menü, fiyat ve hizmet saatleri tesise göre değişebilir; gitmeden önce resmi listeye bak.</p><a href="https:// sosyaltesisler.ibb.istanbul/" target="_blank" rel="noopener">İBB Sosyal Tesisleri ↗</a></article>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="eyebrow">İSTANBUL'DA HERKES İÇİN</div><h2>Bir rota, güzel bir anı,<br><em>ulaşılabilir bir bütçe.</em></h2><a class="primary-btn" href="#rota">Hadi plan yapalım ↗</a>
+  </section>
 </main>
-<div class="toast" id="toast"></div>
-<script>
-const districts=['Adalar','Arnavutköy','Ataşehir','Avcılar','Bağcılar','Bahçelievler','Bakırköy','Başakşehir','Bayrampaşa','Beşiktaş','Beykoz','Beylikdüzü','Beyoğlu','Büyükçekmece','Çatalca','Çekmeköy','Esenler','Esenyurt','Eyüpsultan','Fatih','Gaziosmanpaşa','Güngören','Kadıköy','Kağıthane','Kartal','Küçükçekmece','Maltepe','Pendik','Sancaktepe','Sarıyer','Silivri','Sultanbeyli','Sultangazi','Şile','Şişli','Tuzla','Ümraniye','Üsküdar','Zeytinburnu'];
-const data={
- history:[
-  {tag:'Osmanlı / Denizcilik Tarihi',name:'İstanbul Deniz Müzesi',price:160,time:'09:00 – 17:00',desc:'Tarihi saltanat kayıkları ve Türk denizcilik tarihinin zengin koleksiyonunu keşfet.',district:'Beşiktaş'},
-  {tag:'Osmanlı / 1856',name:'Dolmabahçe Sarayı',price:1050,time:'09:00 – 16:00',desc:'Boğaz kıyısında Osmanlı modernleşmesinin ve saray mimarisinin etkileyici yapısı.',district:'Beşiktaş'}
- ],
- nature:[
-  {tag:'Sahil / Yürüyüş',name:'Caddebostan Sahili',price:0,time:'Gün boyu',desc:'Deniz havası, yürüyüş ve gün batımı için keyifli bir sahil rotası.',district:'Kadıköy'},
-  {tag:'Orman / Doğa',name:'Atatürk Arboretumu',price:150,time:'Ziyaret saatlerini kontrol et',desc:'Doğayla baş başa sakin bir yürüyüş ve fotoğraf molası.',district:'Sarıyer'}
- ],
- food:[
-  {tag:'Kafe / Mola',name:'Sahil Çay Molası',price:90,time:'Gün boyu',desc:'Manzara eşliğinde uygun bütçeli bir çay ve sohbet molası.',district:'Üsküdar'},
-  {tag:'Yemek / Yerel lezzet',name:'Esnaf Lokantası Molası',price:250,time:'Öğle saatleri',desc:'Yerel esnafı keşfederken doyurucu ve hesaplı bir yemek seçeneği.',district:'Fatih'}
- ],
- free:[
-  {tag:'Ücretsiz / Manzara',name:'Salacak Sahili',price:0,time:'Gün boyu',desc:'Kız Kulesi manzarasına karşı yürüyüş ve fotoğraf molası.',district:'Üsküdar'},
-  {tag:'Ücretsiz / Tarih',name:'Sultanahmet Meydanı',price:0,time:'Gün boyu',desc:'Tarihi yarımadanın açık alanlarını ve meydan atmosferini keşfet.',district:'Fatih'}
- ]
-};
-let category='history',people=2,target=2000,selected='Beşiktaş',custom=[],mode='friend';
-const money=n=>Math.round(n).toLocaleString('tr-TR')+' TL';
-function renderPlaces(){const list=data[category];document.getElementById('places').innerHTML=list.map((p,i)=>`<article class="place"><div class="place-top"><span class="place-tag">⌛ ${p.tag}</span><span class="price">${money(p.price)}</span></div><h3>${p.name}</h3><div class="muted">◷ ${p.time} · ${p.district}</div><p>${p.desc}</p><div class="place-foot"><a class="text-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+' İstanbul')}" target="_blank" rel="noopener">Haritada Gör ↗</a><button class="small-btn" onclick="addPlace(${i})">+ Rotaya Ekle</button></div></article>`).join('')}
-function showCategory(c,btn){category=c;document.querySelectorAll('.category').forEach(x=>x.classList.remove('active'));btn.classList.add('active');renderPlaces()}
-function addPlace(i){const p=data[category][i];custom.push({name:p.name,place:p.district,price:p.price});renderCustom();updateBudget();toast(p.name+' rotana eklendi')}
-function addCustomStop(){const name=document.getElementById('stopName').value.trim(),place=document.getElementById('stopPlace').value.trim(),price=Number(document.getElementById('stopPrice').value||0);if(!name){toast('Lütfen durak adını yaz.');return}custom.push({name,place:place||selected,price});document.getElementById('stopName').value='';document.getElementById('stopPlace').value='';renderCustom();updateBudget();toast('Yeni durak eklendi')}
-function renderCustom(){document.getElementById('customStops').innerHTML=custom.length?'<div style="margin-top:12px">'+custom.map((s,i)=>`<div class="cost-line"><span>📍 ${s.name} <small class="muted">${s.place}</small></span><span><b>${money(s.price)}</b> <button onclick="removeStop(${i})" style="color:#b44;background:none;font-weight:800">×</button></span></div>`).join('')+'</div>':''}
-function removeStop(i){custom.splice(i,1);renderCustom();updateBudget()}
-function updateBudget(){let extras=custom.reduce((a,s)=>a+s.price,0);let food=1290+extras,museum=category==='history'?2420:0,transport=310,total=(food+museum+transport)*(people/2);document.getElementById('foodCost').textContent=money(food*(people/2));document.getElementById('museumCost').textContent=money(museum*(people/2));document.getElementById('transportCost').textContent=money(transport*(people/2));document.getElementById('groupTotal').textContent=money(total);document.getElementById('perPerson').textContent=money(total/people);let diff=total/people-target;document.getElementById('budgetWarning').textContent=diff>0?`⚠️ Kişi başı hedefi ${money(diff)} aşıyor; ücretsiz duraklar veya daha uygun seçeneklerle bütçeyi düşürebilirsin.`:`✅ Harika! Kişi başı bütçen hedefinin ${money(Math.abs(diff))} altında.`}
-function changePeople(n){people=Math.max(1,Math.min(12,people+n));document.getElementById('peopleCount').textContent=people+' Kişi';updateBudget()}
-function setBudget(n,btn){target=n;document.querySelectorAll('.budget-tabs button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');updateBudget()}
-function filterDistricts(){let q=document.getElementById('districtSearch').value.toLocaleLowerCase('tr');document.querySelectorAll('#districtGrid button').forEach(b=>b.style.display=b.textContent.toLocaleLowerCase('tr').includes(q)?'':'none')}
-function renderDistricts(){document.getElementById('districtGrid').innerHTML=districts.map(d=>`<button class="chip ${d===selected?'active':''}" onclick="selectDistrict('${d}')">${d}</button>`).join('')}
-function selectDistrict(d){selected=d;document.getElementById('selectedDistrict').textContent='Seçili ilçe: '+d;renderDistricts();toast(d+' rotanın başlangıç ilçesi seçildi')}
-function setMode(m){mode=m;document.getElementById('friend').classList.toggle('active',m==='friend');document.getElementById('date').classList.toggle('active',m==='date');toast(m==='date'?'Date rotası seçildi':'Arkadaş rotası seçildi')}
-function makeRoute(){category='free';document.querySelectorAll('.category').forEach((b,i)=>b.classList.toggle('active',i===3));renderPlaces();document.getElementById('places').scrollIntoView({behavior:'smooth',block:'center'});toast('Bütçe dostu duraklar listelendi')}
-function sharePlan(){const text=`Günün Rotası planım: ${selected} · ${people} kişi · Kişi başı ${document.getElementById('perPerson').textContent}. Sen de rotanı oluştur!`;if(navigator.share){navigator.share({title:'Günün Rotası',text}).catch(()=>{})}else if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>toast('Plan metni kopyalandı'))}else toast(text)}
-function toast(t){const el=document.getElementById('toast');el.textContent=t;el.style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display='none',2400)}
-renderPlaces();renderDistricts();updateBudget();
-</script>
+<footer><a class="brand footer-brand" href="#"><span class="brand-mark">↗</span><span>günün<span class="brand-light">rotası</span><small>İSTANBUL'U KEŞFET</small></span></a><span>İstanbul'u herkes için keşfedilebilir kılmak için.</span><span>© 2026 Günün Rotası</span></footer>
+<script src="app.js"></script>
 </body></html>
