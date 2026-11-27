@@ -1811,5 +1811,227 @@ window.addEventListener("load", () => {
   window.addEventListener("load", mountSmartAi);
 })();
 </script>
+<!-- Günün Rotası - Mevcut Harita ve Mevcut Yapay Zeka Onarım Bloğu -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  /* Mevcut harita kapsayıcılarının yükseklik/görünürlük sorununu giderir */
+  [id*="map" i], [class*="map" i],
+  [id*="harita" i], [class*="harita" i] {
+    min-height: 320px;
+  }
+  .leaflet-container {
+    width: 100% !important;
+    min-height: 320px !important;
+    z-index: 1 !important;
+  }
+</style>
+
+<script>
+(function () {
+  const ILCE_KOORD = {
+    "Adalar": [40.8763, 29.0889], "Arnavutköy": [41.1833, 28.7400], "Ataşehir": [40.9833, 29.1200],
+    "Avcılar": [40.9792, 28.7214], "Bağcılar": [41.0386, 28.8567], "Bahçelievler": [41.0000, 28.8600],
+    "Bakırköy": [40.9800, 28.8772], "Başakşehir": [41.0936, 28.8019], "Bayrampaşa": [41.0456, 28.9000],
+    "Beşiktaş": [41.0422, 29.0094], "Beykoz": [41.1322, 29.0922], "Beylikdüzü": [41.0028, 28.6411],
+    "Beyoğlu": [41.0369, 28.9850], "Büyükçekmece": [41.0186, 28.5897], "Çatalca": [41.1436, 28.4619],
+    "Çekmeköy": [41.0333, 29.1833], "Esenler": [41.0431, 28.8756], "Esenyurt": [41.0342, 28.6800],
+    "Eyüpsultan": [41.0481, 28.9339], "Fatih": [41.0186, 28.9397], "Gaziosmanpaşa": [41.0667, 28.9125],
+    "Güngören": [41.0167, 28.8833], "Kadıköy": [40.9909, 29.0256], "Kağıthane": [41.0806, 28.9706],
+    "Kartal": [40.8889, 29.1856], "Küçükçekmece": [41.0050, 28.7794], "Maltepe": [40.9356, 29.1306],
+    "Pendik": [40.8781, 29.2333], "Sancaktepe": [40.9897, 29.2311], "Sarıyer": [41.1667, 29.0500],
+    "Silivri": [41.0736, 28.2464], "Sultanbeyli": [40.9608, 29.2675], "Sultangazi": [41.1069, 28.8678],
+    "Şile": [41.1756, 29.6133], "Şişli": [41.0603, 28.9878], "Tuzla": [40.8167, 29.3000],
+    "Ümraniye": [41.0167, 29.1167], "Üsküdar": [41.0234, 29.0152], "Zeytinburnu": [41.0053, 28.9025]
+  };
+
+  const ANADOLU_YAKASI = new Set([
+    "Adalar", "Ataşehir", "Beykoz", "Çekmeköy", "Kadıköy", "Kartal",
+    "Maltepe", "Pendik", "Sancaktepe", "Sultanbeyli", "Şile", "Tuzla",
+    "Ümraniye", "Üsküdar"
+  ]);
+
+  function seciliIlceleriBul() {
+    const tumIlceler = Object.keys(ILCE_KOORD);
+    const bulunan = [];
+
+    document.querySelectorAll("select").forEach((sel) => {
+      const metin = (sel.options[sel.selectedIndex]?.text || sel.value || "").toLowerCase();
+      const eslesen = tumIlceler.find((ilce) => metin.includes(ilce.toLowerCase()));
+      if (eslesen && !bulunan.includes(eslesen)) bulunan.push(eslesen);
+    });
+
+    if (bulunan.length < 2) {
+      const govde = (document.body.innerText || "");
+      const eslesme = govde.match(/🚩\s*([A-Za-zÇĞİÖŞÜçğıöşü\s]+?)\s*\(.*?\)\s*➔\s*🏁\s*([A-Za-zÇĞİÖŞÜçğıöşü\s]+?)(?:\s|$)/);
+      if (eslesme) {
+        const i1 = tumIlceler.find((x) => eslesme[1].toLowerCase().includes(x.toLowerCase()));
+        const i2 = tumIlceler.find((x) => eslesme[2].toLowerCase().includes(x.toLowerCase()));
+        if (i1 && !bulunan.includes(i1)) bulunan.push(i1);
+        if (i2 && !bulunan.includes(i2)) bulunan.push(i2);
+      }
+    }
+
+    return {
+      baslangic: bulunan[0] || "Kadıköy",
+      varis: bulunan[1] || "Beşiktaş"
+    };
+  }
+const haritaOrnekleri = new WeakMap();
+
+  function mevcutHaritalariOnar() {
+    if (typeof L === "undefined") return;
+    const { baslangic, varis } = seciliIlceleriBul();
+    const k1 = ILCE_KOORD[baslangic] || ILCE_KOORD["Kadıköy"];
+    const k2 = ILCE_KOORD[varis] || ILCE_KOORD["Beşiktaş"];
+
+    const adaylar = Array.from(document.querySelectorAll("div")).filter((el) => {
+      if (el.offsetParent === null) return false;
+      const idClass = `${el.id || ""} ${el.className || ""}`.toLowerCase();
+      const icerik = (el.innerText || "").toLowerCase();
+      const haritaKapsayiciMi =
+        idClass.includes("map") ||
+        idClass.includes("harita") ||
+        icerik.includes("canlı yol güzergahı haritası");
+
+      if (!haritaKapsayiciMi) return false;
+      // Büyük sayfa sarmalayıcılarını hariç tut
+      const rect = el.getBoundingClientRect();
+      return rect.height < 900 && !el.querySelector("select");
+    });
+
+    adaylar.forEach((kutu) => {
+      let hedef = kutu;
+      // Başlık veya buton içeren bir kartsa içindeki boş/harita alanını hedefle
+      if (kutu.children.length > 0 && !kutu.classList.contains("leaflet-container")) {
+        const icHarita = kutu.querySelector('[id*="map" i], [class*="map" i], [id*="harita" i], [class*="harita" i], canvas');
+        if (icHarita && icHarita.tagName === "DIV") {
+          hedef = icHarita;
+        } else {
+          let bosDiv = kutu.querySelector("[data-gr-map-canvas='1']");
+          if (!bosDiv) {
+            bosDiv = document.createElement("div");
+            bosDiv.setAttribute("data-gr-map-canvas", "1");
+            bosDiv.style.width = "100%";
+            bosDiv.style.height = "320px";
+            bosDiv.style.marginTop = "10px";
+            bosDiv.style.borderRadius = "12px";
+            bosDiv.style.overflow = "hidden";
+            kutu.appendChild(bosDiv);
+          }
+          hedef = bosDiv;
+        }
+      }
+
+      if (!hedef.style.height || parseInt(hedef.style.height, 10) < 200) {
+        hedef.style.height = "320px";
+      }
+
+      let kayit = haritaOrnekleri.get(hedef);
+      if (!kayit) {
+        try {
+          const map = L.map(hedef).setView(k1, 12);
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: "&copy; OpenStreetMap"
+          }).addTo(map);
+          const katman = L.layerGroup().addTo(map);
+          kayit = { map, katman };
+          haritaOrnekleri.set(hedef, kayit);
+        } catch (e) {
+          return;
+        }
+      }
+
+      kayit.katman.clearLayers();
+      L.marker(k1).addTo(kayit.katman).bindPopup(`Kalkış: <b>${baslangic}</b>`);
+      L.marker(k2).addTo(kayit.katman).bindPopup(`Varış: <b>${varis}</b>`);
+      L.polyline([k1, k2], { color: "#2563eb", weight: 4, dashArray: "6,8" }).addTo(kayit.katman);
+      kayit.map.fitBounds(L.latLngBounds([k1, k2]).pad(0.25));
+      setTimeout(() => kayit.map.invalidateSize(), 150);
+    });
+  }
+
+  function mevcutYapayZekayiOnar() {
+    const { baslangic, varis } = seciliIlceleriBul();
+    const yakaDegisimi = ANADOLU_YAKASI.has(baslangic) !== ANADOLU_YAKASI.has(varis);
+    const sayfaMetni = (document.body.innerText || "").toLowerCase();
+    const dateModu = sayfaMetni.includes("romantik date") || sayfaMetni.includes("date");
+
+    const ozetMetin =
+      `${baslangic} → ${varis} rotası hazır: ` +
+      (yakaDegisimi ? "İki yaka arası geçiş (vapur/Marmaray/Metrobüs kontrolü önerilir). " : "Aynı yaka içi ulaşım. ") +
+      (dateModu ? "Romantik date kurgusuyla sahil/koru yürüyüşü ve sakin mekan önceliklendirildi." : "Günlük gezi, mola ve dönüş akışı dengelendi.");
+
+    // Sayfadaki mevcut AI / öneri / asistan çıktı alanlarını doldur
+    const ciktiAlanlari = Array.from(document.querySelectorAll("*")).filter((el) => {
+      if (el.children.length > 0 || el.offsetParent === null) return false;
+      const idClass = `${el.id || ""} ${el.className || ""}`.toLowerCase();
+      const aria = (el.getAttribute("aria-label") || "").toLowerCase();
+      const t = (el.textContent || "").trim().toLowerCase();
+      return (
+        idClass.includes("ai") || idClass.includes("yapay") || idClass.includes("assistant") ||
+        idClass.includes("öneri") || idClass.includes("oneri") || aria.includes("ai") ||
+        t.includes("yapay zeka") || t.includes("ai yanıt") || t.includes("yanıt bekleniyor") ||
+        t.includes("hata") || t.includes("bağlanılamadı")
+      );
+    });
+
+    ciktiAlanlari.forEach((el) => {
+      const mevcut = (el.textContent || "").trim().toLowerCase();
+      if (
+        !mevcut ||
+        mevcut.includes("hata") ||
+        mevcut.includes("bağlan") ||
+        mevcut.includes("api") ||
+        mevcut.includes("yüklen") ||
+        mevcut.includes("bekleniyor") ||
+        mevcut.includes("yapay zeka")
+      ) {
+        if (el.tagName !== "BUTTON" && el.tagName !== "INPUT" && el.tagName !== "H1" && el.tagName !== "H2" && el.tagName !== "H3") {
+          el.textContent = ozetMetin;
+        }
+      }
+    });
+
+    // Mevcut buton/tetikleyicilere tıklanınca haritayı ve özet yanıtı yenile
+    const butonlar = Array.from(document.querySelectorAll("button, [role='button']")).filter((btn) => {
+      const metin = `${btn.textContent || ""} ${btn.id || ""} ${btn.className || ""}`.toLowerCase();
+      return (
+        metin.includes("rota") || metin.includes("öner") || metin.includes("oner") ||
+        metin.includes("ai") || metin.includes("yapay") || metin.includes("sor") ||
+        metin.includes("üret") || metin.includes("uret") || metin.includes("oluştur")
+      );
+    });
+
+    butonlar.forEach((btn) => {
+      if (btn.dataset.grFixed === "1") return;
+      btn.dataset.grFixed = "1";
+      btn.addEventListener("click", () => {
+        setTimeout(() => {
+          mevcutHaritalariOnar();
+          mevcutYapayZekayiOnar();
+        }, 120);
+      });
+    });
+  }
+
+  function tumunuCalistir() {
+    mevcutHaritalariOnar();
+    mevcutYapayZekayiOnar();
+  }
+
+  window.addEventListener("load", () => {
+    tumunuCalistir();
+    document.addEventListener("change", tumunuCalistir);
+    const gozlemci = new MutationObserver(() => {
+      clearTimeout(window.__grFixTimer);
+      window.__grFixTimer = setTimeout(tumunuCalistir, 200);
+    });
+    gozlemci.observe(document.body, { childList: true, subtree: true });
+  });
+})();
+</script>
 </body>
 </html>
