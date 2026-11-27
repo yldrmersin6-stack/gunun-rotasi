@@ -1270,5 +1270,546 @@ function appendChatMessage(role, text, id = null) {
 
         window.addEventListener('DOMContentLoaded', initApp);
     </script>
+<!-- Günün Rotası - Harita ve Yapay Zeka Kurtarma/Tamamlama Bloğu -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  #gr-live-map-box {
+    width: 100%;
+    height: 360px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    margin: 14px 0;
+    z-index: 1;
+    background: #1b222c;
+  }
+  #gr-ai-panel {
+    margin: 16px 0;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    background: rgba(20, 24, 32, 0.92);
+    color: #f3f4f6;
+    font-family: inherit;
+  }
+  #gr-ai-panel h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+  }
+  .gr-ai-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  #gr-ai-prompt {
+    flex: 1;
+    min-width: 220px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+  }
+  #gr-ai-send, #gr-ai-key-btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    background: #2563eb;
+    color: #fff;
+  }
+  #gr-ai-key-btn {
+    background: rgba(255, 255, 255, 0.14);
+  }
+  #gr-ai-output {
+    white-space: pre-line;
+    line-height: 1.55;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.35);
+  }
+  .gr-ai-key-row {
+    display: none;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .gr-ai-key-row.open {
+    display: flex;
+  }
+  #gr-ai-key-input {
+    flex: 1;
+    min-width: 220px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+</style>
+
+<script>
+(function () {
+const ISTANBUL_DISTRICTS = {
+    "Adalar": [40.8763, 29.0889],
+    "Arnavutköy": [41.1833, 28.7400],
+    "Ataşehir": [40.9833, 29.1200],
+    "Avcılar": [40.9792, 28.7214],
+    "Bağcılar": [41.0386, 28.8567],
+    "Bahçelievler": [41.0000, 28.8600],
+    "Bakırköy": [40.9800, 28.8772],
+    "Başakşehir": [41.0936, 28.8019],
+    "Bayrampaşa": [41.0456, 28.9000],
+    "Beşiktaş": [41.0422, 29.0094],
+    "Beykoz": [41.1322, 29.0922],
+    "Beylikdüzü": [41.0028, 28.6411],
+    "Beyoğlu": [41.0369, 28.9850],
+    "Büyükçekmece": [41.0186, 28.5897],
+    "Çatalca": [41.1436, 28.4619],
+    "Çekmeköy": [41.0333, 29.1833],
+    "Esenler": [41.0431, 28.8756],
+    "Esenyurt": [41.0342, 28.6800],
+    "Eyüpsultan": [41.0481, 28.9339],
+    "Fatih": [41.0186, 28.9397],
+    "Gaziosmanpaşa": [41.0667, 28.9125],
+    "Güngören": [41.0167, 28.8833],
+    "Kadıköy": [40.9909, 29.0256],
+    "Kağıthane": [41.0806, 28.9706],
+    "Kartal": [40.8889, 29.1856],
+    "Küçükçekmece": [41.0050, 28.7794],
+    "Maltepe": [40.9356, 29.1306],
+    "Pendik": [40.8781, 29.2333],
+    "Sancaktepe": [40.9897, 29.2311],
+    "Sarıyer": [41.1667, 29.0500],
+    "Silivri": [41.0736, 28.2464],
+    "Sultanbeyli": [40.9608, 29.2675],
+    "Sultangazi": [41.1069, 28.8678],
+    "Şile": [41.1756, 29.6133],
+    "Şişli": [41.0603, 28.9878],
+    "Tuzla": [40.8167, 29.3000],
+    "Ümraniye": [41.0167, 29.1167],
+    "Üsküdar": [41.0234, 29.0152],
+    "Zeytinburnu": [41.0053, 28.9025]
+  };
+
+  function matchDistrict(rawText) {
+    if (!rawText) return null;
+    const clean = String(rawText).trim();
+    for (const name of Object.keys(ISTANBUL_DISTRICTS)) {
+      if (clean.toLowerCase().includes(name.toLowerCase())) {
+        return name;
+      }
+    }
+    return null;
+  }
+function detectSelectedDistricts() {
+    const selects = Array.from(document.querySelectorAll("select"));
+    const found = [];
+    for (const sel of selects) {
+      const valText = sel.options[sel.selectedIndex]?.text || sel.value || "";
+      const d = matchDistrict(valText);
+      if (d && !found.includes(d)) found.push(d);
+    }
+    if (found.length >= 2) return { start: found[0], end: found[1] };
+    if (found.length === 1) return { start: found[0], end: found[0] === "Kadıköy" ? "Beşiktaş" : "Kadıköy" };
+    return { start: "Kadıköy", end: "Beşiktaş" };
+  }
+
+  let mapInstance = null;
+  let routeLayer = null;
+
+  function mountMap() {
+    if (typeof L === "undefined") return;
+
+    let host = document.getElementById("gr-live-map-box");
+    if (!host) {
+      host = document.createElement("div");
+      host.id = "gr-live-map-box";
+
+      const headings = Array.from(document.querySelectorAll("h1, h2, h3, h4, div, p, span"));
+      const targetHeading = headings.find((el) =>
+        el.children.length === 0 && /canlı yol güzergahı haritası/i.test(el.textContent || "")
+      );
+
+      if (targetHeading && targetHeading.parentElement) {
+        targetHeading.parentElement.insertAdjacentElement("afterend", host);
+      } else {
+        const aiPanel = document.getElementById("gr-ai-panel");
+        if (aiPanel) {
+          aiPanel.insertAdjacentElement("beforebegin", host);
+        } else {
+          document.body.appendChild(host);
+        }
+      }
+    }
+
+    const { start, end } = detectSelectedDistricts();
+    const startCoords = ISTANBUL_DISTRICTS[start] || ISTANBUL_DISTRICTS["Kadıköy"];
+    const endCoords = ISTANBUL_DISTRICTS[end] || ISTANBUL_DISTRICTS["Beşiktaş"];
+
+    if (!mapInstance) {
+      mapInstance = L.map("gr-live-map-box").setView(startCoords, 12);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(mapInstance);
+      routeLayer = L.layerGroup().addTo(mapInstance);
+    }
+
+    routeLayer.clearLayers();
+    const m1 = L.marker(startCoords).addTo(routeLayer).bindPopup(`Kalkış: <b>${start}</b>`);
+    const m2 = L.marker(endCoords).addTo(routeLayer).bindPopup(`Varış: <b>${end}</b>`);
+    const line = L.polyline([startCoords, endCoords], {
+      color: "#2563eb",
+      weight: 4,
+      dashArray: "6, 8"
+    }).addTo(routeLayer);
+
+    const bounds = L.latLngBounds([startCoords, endCoords]);
+    mapInstance.fitBounds(bounds.pad(0.25));
+    setTimeout(() => mapInstance.invalidateSize(), 150);
+  }
+
+  function buildLocalAiReply(promptText) {
+    const { start, end } = detectSelectedDistricts();
+    const q = (promptText || "").toLowerCase();
+    const isDate = q.includes("date") || q.includes("romantik") || q.includes("sevgili");
+
+    const modeTip = isDate
+      ? "Romantik date kurgusu: Gün batımına yakın sahil/koru yürüyüşü + sakin kafe veya manzaralı akşam yemeği önerilir."
+      : q.includes("bütçe") || q.includes("ucuz") || q.includes("öğrenci")
+      ? "Bütçe dostu plan: İBB Sosyal Tesisleri, belediye kafeleri ve toplu taşıma aktarmalarıyla kişi başı maliyeti dengede tutabilirsin."
+      : "Dengeli şehir rotası: Varış sonrası kısa yürüyüş, kahve/tatlı molası ve yoğunluk öncesi dönüş saati planlayabilirsin.";
+
+    return [
+ `Rota Özeti: ${start} → ${end}`,
+      `• Başlangıç & Ulaşım: ${start} çıkışlı hatlarla ${end} yönüne geçiş planlandı; harita üzerinde iki ilçe işaretlendi.`,
+      `• Öneri: ${modeTip}`,
+      `• İpucu: Farklı bir ilçe seçtiğinde harita ve öneri otomatik güncellenir.`
+    ].join("\n");
+  }
+
+  async function askAi(promptText) {
+    const outputEl = document.getElementById("gr-ai-output");
+    if (!outputEl) return;
+
+    const apiKey = localStorage.getItem("gr_ai_key") || "";
+    const { start, end } = detectSelectedDistricts();
+    const finalPrompt = promptText && promptText.trim()
+      ? promptText.trim()
+      : `${start} - ${end} arası günün rotası önerisi`;
+
+    outputEl.textContent = "Rota ve öneri hazırlanıyor...";
+
+    if (!apiKey) {
+      outputEl.textContent = buildLocalAiReply(finalPrompt);
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(apiKey)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: `İstanbul ${start} -> ${end} rotası için kısa, net, Türkçe öneri ver. Kullanıcı notu: ${finalPrompt}`
+              }]
+            }]
+          })
+        }
+      );
+      const data = await res.json();
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      outputEl.textContent = text || buildLocalAiReply(finalPrompt);
+    } catch (err) {
+      outputEl.textContent = buildLocalAiReply(finalPrompt);
+    }
+  }
+
+  function mountAiPanel() {
+    if (document.getElementById("gr-ai-panel")) return;
+
+    const panel = document.createElement("div");
+    panel.id = "gr-ai-panel";
+    panel.innerHTML = `
+      <h3>Akıllı Rota & Yapay Zeka Asistanı</h3>
+      <div class="gr-ai-controls">
+        <input id="gr-ai-prompt" type="text" placeholder="Örn: Kadıköy'den Beşiktaş'a bütçe dostu akşam rotası..." />
+        <button id="gr-ai-send" type="button">Öneri Üret</button>
+        <button id="gr-ai-key-btn" type="button">API Anahtarı</button>
+      </div>
+      <div id="gr-ai-key-row" class="gr-ai-key-row">
+        <input id="gr-ai-key-input" type="password" placeholder="İsteğe bağlı Gemini API anahtarı (boşsa yerel motor çalışır)" />
+        <button id="gr-ai-save-key" type="button">Kaydet</button>
+      </div>
+      <div id="gr-ai-output">Seçili ilçelere göre harita ve yapay zeka önerisi hazır.</div>
+    `;
+
+    document.body.appendChild(panel);
+
+    document.getElementById("gr-ai-send").addEventListener("click", () => {
+      const val = document.getElementById("gr-ai-prompt").value;
+      mountMap();
+      askAi(val);
+    });
+
+    document.getElementById("gr-ai-key-btn").addEventListener("click", () => {
+      document.getElementById("gr-ai-key-row").classList.toggle("open");
+      document.getElementById("gr-ai-key-input").value = localStorage.getItem("gr_ai_key") || "";
+    });
+
+    document.getElementById("gr-ai-save-key").addEventListener("click", () => {
+      const k = document.getElementById("gr-ai-key-input").value.trim();
+      if (k) localStorage.setItem("gr_ai_key", k);
+      else localStorage.removeItem("gr_ai_key");
+      document.getElementById("gr-ai-key-row").classList.remove("open");
+      askAi(document.getElementById("gr-ai-prompt").value);
+    });
+  }
+
+  function initAll() {
+    mountMap();
+    mountAiPanel();
+    askAi("");
+  }
+window.addEventListener("load", () => {
+    initAll();
+    document.addEventListener("change", () => {
+      mountMap();
+    });
+  });
+})();
+</script>
+<!-- Günün Rotası - Gelişmiş Yapay Zeka Rota & Plan Motoru -->
+<style>
+  #gr-smart-ai-box {
+    margin: 16px 0 28px 0;
+    padding: 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(128, 128, 128, 0.28);
+    background: rgba(17, 22, 31, 0.95);
+    color: #f8fafc;
+    font-family: inherit;
+  }
+  .gr-ai-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .gr-ai-header h3 {
+    margin: 0;
+    font-size: 17px;
+  }
+  .gr-ai-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .gr-ai-chip {
+    padding: 6px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.06);
+    color: #e2e8f0;
+    font-size: 12.5px;
+    cursor: pointer;
+  }
+  .gr-ai-chip:hover {
+    background: rgba(37, 99, 235, 0.35);
+    border-color: #3b82f6;
+  }
+  .gr-ai-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  #gr-ai-input {
+    flex: 1;
+    min-width: 220px;
+    padding: 10px 13px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+    font-size: 14px;
+  }
+  #gr-ai-run {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    background: #2563eb;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #gr-ai-run:hover {
+    background: #1d4ed8;
+  }
+  #gr-ai-plan-output {
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.38);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    line-height: 1.6;
+    font-size: 14px;
+    white-space: pre-line;
+  }
+</style>
+
+<script>
+(function () {
+  const ANADOLU = new Set([
+    "Adalar", "Ataşehir", "Beykoz", "Çekmeköy", "Kadıköy",
+    "Kartal", "Maltepe", "Pendik", "Sancaktepe", "Sultanbeyli",
+    "Şile", "Tuzla", "Ümraniye", "Üsküdar"
+  ]);
+
+  const DISTRICT_SPOTS = {
+    "Kadıköy": ["Moda Sahili", "Müze Gazhane", "Kadıköy Çarşı & Sahaflar", "Yeldeğirmeni"],
+    "Beşiktaş": ["Beşiktaş Sahil & Çarşı", "Yıldız Parkı", "Abbasağa Parkı", "Ortaköy Sahili"],
+    "Üsküdar": ["Kız Kulesi Sahili", "Kuzguncuk", "Fethipaşa Korusu", "Çamlıca"],
+    "Beyoğlu": ["İstiklal & Galata", "Karaköy Sahil", "Cihangir", "Tophane"],
+    "Fatih": ["Sultanahmet & Gülhane", "Balat & Fener", "Süleymaniye", "Eminönü Sahil"],
+    "Sarıyer": ["Emirgan Korusu", "Bebek - Tarabya Sahil", "Atatürk Kent Ormanı", "Rumeli Kavağı"],
+    "Beykoz": ["Anadolu Kavağı", "Kanlıca & Mihrabat", "Polonezköy", "Beykoz Sahil"]
+  };
+
+  function getDistrictsFromPage() {
+    const names = Object.keys(ANADOLU).concat([
+      "Arnavutköy", "Avcılar", "Bağcılar", "Bahçelievler", "Bakırköy",
+      "Başakşehir", "Bayrampaşa", "Beylikdüzü", "Beyoğlu", "Büyükçekmece",
+      "Çatalca", "Esenler", "Esenyurt", "Eyüpsultan", "Fatih",
+      "Gaziosmanpaşa", "Güngören", "Kağıthane", "Küçükçekmece", "Sarıyer",
+      "Silivri", "Sultangazi", "Şişli", "Zeytinburnu"
+    ]);
+    const found = [];
+    for (const sel of document.querySelectorAll("select")) {
+      const txt = sel.options[sel.selectedIndex]?.text || sel.value || "";
+      const hit = names.find((n) => txt.toLowerCase().includes(n.toLowerCase()));
+      if (hit && !found.includes(hit)) found.push(hit);
+    }
+    return {
+      start: found[0] || "Kadıköy",
+      end: found[1] || "Beşiktaş"
+    };
+  }
+
+  function detectContext(customText) {
+    const pageText = (document.body.innerText || "").toLowerCase();
+    const q = (customText || "").toLowerCase();
+    const isDate = q.includes("date") || q.includes("romantik") || q.includes("sevgili") || pageText.includes("romantik date");
+    const isBudget = q.includes("bütçe") || q.includes("ucuz") || q.includes("ekonomik") || q.includes("sosyal tesis");
+    const isRain = q.includes("yağmur") || q.includes("kapalı") || q.includes("avm");
+    const isCulture = q.includes("müze") || q.includes("tarih") || q.includes("kültür");
+    return { isDate, isBudget, isRain, isCulture };
+  }
+
+  function generateSmartPlan(customText) {
+    const { start, end } = getDistrictsFromPage();
+    const { isDate, isBudget, isRain, isCulture } = detectContext(customText);
+    const crossBosphorus = ANADOLU.has(start) !== ANADOLU.has(end);
+
+    const startSpots = DISTRICT_SPOTS[start] || [`${start} Merkez`, `${start} Sahil / Meydan`];
+    const endSpots = DISTRICT_SPOTS[end] || [`${end} Merkez`, `${end} Sosyal Alan / Kafe`];
+
+    const transportNote = crossBosphorus
+      ? "İki yaka arası geçiş var: Vapur/Marmaray/Metrobüs saatlerini ve dönüş yoğunluğunu hesaba kat."
+      : "Aynı yaka içi rota: Raylı sistem, İETT veya kısa yürüyüş/dolmuş kombinasyonuyla ilerleyebilirsin.";
+
+    const stop2 = isRain
+      ? `Kapalı Mekan & Kültür Molası (${endSpots[1] || end})`
+      : isCulture
+      ? `Tarih & Müze Gezisi (${endSpots[0] || end})`
+      : isDate
+      ? `Gün Batımı & Yürüyüş (${endSpots[0] || end})`
+      : `Gezi & Keşif Turu (${endSpots[0] || end})`;
+
+    const stop3 = isBudget
+      ? `İBB Sosyal Tesis / Belediye Kafe Molası (${endSpots[1] || end})`
+      : isDate
+      ? `Sakin Kafe veya Boğaz / Manzara Durağı (${endSpots[1] || end})`
+      : `Kahve, Tatlı & Dinlenme (${endSpots[1] || end})`;
+
+    const estCost = isBudget ? "~350 - 550 TL / kişi" : isDate ? "~700 - 1.250 TL / kişi" : "~550 - 950 TL / kişi";
+
+    return [
+      `📍 Rota Özeti: ${start} → ${end} (${isDate ? "Romantik Date Modu" : "Arkadaş / Günlük Rota"})`,
+      `💰 Tahmini Bütçe: ${estCost}`,
+      `🚇 Ulaşım Notu: ${transportNote}`,
+      ``,
+      `🕒 Önerilen Akış:`,
+      `1. Çıkış & Başlangıç: ${start} (${startSpots[0]}) hareket ve ${end} yönüne geçiş.`,
+      `2. Ana Durak: ${stop2}.`,
+      `3. Ara Mola: ${stop3}.`,
+      `4. Akşam & Dönüş: Akşam yemeği veya kapanış durağının ardından ${start} yönüne dönüş hattını kontrol et.`,
+      ``,
+      `💡 İpucu: Yukarıdaki kutuya "yağmurlu gün", "bütçe dostu", "romantik date" veya "müze ağırlıklı" yazıp "Plan Oluştur"a basarak akışı anında değiştirebilirsin.`
+    ].join("\n");
+  }
+
+  function mountSmartAi() {
+    if (document.getElementById("gr-smart-ai-box")) return;
+
+    const box = document.createElement("div");
+    box.id = "gr-smart-ai-box";
+    box.innerHTML = `
+ <div class="gr-ai-header">
+        <h3>🤖 Günün Rotası — Akıllı Plan & Asistan</h3>
+      </div>
+      <div class="gr-ai-chips">
+        <button type="button" class="gr-ai-chip" data-q="bütçe dostu plan">💸 Bütçe Dostu</button>
+        <button type="button" class="gr-ai-chip" data-q="romantik date planı">💕 Romantik Date</button>
+        <button type="button" class="gr-ai-chip" data-q="yağmurlu kapalı mekan planı">☔ Kapalı Mekan</button>
+        <button type="button" class="gr-ai-chip" data-q="tarihi ve müze ağırlıklı plan">🏛️ Tarih & Müze</button>
+      </div>
+      <div class="gr-ai-bar">
+        <input id="gr-ai-input" type="text" placeholder="Nasıl bir gün planlıyorsun? (Örn: bütçe dostu, date, yağmurlu gün...)" />
+        <button id="gr-ai-run" type="button">Plan Oluştur</button>
+      </div>
+      <div id="gr-ai-plan-output"></div>
+    `;
+
+    document.body.appendChild(box);
+
+    const inputEl = document.getElementById("gr-ai-input");
+    const runBtn = document.getElementById("gr-ai-run");
+    const outEl = document.getElementById("gr-ai-plan-output");
+
+    function render() {
+      outEl.textContent = generateSmartPlan(inputEl.value);
+    }
+
+    runBtn.addEventListener("click", render);
+    inputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") render();
+    });
+
+    box.querySelectorAll(".gr-ai-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        inputEl.value = chip.getAttribute("data-q") || "";
+        render();
+      });
+    });
+
+    document.addEventListener("change", render);
+    render();
+  }
+
+  window.addEventListener("load", mountSmartAi);
+})();
+</script>
 </body>
 </html>
