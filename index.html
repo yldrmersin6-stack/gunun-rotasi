@@ -3,1201 +3,563 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Günün Rotası — İstanbul 39 İlçe Akıllı Rota & Şehir Rehberi</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <title>Günün Rotası İstanbul — 39 İlçe Keşif, Taksi, Etkinlik &amp; Blog</title>
   <style>
     :root {
-      --bg: #0b1018;
-      --panel: #131b27;
-      --panel-2: #192434;
-      --text: #f3f6fb;
-      --muted: #9fb0c7;
-      --accent: #3b82f6;
+      --bg: #0b1120;
+      --surface: #131c31;
+      --surface-2: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #f59e0b;
       --accent-2: #10b981;
-      --border: rgba(255, 255, 255, 0.1);
+      --info: #38bdf8;
+      --border: rgba(255, 255, 255, 0.09);
       --radius: 16px;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(180deg, #090d14 0%, var(--bg) 100%);
-      color: var(--text);
-      line-height: 1.5;
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.55; padding-bottom: 72px; }
+
+    header {
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(11, 17, 32, 0.92); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border); padding: 14px 20px;
     }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 16px 56px;
+    .header-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
     }
-    header.hero {
-      background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(16,185,129,0.14));
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px;
+    .brand h1 { font-size: 1.35rem; color: var(--accent); letter-spacing: -0.02em; }
+    .brand p { font-size: 0.82rem; color: var(--muted); }
+
+    .nav-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tab-btn {
+      background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+      padding: 8px 14px; border-radius: 999px; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    }
+    .tab-btn.active { background: var(--accent); color: #0b1120; border-color: var(--accent); }
+
+    .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+
+    .hero-strip {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(56, 189, 248, 0.1));
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px 20px; margin-bottom: 18px;
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px;
+    }
+    .hero-strip h2 { font-size: 1.15rem; margin-bottom: 4px; }
+    .hero-strip p { font-size: 0.88rem; color: var(--muted); }
+
+    .controls {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px;
       margin-bottom: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
     }
-    header.hero h1 { margin: 0 0 6px; font-size: 24px; }
-    header.hero p { margin: 0; color: var(--muted); font-size: 14px; }
-    .badge {
-      background: rgba(59,130,246,0.18);
-      border: 1px solid rgba(59,130,246,0.45);
-      color: #dbeafe;
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 12.5px;
-      font-weight: 600;
+    select, input, textarea, button {
+      border-radius: 12px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text); padding: 10px 14px; font-size: 0.92rem;
     }
-    .grid-main {
-      display: grid;
-      grid-template-columns: 360px 1fr;
-      gap: 16px;
-      align-items: start;
-    }
-    @media (max-width: 920px) {
-      .grid-main { grid-template-columns: 1fr; }
+    button { cursor: pointer; font-weight: 600; transition: 0.18s ease; }
+    button:hover { transform: translateY(-1px); filter: brightness(1.06); }
+    .btn-primary { background: var(--accent); color: #0b1120; border: none; }
+    .btn-success { background: var(--accent-2); color: #042f2e; border: none; }
+    .btn-taxi { background: #eab308; color: #111827; border: none; }
+    .btn-info { background: var(--info); color: #082f49; border: none; }
+    .btn-ghost { background: var(--surface-2); }
+
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px;
     }
     .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 16px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
     }
-.card h2, .card h3 { margin: 0 0 12px; font-size: 17px; }
-    .field { margin-bottom: 12px; }
-    .field label {
-      display: block;
-      font-size: 12.5px;
-      color: var(--muted);
-      margin-bottom: 5px;
+    .badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .badge {
+      font-size: 0.74rem; padding: 3px 9px; border-radius: 999px;
+      background: var(--surface-2); color: var(--accent); font-weight: 600;
     }
-    select, input[type="time"], input[type="number"], input[type="text"] {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--text);
-      font-size: 14px;
+    .badge.free { color: #34d399; }
+    .card h3 { font-size: 1.06rem; margin-bottom: 4px; }
+    .card .meta { font-size: 0.85rem; color: var(--muted); }
+    .card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .card-actions button { flex: 1; min-width: 105px; padding: 8px 10px; font-size: 0.84rem; }
+
+    .panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; margin-top: 12px;
     }
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .btn {
-      width: 100%;
-      padding: 11px 14px;
-      border-radius: 11px;
-      border: none;
-      background: var(--accent);
-      color: #fff;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
+    .panel h2 { font-size: 1.2rem; color: var(--accent); margin-bottom: 6px; }
+    .panel p.sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 14px; }
+
+    .form-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px;
+      margin-bottom: 12px;
     }
-    .btn:hover { filter: brightness(1.08); }
-    .btn-sm {
-      width: auto;
-      padding: 6px 11px;
-      font-size: 12px;
-      border-radius: 8px;
-      background: rgba(16,185,129,0.2);
-      border: 1px solid rgba(16,185,129,0.5);
-      color: #a7f3d0;
+    .preview-box {
+      margin-top: 14px; background: var(--bg); border: 1px dashed rgba(245, 158, 11, 0.45);
+      border-radius: var(--radius); padding: 14px;
     }
-    #map {
-      width: 100%;
-      height: 360px;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      z-index: 1;
+    .photo-preview {
+      margin-top: 10px; max-height: 240px; width: 100%; object-fit: cover;
+      border-radius: 12px; display: none; border: 1px solid var(--border);
     }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 12px;
+    .share-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .status-msg { margin-top: 10px; font-size: 0.88rem; color: #34d399; min-height: 20px; }
+
+    .blog-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px; margin-bottom: 14px;
     }
-    @media (max-width: 680px) {
-      .stats { grid-template-columns: repeat(2, 1fr); }
+    .blog-card img {
+      width: 100%; max-height: 260px; object-fit: cover; border-radius: 12px; margin: 10px 0;
     }
-    .stat-box {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 12px;
-    }
-    .stat-label { font-size: 11.5px; color: var(--muted); }
-    .stat-val { font-size: 15px; font-weight: 700; margin-top: 2px; }
-    .timeline { display: flex; flex-direction: column; gap: 10px; }
-    .stop-item {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-    .stop-time { font-weight: 700; color: #93c5fd; font-size: 13px; }
-    .stop-title { font-weight: 600; font-size: 14.5px; }
-    .stop-meta { color: var(--muted); font-size: 12.5px; }
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-    .tab-btn {
-      padding: 8px 13px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--text);
-      font-size: 12.5px;
-      cursor: pointer;
-    }
-    .tab-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-      font-weight: 600;
-    }
-    .places-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 12px;
-    }
-    .place-card {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 8px;
-    }
-.tr-card {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-    }
-    .tr-card h4 { margin: 0 0 6px; font-size: 14.5px; }
-    .tr-card p { margin: 4px 0; font-size: 13px; color: var(--muted); }
-    .tr-card strong { color: var(--text); }
-    .ai-note {
-      background: rgba(16,185,129,0.1);
-      border: 1px solid rgba(16,185,129,0.3);
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 13.5px;
-      color: #d1fae5;
-      margin-top: 10px;
-    }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="hero">
-      <div>
-        <h1>Günün Rotası — İstanbul 39 İlçe Akıllı Rota Asistanı</h1>
-        <p>İlçe, bütçe, kişi sayısı, gezi modu ve saatlere göre harita, mekân ve ulaşım planı</p>
+<header>
+    <div class="header-inner">
+      <div class="brand">
+        <h1>Günün Rotası • İstanbul</h1>
+        <p>39 İlçe Keşfi • Ücretsiz Mekan &amp; Otel Rehberi • Taksi • Etkinlik &amp; Blog</p>
       </div>
-      <div class="badge">39 İlçe • Harita + Mekân + Ulaşım</div>
-    </header>
-
-    <div class="grid-main">
-      <aside>
-        <div class="card">
-          <h2>Rota Ayarları</h2>
-          <div class="field">
-            <label for="startDistrict">Kalkış İlçesi</label>
-            <select id="startDistrict"></select>
-          </div>
-          <div class="field">
-            <label for="endDistrict">Varış İlçesi</label>
-            <select id="endDistrict"></select>
-          </div>
-          <div class="row-2">
-            <div class="field">
-              <label for="peopleCount">Kişi Sayısı</label>
-              <input id="peopleCount" type="number" min="1" max="15" value="2" />
-            </div>
-            <div class="field">
-              <label for="departureTime">Yola Çıkış Saati</label>
-              <input id="departureTime" type="time" value="13:30" />
-            </div>
-          </div>
-          <div class="field">
-            <label for="moodSelect">Gezi / Gün Modu</label>
-            <select id="moodSelect">
-              <option value="arkadas">Arkadaş / Günlük Gezi</option>
-              <option value="date">Romantik Date</option>
-              <option value="kapali">Kapalı / Yağmurlu Gün</option>
-              <option value="kultur">Tarih & Kültür</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="budgetTier">Bütçe Tercihi</label>
-            <select id="budgetTier">
-              <option value="uygun">Uygun Fiyatlı (Sosyal Tesis / Kafe)</option>
-              <option value="dengeli" selected>Dengeli</option>
-              <option value="luks">Lüks / Özel Mekân</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="customNote">Yapay Zeka İsteği / Not</label>
-            <input id="customNote" type="text" placeholder="Örn: Sahil yürüyüşü, akşam yemeği, erken dönüş..." />
-          </div>
-          <button id="generateBtn" class="btn" type="button">Rotayı & Haritayı Güncelle</button>
-          <div id="aiSummaryBox" class="ai-note"></div>
-        </div>
-      </aside>
-
-      <main>
-        <div class="card">
-          <h2>Canlı Güzergah Haritası</h2>
-          <div id="map"></div>
-          <div class="stats">
-            <div class="stat-box">
-              <div class="stat-label">Mesafe & Süre</div>
-              <div id="statDistTime" class="stat-val">-</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">Tahmini Toplam Bütçe</div>
-              <div id="statBudget" class="stat-val">-</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">Dönüş Saati</div>
-              <div id="statReturn" class="stat-val">-</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">Yaka Durumu</div>
-              <div id="statSide" class="stat-val">-</div>
-            </div>
-          </div>
-        </div>
-
-  <div class="card">
-          <h3>Saatlik Durak Planı</h3>
-          <div id="timelineList" class="timeline"></div>
-        </div>
-
-        <div class="card">
-          <h3>Mekân Rehberi (AVM, Tarihi, Orman, Uygun & Lüks)</h3>
-          <div class="tabs" id="categoryTabs">
-            <button type="button" class="tab-btn active" data-cat="all">Tümü</button>
-            <button type="button" class="tab-btn" data-cat="avm">AVM'ler</button>
-            <button type="button" class="tab-btn" data-cat="tarihi">Tarihi Mekânlar</button>
-            <button type="button" class="tab-btn" data-cat="orman">Ormanlık Alanlar</button>
-            <button type="button" class="tab-btn" data-cat="uygun">Uygun Fiyatlı</button>
-            <button type="button" class="tab-btn" data-cat="luks">Lüks Mekânlar</button>
-          </div>
-          <div id="placesGrid" class="places-grid"></div>
-        </div>
-
-        <div class="card">
-          <h3>Ulaşım, Ücret & Geliş-Gidiş Saatleri</h3>
-          <div id="transportGrid" class="transport-list"></div>
-        </div>
-      </main>
+      <nav class="nav-tabs">
+        <button class="tab-btn active" id="tabExplore" onclick="switchTab('explore')">Keşfet &amp; Mekanlar</button>
+        <button class="tab-btn" id="tabEvent" onclick="switchTab('event')">Etkinlik &amp; Paylaş (<span id="routeBadge">0</span>)</button>
+        <button class="tab-btn" id="tabBlog" onclick="switchTab('blog')">Gezi Blogu Yaz / Oku</button>
+      </nav>
     </div>
-  </div>
+  </header>
+
+  <main class="container">
+    <section id="viewExplore">
+      <div class="hero-strip">
+        <div>
+          <h2 id="districtHeadline">İstanbul'un 39 İlçesinde Bugün Ne Var?</h2>
+          <p id="districtSub">Sıkılmadan gez: İster ilçe seç, ister tek tuşla kendine 3 duraklı sürpriz rota çıkar.</p>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-info" onclick="generateSurpriseRoute()">Bana Sürpriz Rota Çıkar</button>
+          <button class="btn-primary" onclick="switchTab('event')">Rotamı Tamamla</button>
+        </div>
+      </div>
+
+      <div class="controls">
+        <select id="districtSelect" onchange="renderPlaces()"></select>
+
+        <select id="categorySelect" onchange="renderPlaces()">
+          <option value="ALL">Tüm Kategoriler</option>
+          <option value="Tarih & Kültür">Tarih &amp; Kültür</option>
+          <option value="Yeme & İçme">Yeme &amp; İçme</option>
+          <option value="Otel">Otel &amp; Konaklama</option>
+          <option value="Manzara & Sahil">Manzara &amp; Sahil</option>
+          <option value="Kültür & Sanat">Kültür &amp; Sanat</option>
+        </select>
+
+        <input type="text" id="searchInput" placeholder="Mekan, semt, otel veya lezzet ara..." oninput="renderPlaces()" />
+      </div>
+
+      <div class="grid" id="placesGrid"></div>
+    </section>
+
+    <section id="viewEvent" class="hidden">
+      <div class="panel">
+        <h2>Etkinliğini Tamamla, Fotoğrafını Ekle ve Paylaş</h2>
+        <p class="sub">
+          Seçtiğin duraklarla etkinliğini oluştur. Gönderdiğinde özet doğrudan WhatsApp hattımıza düşer, fotoğraf cihazına/kendine kaydedilir ve Instagram için hazır hale gelir.
+        </p>
+
+        <div class="form-grid">
+          <input type="text" id="eventTitle" placeholder="Etkinlik adı (örn. Cumartesi Tarihi Yarımada Turu)" />
+          <input type="text" id="userHandle" placeholder="Adın veya Instagram kullanıcı adın (@...)" />
+          <input type="email" id="selfEmail" placeholder="Kendine göndermek için e-posta (opsiyonel)" />
+          <input type="file" id="photoInput" accept="image/*" onchange="handleEventPhoto(event)" />
+        </div>
+
+        <textarea id="eventNotes" rows="3" style="width:100%;" placeholder="Bugünkü rotanla ilgili notun..."></textarea>
+
+        <div class="preview-box">
+          <strong>Canlı Etkinlik Özeti</strong>
+          <p id="summaryText" style="margin-top:6px; color:var(--muted); white-space:pre-line;"></p>
+          <img id="photoPreview" class="photo-preview" alt="Etkinlik fotoğrafı" />
+        </div>
+
+        <div class="share-actions">
+          <button class="btn-success" onclick="sendToOwnerWhatsApp()">WhatsApp Hattımıza Gönder</button>
+          <button class="btn-primary" onclick="shareInstagram()">Instagram İçin Kopyala &amp; Aç</button>
+          <button class="btn-info" onclick="sendToSelf()">Fotoğraf &amp; Özeti Kendime Gönder</button>
+          <button class="btn-ghost" onclick="clearRoute()">Rotayı Sıfırla</button>
+        </div>
+        <div class="status-msg" id="eventStatus"></div>
+      </div>
+    </section>
+
+    <section id="viewBlog" class="hidden">
+      <div class="panel" style="margin-bottom: 18px;">
+        <h2>Kendi Gezi Blogunu Yaz</h2>
+        <p class="sub">Gezdiğin semti, beğendiğin oteli veya keşfettiğin gizli sokağı diğer gezginler için yaz; istersen WhatsApp hattımıza da ilet.</p>
+
+        <div class="form-grid">
+          <input type="text" id="blogTitle" placeholder="Blog başlığı (örn. Balat'tan Fener'e Sabah Yürüyüşü)" />
+          <select id="blogDistrict"></select>
+          <input type="text" id="blogAuthor" placeholder="Yazar adı veya @kullanici" />
+          <input type="file" id="blogPhotoInput" accept="image/*" onchange="handleBlogPhoto(event)" />
+        </div>
+
+        <textarea id="blogContent" rows="4" style="width:100%;" placeholder="Deneyimini, mekan tavsiyelerini ve ipuçlarını buraya yaz..."></textarea>
+
+        <div class="share-actions">
+          <button class="btn-primary" onclick="publishBlog()">Blog Yazısını Yayınla</button>
+          <button class="btn-success" onclick="sendBlogToWhatsApp()">Yazıyı WhatsApp Hattımıza da Gönder</button>
+        </div>
+        <div class="status-msg" id="blogStatus"></div>
+      </div>
+
+      <div id="blogFeed"></div>
+    </section>
+  </main>
 
   <script>
-    const DISTRICTS = {
-"Adalar": { coords: [40.8763, 29.0889], side: "Anadolu" },
-      "Arnavutköy": { coords: [41.1833, 28.7400], side: "Avrupa" },
-      "Ataşehir": { coords: [40.9833, 29.1200], side: "Anadolu" },
-      "Avcılar": { coords: [40.9792, 28.7214], side: "Avrupa" },
-      "Bağcılar": { coords: [41.0386, 28.8567], side: "Avrupa" },
-      "Bahçelievler": { coords: [41.0000, 28.8600], side: "Avrupa" },
-      "Bakırköy": { coords: [40.9800, 28.8772], side: "Avrupa" },
-      "Başakşehir": { coords: [41.0936, 28.8019], side: "Avrupa" },
-      "Bayrampaşa": { coords: [41.0456, 28.9000], side: "Avrupa" },
-      "Beşiktaş": { coords: [41.0422, 29.0094], side: "Avrupa" },
-      "Beykoz": { coords: [41.1322, 29.0922], side: "Anadolu" },
-      "Beylikdüzü": { coords: [41.0028, 28.6411], side: "Avrupa" },
-      "Beyoğlu": { coords: [41.0369, 28.9850], side: "Avrupa" },
-      "Büyükçekmece": { coords: [41.0186, 28.5897], side: "Avrupa" },
-      "Çatalca": { coords: [41.1436, 28.4619], side: "Avrupa" },
-      "Çekmeköy": { coords: [41.0333, 29.1833], side: "Anadolu" },
-      "Esenler": { coords: [41.0431, 28.8756], side: "Avrupa" },
-      "Esenyurt": { coords: [41.0342, 28.6800], side: "Avrupa" },
-      "Eyüpsultan": { coords: [41.0481, 28.9339], side: "Avrupa" },
-      "Fatih": { coords: [41.0186, 28.9397], side: "Avrupa" },
-      "Gaziosmanpaşa": { coords: [41.0667, 28.9125], side: "Avrupa" },
-      "Güngören": { coords: [41.0167, 28.8833], side: "Avrupa" },
-      "Kadıköy": { coords: [40.9909, 29.0256], side: "Anadolu" },
-      "Kağıthane": { coords: [41.0806, 28.9706], side: "Avrupa" },
-      "Kartal": { coords: [40.8889, 29.1856], side: "Anadolu" },
-      "Küçükçekmece": { coords: [41.0050, 28.7794], side: "Avrupa" },
-      "Maltepe": { coords: [40.9356, 29.1306], side: "Anadolu" },
-      "Pendik": { coords: [40.8781, 29.2333], side: "Anadolu" },
-      "Sancaktepe": { coords: [40.9897, 29.2311], side: "Anadolu" },
-      "Sarıyer": { coords: [41.1667, 29.0500], side: "Avrupa" },
-      "Silivri": { coords: [41.0736, 28.2464], side: "Avrupa" },
-      "Sultanbeyli": { coords: [40.9608, 29.2675], side: "Anadolu" },
-      "Sultangazi": { coords: [41.1069, 28.8678], side: "Avrupa" },
-      "Şile": { coords: [41.1756, 29.6133], side: "Anadolu" },
-      "Şişli": { coords: [41.0603, 28.9878], side: "Avrupa" },
-      "Tuzla": { coords: [40.8167, 29.3000], side: "Anadolu" },
-      "Ümraniye": { coords: [41.0167, 29.1167], side: "Anadolu" },
-      "Üsküdar": { coords: [41.0234, 29.0152], side: "Anadolu" },
-      "Zeytinburnu": { coords: [41.0053, 28.9025], side: "Avrupa" }
-    };
-const PLACES = [
-      { id: 1, cat: "avm", name: "Akasya AVM", district: "Üsküdar", coords: [41.0018, 29.0537], costPerPerson: 650, note: "Açık/kapalı alanlar, yeme-içme ve kolay metro bağlantısı." },
-      { id: 2, cat: "avm", name: "İstinyePark", district: "Sarıyer", coords: [41.1112, 29.0334], costPerPerson: 1400, note: "Geniş marka yelpazesi, pazar yeri ve özel restoran seçenekleri." },
-      { id: 3, cat: "avm", name: "Cevahir AVM", district: "Şişli", coords: [41.0634, 28.9932], costPerPerson: 600, note: "M2 metro çıkışıyla doğrudan erişim ve kapalı gün alternatifi." },
-      { id: 4, cat: "tarihi", name: "Galata Kulesi & Karaköy Hattı", district: "Beyoğlu", coords: [41.0256, 28.9741], costPerPerson: 750, note: "Tarihi silüet, ara sokak yürüyüşü ve boğaz hattı." },
-      { id: 5, cat: "tarihi", name: "Sultanahmet & Gülhane Çevresi", district: "Fatih", coords: [41.0086, 28.9802], costPerPerson: 550, note: "Tarihi yarımada mirası, yürüyüş rotaları ve klasik duraklar." },
-      { id: 6, cat: "orman", name: "Belgrad Ormanı & Atatürk Kent Ormanı", district: "Sarıyer", coords: [41.1830, 28.9780], costPerPerson: 220, note: "Yürüyüş parkurları, temiz hava ve doğa molası." },
-      { id: 7, cat: "orman", name: "Fethipaşa Korusu", district: "Üsküdar", coords: [41.0315, 29.0312], costPerPerson: 320, note: "Boğaz manzaralı yürüyüş yolları ve sosyal tesis imkânı." },
-      { id: 8, cat: "orman", name: "Aydos Ormanı & Göleti", district: "Kartal", coords: [40.9285, 29.2435], costPerPerson: 240, note: "Yüksek rakım, gölet çevresi yürüyüş ve doğa atmosferi." },
-      { id: 9, cat: "uygun", name: "İBB Florya & Çamlıca Sosyal Tesisleri", district: "Bakırköy", coords: [40.9735, 28.7865], costPerPerson: 310, note: "Ekonomik menüler, manzaralı teraslar ve aile/arkadaş dostu yapı." },
-      { id: 10, cat: "uygun", name: "Moda Sahili & Kadıköy Çarşı", district: "Kadıköy", coords: [40.9876, 29.0268], costPerPerson: 380, note: "Uygun bütçeli kafe/lokanta alternatifleri ve sahil yürüyüşü." },
-      { id: 11, cat: "luks", name: "Boğaz Hattı Fine Dining & Oteller", district: "Beşiktaş", coords: [41.0475, 29.0355], costPerPerson: 2400, note: "Özel gün ve romantik akşam kurguları için yüksek segment duraklar." },
-      { id: 12, cat: "luks", name: "Bebek - Yeniköy Sahil Restoranları", district: "Sarıyer", coords: [41.0778, 29.0432], costPerPerson: 2100, note: "Deniz kenarı ambiyans, özel menüler ve akşam buluşmaları." }
+    const SITE_WHATSAPP_PHONE = "55145411748";
+    const SITE_INSTAGRAM = "gununrotasi.app";
+
+    const istanbulDistricts = [
+      "Adalar", "Arnavutköy", "Ataşehir", "Avcılar", "Bağcılar", "Bahçelievler", "Bakırköy",
+      "Başakşehir", "Bayrampaşa", "Beşiktaş", "Beykoz", "Beylikdüzü", "Beyoğlu", "Büyükçekmece",
+      "Çatalca", "Çekmeköy", "Esenler", "Esenyurt", "Eyüpsultan", "Fatih (Sur İçi)", "Gaziosmanpaşa",
+      "Güngören", "Kadıköy", "Kağıthane", "Kartal", "Küçükçekmece", "Maltepe", "Pendik",
+      "Sancaktepe", "Sarıyer", "Silivri", "Sultanbeyli", "Sultangazi", "Şile", "Şişli",
+      "Tuzla", "Ümraniye", "Üsküdar", "Zeytinburnu"
     ];
 
-    let map, routeLayer, extraStops = [], activeCategory = "all";
+    const basePlaces = [
+{ id: 1, name: "Tarihi Yarımada Sur İçi & Sultanahmet Meydanı", district: "Fatih (Sur İçi)", category: "Tarih & Kültür", info: "Surlar, tarihi avlular ve kültürel miras duraklarıyla tam günlük yürüyüş hattı.", coords: "41.0054,28.9768" },
+      { id: 2, name: "Sur İçi Tarihi Konak Otel", district: "Fatih (Sur İçi)", category: "Otel", info: "Tarihi yarımada dokusuna yürüme mesafesinde konforlu konaklama.", coords: "41.0072,28.9741" },
+      { id: 3, name: "Balat & Fener Renkli Sokaklar ve Kahve Durakları", district: "Fatih (Sur İçi)", category: "Yeme & İçme", info: "Tarihi Fener-Balat aksında sabah kahvesi ve sokak fotoğrafçılığı rotası.", coords: "41.0292,28.9491" },
+      { id: 4, name: "Galata Kulesi & Karaköy Rıhtım Hattı", district: "Beyoğlu", category: "Kültür & Sanat", info: "Galata'dan Karaköy sahile inen sanat galerileri ve butik kafeler.", coords: "41.0256,28.9741" },
+      { id: 5, name: "Karaköy Butik Şehir Oteli", district: "Beyoğlu", category: "Otel", info: "Vapur iskelesine ve tramvaya birkaç dakika mesafede konaklama.", coords: "41.0229,28.9762" },
+      { id: 6, name: "Moda Sahili & Yoğurtçu Parkı Gün Batımı", district: "Kadıköy", category: "Manzara & Sahil", info: "Adalar manzarasına karşı yürüyüş ve açık hava molası.", coords: "40.9801,29.0256" },
+      { id: 7, name: "Kadıköy Çarşı Lezzet Durakları", district: "Kadıköy", category: "Yeme & İçme", info: "Geleneksel esnaf lokantaları ve modern kahvecilerin buluşma noktası.", coords: "40.9904,29.0273" },
+      { id: 8, name: "Kadıköy Rıhtım Konaklama Oteli", district: "Kadıköy", category: "Otel", info: "Anadolu Yakası ulaşım merkezinde pratik otel seçeneği.", coords: "40.9918,29.0235" },
+      { id: 9, name: "Ortaköy Meydanı & Yıldız Parkı Korusu", district: "Beşiktaş", category: "Manzara & Sahil", info: "Boğaz kıyısında kumpir/waffle molası ve koruda doğa yürüyüşü.", coords: "41.0475,29.0268" },
+      { id: 10, name: "Beşiktaş Sahil Butik Otel", district: "Beşiktaş", category: "Otel", info: "Boğaz hattı gezileri için merkezi konaklama noktası.", coords: "41.0422,29.0077" },
+      { id: 11, name: "Kuzguncuk Bostanı & Tarihi Ahşap Evler", district: "Üsküdar", category: "Tarih & Kültür", info: "Mahalle kültürünü koruyan sokaklar, bostan ve sahil kafeleri.", coords: "41.0345,29.0308" },
+      { id: 12, name: "Salacak Sahili & Kız Kulesi Manzarası", district: "Üsküdar", category: "Manzara & Sahil", info: "Gün batımında tarihi yarımada siluetini izlemek için ideal durak.", coords: "41.0211,29.0041" },
+      { id: 13, name: "Emirgan Korusu & Bebek Sahil Yürüyüşü", district: "Sarıyer", category: "Manzara & Sahil", info: "Boğazın kuzeyinde yeşillikler içinde sabah yürüyüşü ve kahvaltı.", coords: "41.1085,29.0558" },
+      { id: 14, name: "Büyükada Aya Yorgi & Faytonsuz Ada Turu", district: "Adalar", category: "Manzara & Sahil", info: "Çam ormanları içinde yürüyüş, bisiklet ve deniz kıyısı restoranları.", coords: "40.8583,29.1206" },
+      { id: 15, name: "Büyükada Deniz Kıyısı Konaklama Oteli", district: "Adalar", category: "Otel", info: "Hafta sonu adada kalmak isteyenler için sakin konaklama.", coords: "40.8712,29.1274" },
+      { id: 16, name: "Pierre Loti Tepesi & Eyüp Sultan Meydanı", district: "Eyüpsultan", category: "Tarih & Kültür", info: "Haliç manzarasına karşı çay molası ve tarihi çevre gezisi.", coords: "41.0544,28.9338" },
+      { id: 17, name: "Florya Atatürk Deniz Köşkü & Sahil Parkı", district: "Bakırköy", category: "Kültür & Sanat", info: "Deniz üzerinde tarihi mimari ve uzun sahil yürüyüş parkuru.", coords: "40.9742,28.7869" },
+      { id: 18, name: "Nişantaşı Sanat Galerileri & Tasarım Sokakları", district: "Şişli", category: "Kültür & Sanat", info: "Sergi mekanları, kitapçılar ve açık hava oturma alanları.", coords: "41.0487,28.9936" },
+      { id: 19, name: "Şile Feneri & Ağva Göksu Nehri Kıyısı", district: "Şile", category: "Manzara & Sahil", info: "Şehirden uzaklaşmadan Karadeniz kıyısı ve nehir kenarı kaçamağı.", coords: "41.1764,29.6132" },
+      { id: 20, name: "Polonezköy Tabiat Parkı & Doğa Otelleri", district: "Beykoz", category: "Otel", info: "Orman içi yürüyüş parkurları ve hafta sonu doğa otelleri.", coords: "41.1147,29.2119" }
+    ];
 
-    function populateDistricts() {
-      const sSel = document.getElementById("startDistrict");
-      const eSel = document.getElementById("endDistrict");
-      Object.keys(DISTRICTS).forEach((name) => {
-        sSel.add(new Option(name, name));
-        eSel.add(new Option(name, name));
+    const coveredDistricts = new Set(basePlaces.map(p => p.district));
+    let nextId = basePlaces.length + 1;
+    istanbulDistricts.forEach(dist => {
+      if (!coveredDistricts.has(dist)) {
+        basePlaces.push(
+          {
+            id: nextId++,
+            name: `${dist} Meydanı & Yerel Lezzet Durakları`,
+            district: dist,
+            category: "Yeme & İçme",
+            info: `${dist} merkezinde günün her saati uğrayabileceğin popüler yeme-içme ve mola noktaları.`,
+            coords: "41.0082,28.9784"
+          },
+          {
+            id: nextId++,
+            name: `${dist} Şehir & Konaklama Oteli`,
+            district: dist,
+            category: "Otel",
+            info: `${dist} bölgesinde ulaşım hatlarına yakın, rahat konaklama alternatifi.`,
+            coords: "41.0122,28.9760"
+          },
+          {
+            id: nextId++,
+            name: `${dist} Park, Kültür ve Yürüyüş Rotası`,
+            district: dist,
+            category: "Kültür & Sanat",
+            info: `${dist} içinde nefes alabileceğin park, kültür merkezi ve akşam yürüyüşü hattı.`,
+            coords: "41.0150,28.9800"
+          }
+        );
+      }
+    });
+
+    let routeIds = [];
+    let eventPhotoDataUrl = "";
+    let eventPhotoName = "";
+    let blogPhotoDataUrl = "";
+
+    const defaultBlogs = [
+      {
+        id: 101,
+        title: "Sur İçi'nden Balat'a: Tek Günde İstanbul'un Hafızası",
+        district: "Fatih (Sur İçi)",
+        author: "@gununrotasi.app",
+        date: "28 Kasım 2026",
+        content: "Sabah erken saatlerde Sur İçi'nde tarihi avluları gezip öğleden sonra sahil hattından Balat'ın renkli sokaklarına geçmek yormayan ama çok dolu bir rota sunuyor.",
+        image: ""
+      },
+      {
+        id: 102,
+        title: "Kadıköy Moda Sahilinde Gün Batımı ve Kahve Molası",
+        district: "Kadıköy",
+        author: "@gezgin_istanbul",
+        date: "27 Kasım 2026",
+        content: "Çarşı içinde kısa bir öğle yemeğinin ardından Moda sahiline yürüyüp gün batımını izlemek hafta sonu stresini tamamen alıyor.",
+        image: ""
+      }
+    ];
+
+    function initSelects() {
+      const distSelect = document.getElementById("districtSelect");
+      const blogDist = document.getElementById("blogDistrict");
+      distSelect.innerHTML = `<option value="ALL">Tüm İstanbul (39 İlçe — ${basePlaces.length} Mekan)</option>` +
+        istanbulDistricts.map(d => `<option value="${d}">${d}</option>`).join("");
+      blogDist.innerHTML = istanbulDistricts.map(d => `<option value="${d}">${d}</option>`).join("");
+    }
+
+    function switchTab(tab) {
+      ["explore", "event", "blog"].forEach(name => {
+        document.getElementById("view" + name.charAt(0).toUpperCase() + name.slice(1)).classList.toggle("hidden", name !== tab);
+        document.getElementById("tab" + name.charAt(0).toUpperCase() + name.slice(1)).classList.toggle("active", name === tab);
       });
-      sSel.value = "Kadıköy";
-      eSel.value = "Beşiktaş";
-    }
-
-    function calcDistanceKm(c1, c2) {
-      const R = 6371;
-      const toRad = (d) => (d * Math.PI) / 180;
-      const dLat = toRad(c2[0] - c1[0]);
-      const dLon = toRad(c2[1] - c1[1]);
-      const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(c1[0])) * Math.cos(toRad(c2[0])) * Math.sin(dLon / 2) ** 2;
-      return Number((R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 1.25).toFixed(1));
-    }
-
-    function addMinutesToTime(timeStr, mins) {
-      const [h, m] = (timeStr || "13:30").split(":").map(Number);
-      const total = ((h * 60 + m + mins) % (24 * 60) + (24 * 60)) % (24 * 60);
-      const hh = String(Math.floor(total / 60)).padStart(2, "0");
-      const mm = String(total % 60).padStart(2, "0");
-      return `${hh}:${mm}`;
-    }
-
-    function initMap() {
-      const start = DISTRICTS["Kadıköy"].coords;
-      map = L.map("map").setView(start, 12);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: "&copy; OpenStreetMap"
-      }).addTo(map);
-      routeLayer = L.layerGroup().addTo(map);
+      if (tab === "event") updateSummary();
+      if (tab === "blog") renderBlogs();
     }
 
     function renderPlaces() {
-      const grid = document.getElementById("placesGrid");
-      const list = activeCategory === "all" ? PLACES : PLACES.filter((p) => p.cat === activeCategory);
-      const labels = {
-        avm: "AVM",
-        tarihi: "Tarihi Mekân",
-        orman: "Ormanlık Alan",
-        uygun: "Uygun Fiyatlı",
-        luks: "Lüks Mekân"
-      };
-      grid.innerHTML = list.map((p) => `
-        <div class="place-card">
-          <div>
-            <span class="place-tag">${labels[p.cat] || p.cat} • ${p.district}</span>
-            <div class="stop-title">${p.name}</div>
-            <div class="stop-meta">${p.note}</div>
-          </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-            <span class="stop-meta">~${p.costPerPerson} TL/kişi</span>
-            <button type="button" class="btn btn-sm" onclick="addPlaceToRoute(${p.id})">+ Rotaya Ekle</button>
-          </div>
-        </div>
-      `).join("");
-    }
+      const dist = document.getElementById("districtSelect").value;
+      const cat = document.getElementById("categorySelect").value;
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
 
-    window.addPlaceToRoute = function (id) {
-      const found = PLACES.find((p) => p.id === id);
-      if (found && !extraStops.some((s) => s.id === found.id)) {
-        extraStops.push(found);
-        updateAll();
-      }
-    };
-window.addPlaceToRoute = function (id) {
-      const found = PLACES.find((p) => p.id === id);
-      if (found && !extraStops.some((s) => s.id === found.id)) {
-        extraStops.push(found);
-        updateAll();
-      }
-    };
+      document.getElementById("districtHeadline").textContent = dist === "ALL"
+        ? `İstanbul Genelinde ${basePlaces.length} Keşif Noktası & Otel`
+        : `${dist} İlçesinde Neler Var?`;
 
-    window.removeExtraStop = function (id) {
-      extraStops = extraStops.filter((s) => s.id !== id);
-      updateAll();
-    };
+      document.getElementById("districtSub").textContent = dist === "ALL"
+        ? "Sponsorlu sıralama yok: İlçe seç, taksiyle ulaş veya rotana ekleyip WhatsApp'tan paylaş."
+        : `${dist} bölgesindeki gezi durakları, lezzet noktaları ve otel seçenekleri listeleniyor.`;
 
-    function renderTransport(km, crossSide, people, depTime) {
-      const busMin = Math.max(25, Math.round(km * (crossSide ? 4.9 : 3.6) + (crossSide ? 15 : 8)));
-      const dolmusMin = Math.max(20, Math.round(km * 3.8 + 6));
-      const taxiMin = Math.max(15, Math.round(km * 2.5 + (crossSide ? 12 : 5)));
-      const taxiFare = Math.round(85 + km * 48 + (crossSide ? 120 : 0));
-
-      document.getElementById("transportGrid").innerHTML = `
-        <div class="tr-card">
-          <h4>Otobüs / İETT & Raylı Hatlar</h4>
-          <p><strong>Tahmini Süre:</strong> ~${busMin} dk</p>
-          <p><strong>Geliş-Gidiş Saatleri:</strong> 06:00 – 23:55 (Gece hatları 00:00–06:00 arası 30–60 dk sıklıkla)</p>
-          <p><strong>Kalkış / Dönüş Örneği:</strong> ${depTime} gidiş • ${addMinutesToTime(depTime, 300)} dönüş</p>
-        </div>
-        <div class="tr-card">
-          <h4>Dolmuş / Minibüs</h4>
-          <p><strong>Tahmini Süre:</strong> ~${dolmusMin} dk (Aynı yaka / hat güzergâhı)</p>
-          <p><strong>Geliş-Gidiş Saatleri:</strong> 06:30 – 23:30 (Yoğun saatlerde 5–12 dk aralıkla)</p>
-          <p><strong>Not:</strong> Ara duraklarda esnek inme-binme avantajı sağlar.</p>
-        </div>
-        <div class="tr-card">
-          <h4>Taksi (${people} Kişi)</h4>
-          <p><strong>Tahmini Süre:</strong> ~${taxiMin} dk (Trafiğe göre değişir)</p>
-          <p><strong>Tahmini Tek Yön Ücret:</strong> ~${taxiFare} TL (00:00–06:00 gece tarifesinde artış olabilir)</p>
-          <p><strong>Geliş-Gidiş Saatleri:</strong> 24 saat kesintisiz hizmet</p>
-        </div>
-      `;
-    }
-
-    function updateAll() {
-      const sName = document.getElementById("startDistrict").value;
-      const eName = document.getElementById("endDistrict").value;
-      const people = Math.max(1, parseInt(document.getElementById("peopleCount").value || "2", 10));
-      const depTime = document.getElementById("departureTime").value || "13:30";
-      const mood = document.getElementById("moodSelect").value;
-      const budgetTier = document.getElementById("budgetTier").value;
-      const note = (document.getElementById("customNote").value || "").trim();
-
-      const sData = DISTRICTS[sName];
-      const eData = DISTRICTS[eName];
-      const crossSide = sData.side !== eData.side;
-      const km = calcDistanceKm(sData.coords, eData.coords);
-      const travelMin = Math.max(20, Math.round(km * (crossSide ? 4.5 : 3.2) + (crossSide ? 12 : 6)));
-
-      const basePerPerson = budgetTier === "uygun" ? 360 : budgetTier === "luks" ? 1850 : 720;
-      const moodMult = mood === "date" ? 1.25 : 1.0;
-      const stopsExtraPerPerson = extraStops.reduce((acc, item) => acc + item.costPerPerson, 0);
-      const totalBudget = Math.round((basePerPerson * moodMult + stopsExtraPerPerson + (crossSide ? 90 : 45)) * people);
-
-      const arrivalTime = addMinutesToTime(depTime, travelMin);
-      const totalStayMin = 240 + extraStops.length * 60;
-      const returnStart = addMinutesToTime(arrivalTime, totalStayMin);
-      const homeArrival = addMinutesToTime(returnStart, travelMin);
-
-      document.getElementById("statDistTime").textContent = `~${km} km • ~${travelMin} dk`;
-      document.getElementById("statBudget").textContent = `~${totalBudget.toLocaleString("tr-TR")} TL`;
-      document.getElementById("statReturn").textContent = `${returnStart} çıkış → ${homeArrival} varış`;
-      document.getElementById("statSide").textContent = crossSide
-        ? `${sData.side} → ${eData.side} (Yaka Geçişi)`
-        : `${sData.side} Yakası İçi`;
-
-      const moodText = {
-        arkadas: "Arkadaş / günlük gezi kurgusu",
-        date: "Romantik date kurgusu",
-        kapali: "Kapalı/yağmurlu gün kurgusu",
-        kultur: "Tarih ve kültür ağırlıklı kurgu"
-      }[mood];
-
-      document.getElementById("aiSummaryBox").textContent =
-        `Yapay Zeka Özeti: ${sName} → ${eName} için ${moodText} hazırlandı (${people} kişi). ` +
-        (crossSide ? "İki yaka arası geçişte vapur/Marmaray/Metrobüs saatlerini kontrol et. " : "Aynı yaka içi ulaşım seçildi. ") +
-        (note ? `Notun dikkate alındı: "${note}".` : "");
-
-      // Harita çizimi
-      routeLayer.clearLayers();
-      const points = [sData.coords];
-      L.marker(sData.coords).addTo(routeLayer).bindPopup(`<b>Kalkış:</b> ${sName}`);
-
-      extraStops.forEach((st) => {
-        points.push(st.coords);
-        L.marker(st.coords).addTo(routeLayer).bindPopup(`<b>Durak:</b> ${st.name} (${st.district})`);
+      const filtered = basePlaces.filter(p => {
+        const mDist = dist === "ALL" || p.district === dist;
+        const mCat = cat === "ALL" || p.category === cat;
+        const mQ = !q || `${p.name} ${p.district} ${p.category} ${p.info}`.toLowerCase().includes(q);
+        return mDist && mCat && mQ;
       });
 
-      points.push(eData.coords);
-      L.marker(eData.coords).addTo(routeLayer).bindPopup(`<b>Varış:</b> ${eName}`);
+      document.getElementById("routeBadge").textContent = routeIds.length;
 
-      L.polyline(points, { color: "#3b82f6", weight: 4, dashArray: "6,8" }).addTo(routeLayer);
-      map.fitBounds(L.latLngBounds(points).pad(0.25));
-      setTimeout(() => map.invalidateSize(), 120);
-
-      // Saatlik zaman çizelgesi
-      let curMin = 0;
-      const timelineItems = [
-        {
-time: `${depTime} - ${arrivalTime}`,
-          title: `${sName} → ${eName} Geçiş`,
-          meta: `Tahmini ~${travelMin} dk • ${crossSide ? "Yaka geçişi" : "Aynı yaka"}`,
-          removableId: null
-        }
-      ];
-
-      curMin = travelMin;
-      extraStops.forEach((st) => {
-        const startT = addMinutesToTime(depTime, curMin);
-        curMin += 75;
-        const endT = addMinutesToTime(depTime, curMin);
-        timelineItems.push({
-          time: `${startT} - ${endT}`,
-          title: `${st.name} (${st.district})`,
-          meta: `${st.note} • ~${st.costPerPerson} TL/kişi`,
-          removableId: st.id
-        });
-      });
-
-      const actStart = addMinutesToTime(depTime, curMin);
-      const actEnd = returnStart;
-      timelineItems.push({
-        time: `${actStart} - ${actEnd}`,
-        title: `${eName} Ana Program & Mola`,
-        meta: `${moodText} • Seçili bütçe: ${budgetTier}`,
-        removableId: null
-      });
-
-      timelineItems.push({
-        time: `${returnStart} - ${homeArrival}`,
-        title: `Dönüş Yolu (${eName} → ${sName})`,
-        meta: `Tahmini eve varış: ~${homeArrival}`,
-        removableId: null
-      });
-
-      document.getElementById("timelineList").innerHTML = timelineItems.map((item) => `
-        <div class="stop-item">
-          <div>
-            <div class="stop-time">${item.time}</div>
-            <div class="stop-title">${item.title}</div>
-            <div class="stop-meta">${item.meta}</div>
-          </div>
-          ${item.removableId ? `<button type="button" class="btn btn-sm" onclick="removeExtraStop(${item.removableId})">Kaldır</button>` : ""}
-        </div>
-      `).join("");
-
-      renderTransport(km, crossSide, people, depTime);
-    }
-
-    document.getElementById("categoryTabs").addEventListener("click", (e) => {
-      const btn = e.target.closest(".tab-btn");
-      if (!btn) return;
-      document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      activeCategory = btn.getAttribute("data-cat");
-      renderPlaces();
-    });
-
-    document.getElementById("generateBtn").addEventListener("click", updateAll);
-    ["startDistrict", "endDistrict", "peopleCount", "departureTime", "moodSelect", "budgetTier"].forEach((id) => {
-      document.getElementById(id).addEventListener("change", updateAll);
-    });
-
-    window.addEventListener("load", () => {
-      populateDistricts();
-      initMap();
-      renderPlaces();
-      updateAll();
-    });
-  </script>
-<!-- GÜNÜN ROTASI - DATE PLANLA MODÜLÜ -->
-<section id="date-planla-modulu" style="max-width: 1050px; margin: 24px auto; padding: 16px; font-family: system-ui, -apple-system, sans-serif;">
-  <style>
-    .dp-header {
-      background: linear-gradient(135deg, #1e1b4b, #312e81);
-      color: #fff;
-      padding: 22px;
-      border-radius: 16px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 10px 25px rgba(30, 27, 75, 0.18);
-    }
-    .dp-title h2 { margin: 0 0 6px 0; font-size: 1.35rem; }
-    .dp-title p { margin: 0; font-size: 0.92rem; opacity: 0.88; }
-    .dp-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-    .dp-select, .dp-date {
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.25);
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-      font-size: 0.92rem;
-      outline: none;
-    }
-    .dp-select option { color: #111827; background: #fff; }
-    .dp-btn-main {
-      background: #f59e0b;
-      color: #111827;
-      font-weight: 700;
-      border: none;
-      padding: 11px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: transform 0.15s ease, background 0.15s ease;
-    }
-    .dp-btn-main:hover { background: #fbbf24; transform: translateY(-1px); }
-    .dp-grid {
-      display: none;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
-      margin-top: 20px;
-    }
-    .dp-grid.aktif { display: grid; }
-    .dp-card {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .dp-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.09); }
-    .dp-badge {
-      display: inline-block;
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .badge-uygun { background: #dcfce7; color: #166534; }
-    .badge-orta { background: #dbeafe; color: #1e40af; }
-    .badge-yuksek { background: #fef3c7; color: #92400e; }
-    .dp-card h3 { margin: 0 0 8px 0; font-size: 1.15rem; color: #111827; }
-    .dp-meta { font-size: 0.85rem; color: #6b7280; margin-bottom: 14px; }
-    .dp-steps { list-style: none; padding: 0; margin: 0 0 18px 0; }
-    .dp-steps li {
-      position: relative;
-      padding-left: 18px;
-      margin-bottom: 10px;
-      font-size: 0.92rem;
-      color: #374151;
-      line-height: 1.45;
-    }
-    .dp-steps li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: #4f46e5;
-      font-weight: bold;
-    }
-    .dp-actions { display: flex; gap: 8px; margin-top: auto; }
-    .dp-map-btn {
-      flex: 1;
-      text-align: center;
-      text-decoration: none;
-      background: #111827;
-      color: #fff;
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 0.88rem;
-      font-weight: 600;
-    }
-    .dp-map-btn:hover { background: #374151; }
-    .dp-refresh-btn {
-      background: #f3f4f6;
-      color: #111827;
-      border: 1px solid #d1d5db;
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .dp-refresh-btn:hover { background: #e5e7eb; }
-  </style>
- <!-- Üst Kontrol Alanı -->
-  <div class="dp-header">
-    <div class="dp-title">
-      <h2>Date Planla</h2>
-      <p>İlçe ve gününü seç, bütçene göre 3 hazır buluşma rotası anında çıksın.</p>
-    </div>
-
-    <div class="dp-controls">
-      <select id="dp-ilce" class="dp-select" aria-label="İlçe Seçin">
-        <option value="Kadıköy">Kadıköy</option>
-        <option value="Beşiktaş">Beşiktaş</option>
-        <option value="Beyoğlu">Beyoğlu</option>
-        <option value="Üsküdar">Üsküdar</option>
-        <option value="Bakırköy">Bakırköy</option>
-        <option value="Sarıyer">Sarıyer</option>
-        <option value="Fatih">Fatih</option>
-        <option value="Şişli">Şişli</option>
-        <option value="Başakşehir">Başakşehir</option>
-        <option value="İstanbul Geneli">Tüm İstanbul</option>
-      </select>
-
-      <input type="date" id="dp-tarih" class="dp-date" aria-label="Tarih Seçin" />
-
-      <button type="button" id="dp-baslat-btn" class="dp-btn-main">Date Planla</button>
-    </div>
-  </div>
-
-  <!-- 3 Seçenekli Kart Alanı (Uygun / Orta / Yüksek) -->
-  <div id="dp-sonuclar" class="dp-grid"></div>
-
-  <script>
-    (function () {
-      const tarihInput = document.getElementById("dp-tarih");
-      const ilceSelect = document.getElementById("dp-ilce");
-      const baslatBtn = document.getElementById("dp-baslat-btn");
-      const sonuclarAlani = document.getElementById("dp-sonuclar");
-
-      // Bugünün tarihini varsayılan yap
-      const bugun = new Date().toISOString().split("T")[0];
-      tarihInput.value = bugun;
-
-      // Bütçe seviyelerine göre örnek rota havuzu
-      const rotaHavuzu = {
-        uygun: [
-          {
-            baslik: "Samimi Kahve & Sahil Yürüyüşü",
-            sure: "2 - 3 Saat • Öğleden Sonra",
-            duraklar: [
-              "Butik bir kahvecide filtre kahve & tatlı molası",
-              "Sahil hattı veya parkta gün batımı yürüyüşü",
-              "Sokak lezzeti veya sıcak içecek ile kapanış"
-            ],
-            arama: "kahve ve sahil yürüyüşü"
-          },
-          {
-            baslik: "Semt Keşfi & Kitap-Kafe Rotası",
-            sure: "2.5 Saat • Gündüz",
-            duraklar: [
-              "Sakin bir arka sokak kafesinde sohbet",
-              "Yerel sahaflar ve tasarım dükkanları gezisi",
-              "Manzaralı bank veya seyir noktasında mola"
-            ],
-            arama: "butik kafe ve sahaf"
-          }
-        ],
-        orta: [
-          {
-            baslik: "Keyifli Akşam Yemeği & Tatlı Durağı",
-            sure: "3 - 4 Saat • Akşam",
-            duraklar: [
-              "Merkezi bir bistrodan özenli akşam yemeği",
-              "Kısa semt turu ve fotoğraf noktası",
-              "Özel tatlıcı veya kokteyl mekanında kapanış"
-            ],
-            arama: "bistro restoran ve tatlı"
-          },
-          {
-            baslik: "Kültür-Sanat & Akşamüstü Buluşması",
-            sure: "3.5 Saat • Öğleden Sonra - Akşam",
-            duraklar: [
-              "Sergi, müze veya tiyatro etkinliği",
-              "Etkinlik sonrası sıcak atmosferli bir restoranda yemek",
-              "Canlı müzikli sakin bir mekanda içecek"
-            ],
-            arama: "sanat galerisi ve restoran"
-          }
-        ],
-        yuksek: [
-          {
-            baslik: "Manzaralı Özel Akşam & Teras Deneyimi",
-            sure: "4+ Saat • Özel Akşam",
-            duraklar: [
-              "Boğaz veya şehir manzaralı şık restoranda akşam yemeği",
-              "Özel teras veya lounge mekanda imza içecekler",
-              "Gece manzarası eşliğinde özel araç/sahil turu"
-            ],
-            arama: "manzaralı fine dining restoran"
-          },
-          {
-            baslik: "Gastronomi & Özel Etkinlik Gecesi",
-            sure: "4 Saat • Hafta Sonu Akşam",
-            duraklar: [
-              "Şef menüsü sunan konsept restoranda rezervasyon",
-              "Konser, akustik performans veya özel gösteri",
-              "Gece sonu butik tatlı & kahve deneyimi"
-            ],
-            arama: "şef restoranı ve konser"
-          }
-        ]
-      };
-
-      let seciliIndex = { uygun: 0, orta: 0, yuksek: 0 };
-
-      function tarihFormatla(tarihStr) {
-        if (!tarihStr) return "Bugün";
-        const parcalar = tarihStr.split("-");
-        return `${parcalar[2]}.${parcalar[1]}.${parcalar[0]}`;
-      }
-
-      function kartlariCiz() {
-        const ilce = ilceSelect.value;
-        const tarih = tarihFormatla(tarihInput.value);
-
-        const kategoriler = [
-          { key: "uygun", etiket: "Uygun Bütçe", sinif: "badge-uygun" },
-          { key: "orta", etiket: "Orta Bütçe", sinif: "badge-orta" },
-          { key: "yuksek", etiket: "Yüksek Bütçe", sinif: "badge-yuksek" }
-        ];
-
-        sonuclarAlani.innerHTML = kategoriler.map(kat => {
-          const liste = rotaHavuzu[kat.key];
-          const aktifRota = liste[seciliIndex[kat.key] % liste.length];
-          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ilce + " " + aktifRota.arama)}`;
-
-          return `
-            <article class="dp-card">
-              <div>
-                <span class="dp-badge ${kat.sinif}">${kat.etiket}</span>
-                <h3>${aktifRota.baslik}</h3>
-                <div class="dp-meta">📍 ${ilce} • 📅 ${tarih}<br>⏱ ${aktifRota.sure}</div>
-                <ul class="dp-steps">
-                  ${aktifRota.duraklar.map(d => `<li>${d}</li>`).join("")}
-                </ul>
+      document.getElementById("placesGrid").innerHTML = filtered.map(p => {
+        const added = routeIds.includes(p.id);
+        return `
+          <article class="card">
+            <div>
+              <div class="badge-row">
+                <span class="badge">${p.district}</span>
+                <span class="badge">${p.category}</span>
+                <span class="badge free">Bağımsız Öneri</span>
               </div>
-              <div class="dp-actions">
-                <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="dp-map-btn">Haritada Aç</a>
-                <button type="button" class="dp-refresh-btn" data-kategori="${kat.key}">Değiştir</button>
-              </div>
-            </article>
-          `;
-        }).join("");
-
-        sonuclarAlani.classList.add("aktif");
-
-        // Her karttaki "Değiştir" butonuna alternatif rota geçişi bağla
-        sonuclarAlani.querySelectorAll(".dp-refresh-btn").forEach(btn => {
-          btn.addEventListener("click", function () {
-            const kat = this.getAttribute("data-kategori");
-            seciliIndex[kat] += 1;
-            kartlariCiz();
-          });
-        });
-      }
-
-      baslatBtn.addEventListener("click", kartlariCiz);
-    })();
-  </script>
-</section>
-<!-- GÜNÜN ROTASI - DATE PLANLA MODÜLÜ (KOMPAKT + SAAT SAAT + FİYAT + MEKAN İSİMLİ) -->
-<section id="date-planla-modulu" style="max-width: 960px; margin: 16px auto; padding: 0 12px; font-family: system-ui, -apple-system, sans-serif;">
-  <style>
-    .dp-box {
-      background: #141824;
-      color: #f9fafb;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
-    }
-    .dp-top {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .dp-heading h2 { margin: 0; font-size: 1.2rem; }
-    .dp-heading p { margin: 3px 0 0; font-size: 0.85rem; color: #9ca3af; }
-    .dp-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-    .dp-input {
-      padding: 9px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: #1f2937;
-      color: #fff;
-      font-size: 0.88rem;
-    }
-    .dp-btn {
-      background: #f59e0b;
-      color: #111827;
-      font-weight: 700;
-      border: none;
-      padding: 9px 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    .dp-btn:hover { background: #fbbf24; }
-    .dp-panel {
-      display: none;
-      margin-top: 14px;
-      background: #ffffff;
-      color: #111827;
-      border-radius: 14px;
-      padding: 14px;
-    }
-    .dp-panel.acik { display: block; }
-    .dp-tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .dp-tab {
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
-      color: #374151;
-      padding: 9px 8px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.86rem;
-      cursor: pointer;
-      text-align: center;
-    }
-    .dp-tab.aktif-uygun { background: #dcfce7; border-color: #16a34a; color: #14532d; }
-    .dp-tab.aktif-orta { background: #dbeafe; border-color: #2563eb; color: #1e3a8a; }
-    .dp-tab.aktif-yuksek { background: #fef3c7; border-color: #d97706; color: #78350f; }
-    .dp-ozet {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    .dp-rota-adi { margin: 0; font-size: 1.05rem; color: #111827; }
-    .dp-fiyat {
-      background: #111827;
-      color: #fbbf24;
-      padding: 5px 10px;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
-    .dp-saat-liste {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 12px 0;
-    }
-    .dp-saat-liste li {
-      display: grid;
-      grid-template-columns: 98px 1fr;
-      gap: 10px;
-      padding: 7px 0;
-      border-bottom: 1px dashed #e5e7eb;
-      font-size: 0.88rem;
-      line-height: 1.35;
-    }
-    .dp-saat-liste li:last-child { border-bottom: none; }
-    .dp-saat { font-weight: 700; color: #4338ca; font-size: 0.84rem; }
-    .dp-mekan { font-weight: 600; color: #111827; }
-    .dp-not { color: #4b5563; }
-    .dp-alt {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .dp-link {
-      text-decoration: none;
-      background: #111827;
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 9px;
-      font-size: 0.84rem;
-      font-weight: 600;
-    }
-    .dp-degistir {
-      background: #f3f4f6;
-      color: #111827;
-      border: 1px solid #d1d5db;
-      padding: 8px 12px;
-      border-radius: 9px;
-      font-size: 0.84rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    @media (max-width: 540px) {
-      .dp-saat-liste li { grid-template-columns: 1fr; gap: 2px; }
-    }
-  </style>
-
-  <div class="dp-box">
-    <div class="dp-top">
-      <div class="dp-heading">
-        <h2>Date Planla</h2>
-        <p>Uygun, Orta ve Yüksek bütçeye göre saat saat rota ve mekan önerisi.</p>
-      </div>
-      <div class="dp-form">
-        <select id="dp2-ilce" class="dp-input" aria-label="İlçe">
-          <option value="Kadıköy">Kadıköy</option>
-          <option value="Beşiktaş">Beşiktaş</option>
-          <option value="Karaköy">Karaköy</option>
-          <option value="Üsküdar">Üsküdar</option>
-          <option value="Bakırköy">Bakırköy</option>
-        </select>
-        <input type="date" id="dp2-tarih" class="dp-input" aria-label="Tarih" />
-        <button type="button" id="dp2-ac" class="dp-btn">Date Planla</button>
-      </div>
-    </div>
-
-    <div id="dp2-panel" class="dp-panel">
-      <div class="dp-tabs">
-        <button type="button" class="dp-tab aktif-uygun" data-butce="uygun">Uygun</button>
-        <button type="button" class="dp-tab" data-butce="orta">Orta</button>
-        <button type="button" class="dp-tab" data-butce="yuksek">Yüksek</button>
-      </div>
-      <div id="dp2-icerik"></div>
-    </div>
-  </div>
-
-  <script>
-    (function () {
-      const ilceEl = document.getElementById("dp2-ilce");
-      const tarihEl = document.getElementById("dp2-tarih");
-      const acBtn = document.getElementById("dp2-ac");
-      const panelEl = document.getElementById("dp2-panel");
-      const icerikEl = document.getElementById("dp2-icerik");
-      const tablar = panelEl.querySelectorAll(".dp-tab");
-
-      tarihEl.value = new Date().toISOString().split("T")[0];
-
-      const planlar = {
-        uygun: [
-          {
-            ad: "Kahve, Sahil & Gün Batımı",
-            fiyat: "Tahmini 350 - 650 TL (2 kişi)",
-            saatler: [
-              { saat: "15:00 - 16:30", mekan: "Walter's Coffee Roastery / Moda Sahil Kafeleri", not: "Kahve ve atıştırmalık molası" },
-              { saat: "16:30 - 18:00", mekan: "Moda Sahil Parkı", not: "Yürüyüş ve deniz kenarı sohbeti" },
-              { saat: "18:00 - 19:00", mekan: "Kuzguncuk / Kadıköy Çarşı Tatlıcıları", not: "Sıcak içecek veya tatlı ile kapanış" }
-            ],
-            harita: "kahve ve sahil yürüyüşü"
-          },
-          {
-            ad: "Sakin Sokak & Kitap-Kafe Akışı",
-            fiyat: "Tahmini 300 - 600 TL (2 kişi)",
-            saatler: [
-              { saat: "14:00 - 15:30", mekan: "Kuzguncuk / Beşiktaş Arka Sokak Kafeleri", not: "Sakin başlangıç ve sohbet" },
-              { saat: "15:30 - 17:00", mekan: "Semt Sahafları ve Yürüyüş Hattı", not: "Keyifli keşif turu" },
-              { saat: "17:00 - 18:30", mekan: "Sahil Bankları / Çay Bahçesi", not: "Düşük bütçeli akşamüstü molası" }
-            ],
-            harita: "kafe ve sahaf"
-          }
-        ],
-        orta: [
-          {
-            ad: "Bistro Akşamı & Kokteyl/Tatlı",
-            fiyat: "Tahmini 1.200 - 2.200 TL (2 kişi)",
-            saatler: [
-              { saat: "17:30 - 18:45", mekan: "Karaköy / Kadıköy Butik Kahve & Galeri", not: "Buluşma ve kısa ısınma" },
-              { saat: "19:00 - 21:00", mekan: "Basta! Street Food / Lokal Bistro", not: "Ana yemek ve sohbet" },
-              { saat: "21:15 - 22:30", mekan: "Semt Kokteyl Bar veya Tatlıcı", not: "Akşam kapanışı" }
-            ],
-            harita: "bistro restoran ve tatlı"
-          },
-          {
-            ad: "Kültür-Sanat & Akşam Yemeği",
-            fiyat: "Tahmini 1.100 - 2.000 TL (2 kişi)",
-            saatler: [
-              { saat: "16:00 - 17:30", mekan: "İstanbul Modern / Pera & Bölge Galerileri", not: "Sergi veya kültür gezisi" },
-              { saat: "18:00 - 20:00", mekan: "Karaköy / Beşiktaş Esnaf & Bistro", not: "Akşam yemeği" },
-              { saat: "20:15 - 21:30", mekan: "Sahil veya Meydan Yürüyüşü", not: "Hafif akşam yürüyüşü" }
-            ],
-            harita: "sanat galerisi ve restoran"
-          }
-        ],
-        yuksek: [
-          {
-            ad: "Özel Akşam Yemeği & Manzara",
-            fiyat: "Tahmini 3.500 - 6.500+ TL (2 kişi)",
-            saatler: [
-              { saat: "18:00 - 19:15", mekan: "Boğaz Hattı Lounge / Teras Noktası", not: "Gün batımı karşılama" },
-              { saat: "19:30 - 21:45", mekan: "Nusr-Et / Sunset / Bölge Fine Dining", not: "Özel akşam yemeği" },
-              { saat: "22:00 - 23:30", mekan: "Manzaralı Kokteyl veya Tatlı Durağı", not: "Gece kapanışı" }
-            ],
-            harita: "manzaralı restoran"
-          },
-          {
-            ad: "Gastronomi & Gece Deneyimi",
-            fiyat: "Tahmini 3.000 - 5.800+ TL (2 kişi)",
-            saatler: [
-              { saat: "17:30 - 18:45", mekan: "Nişantaşı / Bebek Özel Kahve & Bakery", not: "Buluşma başlangıcı" },
-              { saat: "19:00 - 21:15", mekan: "Şef Mutfağı / Konsept Restoran", not: "Özel menü deneyimi" },
-              { saat: "21:30 - 23:00", mekan: "Akustik / Canlı Müzik veya Teras", not: "Gece programı" }
-            ],
-            harita: "konsept restoran"
-          }
-        ]
-      };
-
-      let aktifButce = "uygun";
-      let indeks = { uygun: 0, orta: 0, yuksek: 0 };
-
-      function ciz() {
-        const ilce = ilceEl.value;
-        const liste = planlar[aktifButce];
-        const secili = liste[indeks[aktifButce] % liste.length];
-        const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ilce + " " + secili.harita)}`;
-
-        tablar.forEach(t => {
-          t.classList.remove("aktif-uygun", "aktif-orta", "aktif-yuksek");
-          if (t.dataset.butce === aktifButce) {
-            t.classList.add("aktif-" + aktifButce);
-          }
-        });
-
-        icerikEl.innerHTML = `
-          <div class="dp-ozet">
-            <h3 class="dp-rota-adi">${secili.ad} (${ilce})</h3>
-            <span class="dp-fiyat">${secili.fiyat}</span>
-          </div>
-          <ul class="dp-saat-liste">
-            ${secili.saatler.map(s => `
-              <li>
-                <span class="dp-saat">${s.saat}</span>
-                <div><span class="dp-mekan">${s.mekan}</span> <span class="dp-not">— ${s.not}</span></div>
-              </li>
-            `).join("")}
-          </ul>
-          <div class="dp-alt">
-            <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="dp-link">Haritada Ara</a>
-            <button type="button" id="dp2-degistir" class="dp-degistir">Başka Rota Öner</button>
-          </div>
+              <h3>${p.name}</h3>
+              <p class="meta">${p.info}</p>
+            </div>
+            <div class="card-actions">
+              <button class="${added ? "btn-success" : "btn-primary"}" onclick="toggleRoute(${p.id})">
+                ${added ? "Rotada ✓" : "Rotaya Ekle"}
+              </button>
+              <button class="btn-taxi" onclick="openTaxi('${encodeURIComponent(p.name + " " + p.district)}', '${p.coords}')">
+                Taksi
+              </button>
+            </div>
+          </article>
         `;
+      }).join("") || `<p style="color:var(--muted);">Aramana uygun mekan bulunamadı.</p>`;
+    }
 
-        document.getElementById("dp2-degistir").addEventListener("click", function () {
-          indeks[aktifButce] += 1;
-          ciz();
-        });
+    function toggleRoute(id) {
+      routeIds = routeIds.includes(id) ? routeIds.filter(x => x !== id) : [...routeIds, id];
+      renderPlaces();
+    }
+
+    function generateSurpriseRoute() {
+      const dist = document.getElementById("districtSelect").value;
+      const pool = dist === "ALL" ? basePlaces : basePlaces.filter(p => p.district === dist);
+      const shuffled = [...pool].sort(() => 0.5 - Math.random()).slice(0, 3);
+      routeIds = shuffled.map(p => p.id);
+      renderPlaces();
+      switchTab("event");
+      document.getElementById("eventStatus").textContent = "Senin için 3 duraklı sürpriz rota hazırlandı!";
+    }
+
+    function openTaxi(label, coords) {
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(decodeURIComponent(label))}&travelmode=driving`;
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+function handleEventPhoto(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      eventPhotoName = file.name;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        eventPhotoDataUrl = ev.target.result;
+        const img = document.getElementById("photoPreview");
+        img.src = eventPhotoDataUrl;
+        img.style.display = "block";
+        updateSummary();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function buildEventMessage() {
+      const title = document.getElementById("eventTitle").value.trim() || "İstanbul Günün Rotası Etkinliğim";
+      const handle = document.getElementById("userHandle").value.trim() || "Misafir Gezgin";
+      const notes = document.getElementById("eventNotes").value.trim();
+      const stops = basePlaces.filter(p => routeIds.includes(p.id)).map((p, i) => `${i + 1}. ${p.name} (${p.district})`).join("\n");
+
+      return [
+        `📍 *GÜNÜN ROTASI ETKİNLİK BİLDİRİMİ*`,
+        `Etkinlik: ${title}`,
+        `Katılımcı: ${handle}`,
+        stops ? `Duraklar:\n${stops}` : "Duraklar: Henüz seçilmedi",
+        notes ? `Not: ${notes}` : "",
+        eventPhotoName ? `Eklenen Fotoğraf: ${eventPhotoName}` : "",
+        `Instagram: @${SITE_INSTAGRAM}`
+      ].filter(Boolean).join("\n\n");
+    }
+
+    function updateSummary() {
+      document.getElementById("summaryText").textContent = buildEventMessage();
+    }
+
+    ["eventTitle", "userHandle", "eventNotes"].forEach(id => {
+      document.getElementById(id).addEventListener("input", updateSummary);
+    });
+
+    function sendToOwnerWhatsApp() {
+      const text = encodeURIComponent(buildEventMessage());
+      if (eventPhotoDataUrl) {
+        const a = document.createElement("a");
+        a.href = eventPhotoDataUrl;
+        a.download = eventPhotoName || "gunun-rotasi-etkinlik.jpg";
+        a.click();
+      }
+      window.open(`https://wa.me/${SITE_WHATSAPP_PHONE}?text=${text}`, "_blank", "noopener,noreferrer");
+      document.getElementById("eventStatus").textContent = "WhatsApp hattımız açıldı! İndirilen fotoğrafı sohbete ekleyip gönderebilirsin.";
+    }
+
+    async function shareInstagram() {
+      try { await navigator.clipboard.writeText(buildEventMessage()); } catch (_) {}
+      if (eventPhotoDataUrl) {
+        const a = document.createElement("a");
+        a.href = eventPhotoDataUrl;
+        a.download = eventPhotoName || "gunun-rotasi-instagram.jpg";
+        a.click();
+      }
+      window.open(`https://www.instagram.com/${SITE_INSTAGRAM}/`, "_blank", "noopener,noreferrer");
+      document.getElementById("eventStatus").textContent = "Rota metni kopyalandı ve Instagram sayfamız açıldı!";
+    }
+
+    function sendToSelf() {
+      const email = document.getElementById("selfEmail").value.trim();
+      if (eventPhotoDataUrl) {
+        const a = document.createElement("a");
+        a.href = eventPhotoDataUrl;
+        a.download = eventPhotoName || "gunun-rotasi-anim.jpg";
+        a.click();
+      }
+      if (email) {
+        window.location.href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent("Günün Rotası Anım")}&body=${encodeURIComponent(buildEventMessage())}`;
+      }
+      document.getElementById("eventStatus").textContent = "Fotoğraf cihazına kaydedildi ve özetin hazırlandı.";
+    }
+
+    function clearRoute() {
+      routeIds = [];
+      renderPlaces();
+      updateSummary();
+      document.getElementById("eventStatus").textContent = "Rota sıfırlandı.";
+    }
+
+    function handleBlogPhoto(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => { blogPhotoDataUrl = ev.target.result; };
+      reader.readAsDataURL(file);
+    }
+
+    function getBlogs() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("gr_blogs") || "[]");
+        return [...saved, ...defaultBlogs];
+      } catch (_) {
+        return defaultBlogs;
+      }
+    }
+
+    function publishBlog() {
+      const title = document.getElementById("blogTitle").value.trim();
+      const district = document.getElementById("blogDistrict").value;
+      const author = document.getElementById("blogAuthor").value.trim() || "Gezgin";
+      const content = document.getElementById("blogContent").value.trim();
+
+      if (!title || !content) {
+        document.getElementById("blogStatus").textContent = "Lütfen başlık ve yazı içeriğini doldur.";
+        return;
       }
 
-      acBtn.addEventListener("click", function () {
-        panelEl.classList.add("acik");
-        ciz();
-      });
+      const newPost = {
+        id: Date.now(),
+        title,
+        district,
+        author,
+        date: new Date().toLocaleDateString("tr-TR"),
+        content,
+        image: blogPhotoDataUrl
+      };
 
-      tablar.forEach(tab => {
-        tab.addEventListener("click", function () {
-          aktifButce = this.dataset.butce;
-          panelEl.classList.add("acik");
-          ciz();
-        });
-      });
-    })();
+      const existing = JSON.parse(localStorage.getItem("gr_blogs") || "[]");
+      localStorage.setItem("gr_blogs", JSON.stringify([newPost, ...existing]));
+
+      document.getElementById("blogTitle").value = "";
+      document.getElementById("blogContent").value = "";
+      blogPhotoDataUrl = "";
+      renderBlogs();
+      document.getElementById("blogStatus").textContent = "Blog yazın yayınlandı!";
+    }
+
+    function sendBlogToWhatsApp() {
+      const title = document.getElementById("blogTitle").value.trim() || "Yeni Blog Yazısı";
+      const district = document.getElementById("blogDistrict").value;
+      const author = document.getElementById("blogAuthor").value.trim() || "Gezgin";
+      const content = document.getElementById("blogContent").value.trim();
+      const msg = encodeURIComponent(`📝 *GÜNÜN ROTASI BLOG YAZISI*\nBaşlık: ${title}\nİlçe: ${district}\nYazar: ${author}\n\n${content}`);
+      window.open(`https://wa.me/${SITE_WHATSAPP_PHONE}?text=${msg}`, "_blank", "noopener,noreferrer");
+    }
+
+    function renderBlogs() {
+      const posts = getBlogs();
+      document.getElementById("blogFeed").innerHTML = posts.map(b => `
+        <article class="blog-card">
+          <div class="badge-row">
+            <span class="badge">${b.district}</span>
+            <span class="badge free">${b.author}</span>
+            <span class="badge">${b.date}</span>
+          </div>
+          <h3 style="margin-bottom:6px;">${b.title}</h3>
+          ${b.image ? `<img src="${b.image}" alt="${b.title}" />` : ""}
+          <p style="color:var(--muted); white-space:pre-line;">${b.content}</p>
+        </article>
+      `).join("");
+    }
+
+    initSelects();
+    renderPlaces();
+    updateSummary();
   </script>
-</section>
 </body>
 </html>
