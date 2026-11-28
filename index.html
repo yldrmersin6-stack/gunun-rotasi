@@ -2560,3 +2560,762 @@
   document.head.appendChild(ldJson);
 })();
 </script>
+<!-- GÜNÜN REHBERİ: AKILLI ROTA ASİSTANI (2026 - API'SİZ / ÜCRETSİZ) -->
+<style>
+  #gr-ai-launcher {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #18221f;
+    color: #faf8f5;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    padding: 12px 18px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(15, 23, 20, 0.24);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  #gr-ai-launcher:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(15, 23, 20, 0.32);
+    background: #22302c;
+  }
+  #gr-ai-launcher .gr-ai-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
+    flex-shrink: 0;
+  }
+
+  #gr-ai-window {
+    position: fixed;
+    right: 18px;
+    bottom: 76px;
+    z-index: 9999;
+    width: 370px;
+    max-width: calc(100vw - 24px);
+    height: 540px;
+    max-height: calc(100vh - 104px);
+    background: #fbfaf7;
+    color: #1c1b18;
+    border: 1px solid #e4e0d8;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  #gr-ai-window.gr-open {
+    display: flex;
+    animation: grSlideUp 0.22s ease-out;
+  }
+  @keyframes grSlideUp {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Koyu Tema Uyumluluğu */
+  body.dark #gr-ai-window,
+  body.dark-mode #gr-ai-window,
+  [data-theme="dark"] #gr-ai-window {
+    background: #161817;
+    color: #f2efe9;
+    border-color: #2c302e;
+  }
+
+  .gr-ai-header {
+    background: #18221f;
+    color: #faf8f5;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .gr-ai-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .gr-ai-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2d6a4f, #1b4332);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+  }
+  .gr-ai-sub {
+    font-size: 11.5px;
+    color: #a7f3d0;
+    margin-top: 2px;
+  }
+  .gr-ai-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .gr-ai-icon-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #faf8f5;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gr-ai-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  #gr-ai-messages {
+    flex: 1;
+    padding: 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scroll-behavior: smooth;
+  }
+  .gr-msg {
+    max-width: 86%;
+    padding: 10px 13px;
+    border-radius: 15px;
+    font-size: 13.5px;
+    line-height: 1.48;
+    word-wrap: break-word;
+  }
+  .gr-msg-bot {
+    align-self: flex-start;
+    background: #ffffff;
+    color: #1f2421;
+    border: 1px solid #e6e2d8;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  }
+  body.dark .gr-msg-bot,
+  body.dark-mode .gr-msg-bot,
+  [data-theme="dark"] .gr-msg-bot {
+    background: #212423;
+    color: #f2efe9;
+    border-color: #323735;
+  }
+  .gr-msg-user {
+    align-self: flex-end;
+    background: #1f4e3d;
+    color: #ffffff;
+    border-bottom-right-radius: 4px;
+  }
+
+  .gr-route-card {
+    margin-top: 8px;
+    padding: 10px;
+    border-radius: 12px;
+    background: #f5f3ed;
+    border: 1px solid #e2ddd2;
+    font-size: 12.5px;
+  }
+  body.dark .gr-route-card,
+  body.dark-mode .gr-route-card,
+  [data-theme="dark"] .gr-route-card {
+    background: #181b1a;
+    border-color: #2e3331;
+  }
+  .gr-route-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px dashed rgba(128, 128, 128, 0.22);
+  }
+  .gr-route-item:last-of-type {
+    border-bottom: none;
+  }
+  .gr-route-price {
+    font-weight: 700;
+    color: #1f4e3d;
+    white-space: nowrap;
+  }
+  body.dark .gr-route-price,
+  [data-theme="dark"] .gr-route-price {
+    color: #6ee7b7;
+  }
+  .gr-route-total {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(128, 128, 128, 0.25);
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .gr-card-btns {
+    display: flex;
+    gap: 6px;
+    margin-top: 9px;
+  }
+  .gr-card-btn {
+    flex: 1;
+    padding: 7px 8px;
+    border-radius: 8px;
+    border: 1px solid #1f4e3d;
+    background: #1f4e3d;
+    color: #fff;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+  }
+  .gr-card-btn.secondary {
+    background: transparent;
+    color: #1f4e3d;
+  }
+  body.dark .gr-card-btn.secondary,
+  [data-theme="dark"] .gr-card-btn.secondary {
+    color: #6ee7b7;
+    border-color: #6ee7b7;
+  }
+
+  #gr-ai-chips {
+    padding: 8px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    border-top: 1px solid rgba(128, 128, 128, 0.14);
+    background: rgba(245, 243, 237, 0.65);
+  }
+  body.dark #gr-ai-chips,
+  [data-theme="dark"] #gr-ai-chips {
+    background: #1b1e1d;
+  }
+  .gr-chip {
+    background: #ffffff;
+    color: #1f4e3d;
+    border: 1px solid #cbd5ce;
+    border-radius: 999px;
+    padding: 6px 11px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .gr-chip:hover {
+    background: #1f4e3d;
+    color: #ffffff;
+    border-color: #1f4e3d;
+  }
+  body.dark .gr-chip,
+  [data-theme="dark"] .gr-chip {
+    background: #242927;
+    color: #a7f3d0;
+    border-color: #38413e;
+  }
+
+  .gr-ai-input-bar {
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px;
+    border-top: 1px solid rgba(128, 128, 128, 0.16);
+    background: inherit;
+  }
+  #gr-ai-input {
+    flex: 1;
+    border: 1px solid #d6d1c7;
+    border-radius: 12px;
+    padding: 9px 12px;
+    font-size: 13px;
+    background: #ffffff;
+    color: #1c1b18;
+    outline: none;
+  }
+  body.dark #gr-ai-input,
+  [data-theme="dark"] #gr-ai-input {
+    background: #222624;
+    border-color: #363c3a;
+    color: #f2efe9;
+  }
+  #gr-ai-send {
+    background: #18221f;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 0 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .gr-typing {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px 2px;
+  }
+  .gr-typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #888;
+    animation: grBounce 1.2s infinite ease-in-out;
+  }
+  .gr-typing span:nth-child(2) { animation-delay: 0.2s; }
+  .gr-typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes grBounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+</style>
+
+<button id="gr-ai-launcher" type="button" aria-label="Günün Rehberi'ne Sor">
+  <span class="gr-ai-dot"></span>
+  <span>Günün Rehberi'ne Sor</span>
+</button>
+
+<div id="gr-ai-window" role="dialog" aria-label="Günün Rehberi Akıllı Asistan">
+  <div class="gr-ai-header">
+    <div class="gr-ai-title-wrap">
+      <div class="gr-ai-avatar">🧭</div>
+      <div>
+        <div class="gr-ai-title">Günün Rehberi</div>
+        <div class="gr-ai-sub">2026 İstanbul Canlı Veri Asistanı</div>
+      </div>
+    </div>
+    <div class="gr-ai-header-actions">
+      <button id="gr-ai-reset" class="gr-ai-icon-btn" type="button" title="Sohbeti Sıfırla">↺</button>
+      <button id="gr-ai-close" class="gr-ai-icon-btn" type="button" title="Kapat">✕</button>
+    </div>
+  </div>
+
+  <div id="gr-ai-messages"></div>
+  <div id="gr-ai-chips"></div>
+
+  <form id="gr-ai-form" class="gr-ai-input-bar">
+    <input id="gr-ai-input" type="text" placeholder="Örn: Kadıköy 600 TL sakin sahil..." autocomplete="off" />
+    <button id="gr-ai-send" type="submit">Gönder</button>
+  </form>
+</div>
+
+<script>
+(function () {
+  const launcher = document.getElementById("gr-ai-launcher");
+  const win = document.getElementById("gr-ai-window");
+  const closeBtn = document.getElementById("gr-ai-close");
+  const resetBtn = document.getElementById("gr-ai-reset");
+  const msgBox = document.getElementById("gr-ai-messages");
+  const chipBox = document.getElementById("gr-ai-chips");
+  const form = document.getElementById("gr-ai-form");
+  const input = document.getElementById("gr-ai-input");
+
+  // 2026 İstanbul Güncel Veri Tabanı (Tutarlar kalem kalem birebir toplanır)
+  const ROUTES_2026 = [
+    {
+      district: "Kadıköy",
+      title: "Kadıköy & Moda Sahil Rotası",
+      mood: "Sakin & Sahil",
+      budgetTier: "dengeli",
+      note: "Kalabalıktan uzak, kahve ve deniz kokulu keyifli bir gün.",
+      stops: [
+        { name: "Vapur / Marmaray (Gidiş-Dönüş İstanbulkart)", cost: 70 },
+        { name: "Moda Sahili yürüyüş & 3. nesil filtre kahve + kruvasan", cost: 210 },
+        { name: "Kadıköy Çarşı esnaf lokantasında öğle yemeği", cost: 220 },
+        { name: "Yeldeğirmeni sokak sanatı turu & akşam çayı", cost: 80 }
+      ]
+    },
+    {
+district: "Kadıköy",
+      title: "Kadıköy Çarşı & Moda Lezzet Turu",
+      mood: "Lezzet & Sokak",
+      budgetTier: "keyifli",
+      note: "Çarşının en sevilen duraklarını birleştiren dolu dolu bir gastronomi günü.",
+      stops: [
+        { name: "Marmaray + Nostaljik Moda Tramvayı", cost: 80 },
+        { name: "Kadıköy Çarşı kahvaltı tabağı & Türk kahvesi", cost: 290 },
+        { name: "Tarihi çarşı turu & öğle arası kokoreç / midye tadımı", cost: 260 },
+        { name: "Moda çay bahçesi manzarası & tatlı molası", cost: 330 }
+      ]
+    },
+    {
+      district: "Üsküdar",
+      title: "Üsküdar & Kuzguncuk Ekonomik Rota",
+      mood: "Ekonomik & Öğrenci",
+      budgetTier: "ekonomik",
+      note: "Cebini yormadan Boğaz havası ve tarihi sokak keyfi.",
+      stops: [
+        { name: "Vapur / Metro ulaşım (Gidiş-Dönüş)", cost: 60 },
+        { name: "Kuzguncuk Bostanı & renkli ahşap evler yürüyüşü", cost: 0 },
+        { name: "Kuzguncuk fırınından poğaça & çay molası", cost: 110 },
+        { name: "İBB Fethi Paşa Sosyal Tesisi öğle yemeği", cost: 220 }
+      ]
+    },
+    {
+      district: "Üsküdar",
+      title: "Kız Kulesi & Çamlıca Manzara Rotası",
+      mood: "Romantik & Manzara",
+      budgetTier: "dengeli",
+      note: "Gün batımında İstanbul'u en güzel açıdan izleme planı.",
+      stops: [
+        { name: "Üsküdar sahil & vapur geçişi", cost: 70 },
+        { name: "Kız Kulesi karşısı sahil yürüyüşü & kahve", cost: 220 },
+        { name: "Kuzguncuk butik kafede öğle yemeği", cost: 340 },
+        { name: "Çamlıca Tepesi İBB Sosyal Tesisi çay & tatlı", cost: 110 }
+      ]
+    },
+    {
+      district: "Beşiktaş",
+      title: "Beşiktaş Kahvaltı & Ortaköy Sahil",
+      mood: "Lezzet & Sokak",
+      budgetTier: "dengeli",
+      note: "Enerjik başlayan ve Boğaz kıyısında tamamlanan klasik rota.",
+      stops: [
+        { name: "Otobüs / Vapur ulaşım", cost: 70 },
+        { name: "Beşiktaş Kahvaltıcılar Sokağı kahvaltı tabağı", cost: 270 },
+        { name: "Yıldız Parkı doğa yürüyüşü (Ücretsiz)", cost: 0 },
+        { name: "Ortaköy Meydanı kumpir & Boğaz kenarı çay", cost: 350 }
+      ]
+    },
+    {
+      district: "Beyoğlu",
+      title: "Karaköy & Galata Kültür Yürüyüşü",
+      mood: "Kültür & Tarih",
+      budgetTier: "keyifli",
+      note: "Tarihi pasajlar, ücretsiz sergiler ve Karaköy sokakları.",
+      stops: [
+        { name: "Karaköy Tünel & Tramvay ulaşım", cost: 70 },
+        { name: "Karaköy butik kahve & kruvasan başlangıcı", cost: 250 },
+        { name: "Galata Kulesi çevresi & Salt Galata sergisi", cost: 0 },
+        { name: "Karaköy lokantasında öğle yemeği", cost: 480 },
+        { name: "Galataport sahil yürüyüşü & akşam kahvesi", cost: 350 }
+      ]
+    },
+    {
+      district: "Fatih",
+      title: "Tarihi Yarımada Kültür & Lezzet",
+      mood: "Kültür & Tarih",
+      budgetTier: "ekonomik",
+      note: "Bütçe dostu tam gün tarih ve sokak lezzeti keşfi.",
+      stops: [
+        { name: "T1 Tramvay gidiş-dönüş", cost: 60 },
+        { name: "Sultanahmet Meydanı & Gülhane Parkı gezisi", cost: 0 },
+        { name: "Tarihi Sultanahmet esnaf menüsü", cost: 230 },
+        { name: "Mısır Çarşısı gezisi & sahilde çay-simit", cost: 90 }
+      ]
+    },
+    {
+      district: "Bakırköy",
+      title: "Florya Sosyal Tesis & Yeşilköy Sahil",
+      mood: "Sakin & Sahil",
+      budgetTier: "dengeli",
+      note: "Deniz kenarında huzurlu yürüyüş ve uygun fiyatlı tesis keyfi.",
+      stops: [
+        { name: "Marmaray ulaşım (Gidiş-Dönüş)", cost: 70 },
+        { name: "İBB Florya Sosyal Tesisleri öğle yemeği", cost: 340 },
+        { name: "Florya sahil parkuru & köşk çevresi yürüyüşü", cost: 50 },
+        { name: "Yeşilköy sahil kafesinde filtre kahve molası", cost: 160 }
+      ]
+    },
+    {
+      district: "Sarıyer",
+      title: "Emirgan Korusu & Boğaz Hattı VIP",
+      mood: "Romantik & Manzara",
+      budgetTier: "vip",
+      note: "Boğaz'ın kuzeyinde tam gün doğa ve gastronomi deneyimi.",
+      stops: [
+        { name: "Metro + Sahil hattı ulaşım", cost: 90 },
+        { name: "Emirgan Korusu İBB Sarı Köşk sabah kahvaltısı", cost: 460 },
+        { name: "Sabancı Müzesi & Boğaz hattı yürüyüşü", cost: 250 },
+        { name: "Yeniköy / İstinye sahil restoranında akşam yemeği", cost: 850 }
+      ]
+    }
+  ];
+
+  // Sitedeki mevcut 2026 verilerini / seçili ilçeyi dinamik yakalama
+  function getSiteContext() {
+    const selected = document.querySelector("select, [data-district].active, .district-btn.active");
+    let currentDistrict = "";
+    if (selected) {
+      currentDistrict = (selected.value || selected.textContent || "").trim();
+    }
+    const pagePlaces = [];
+    document.querySelectorAll("[data-place], .place-card, .stop-card, .card").forEach((el) => {
+      const txt = el.textContent.replace(/\s+/g, " ").trim();
+      if (txt.length > 6 && txt.length < 140) pagePlaces.push(txt);
+    });
+    return { currentDistrict, pagePlaces };
+  }
+
+  let state = { step: "mood", mood: null, budget: null, district: null };
+
+  function addMessage(html, sender = "bot") {
+    const div = document.createElement("div");
+    div.className = "gr-msg " + (sender === "user" ? "gr-msg-user" : "gr-msg-bot");
+    div.innerHTML = html;
+    msgBox.appendChild(div);
+    msgBox.scrollTop = msgBox.scrollHeight;
+    return div;
+  }
+
+  function showTypingThen(callback) {
+    const typing = addMessage('<div class="gr-typing"><span></span><span></span><span></span></div>', "bot");
+    setTimeout(() => {
+      typing.remove();
+      callback();
+    }, 520);
+  }
+
+  function setChips(items) {
+    chipBox.innerHTML = "";
+    items.forEach((item) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "gr-chip";
+      btn.textContent = item.label;
+      btn.onclick = () => handleUserChoice(item.label, item.value);
+      chipBox.appendChild(btn);
+    });
+  }
+
+  function startConversation() {
+    msgBox.innerHTML = "";
+    state = { step: "mood", mood: null, budget: null, district: null };
+    const ctx = getSiteContext();
+    const intro = ctx.currentDistrict
+      ? `Merhaba! Şu an <strong>${ctx.currentDistrict}</strong> tarafına baktığını görüyorum. Bugün nasıl bir moddasın? Sana 2026 güncel fiyatlarıyla nokta atışı bir rota çıkarayım.`
+      : `Merhaba! Ben <strong>Günün Rehberi</strong>. Bugün nasıl bir moddasın? Seçimini yap, sitendeki 2026 güncel verilerle sana özel bütçe dostu bir İstanbul rotası çıkarayım.`;
+    addMessage(intro, "bot");
+    setChips([
+      { label: "🌊 Sakin & Sahil", value: "Sakin & Sahil" },
+      { label: "🏛️ Kültür & Tarih", value: "Kültür & Tarih" },
+      { label: "🥙 Lezzet & Sokak", value: "Lezzet & Sokak" },
+      { label: "🎓 Ekonomik & Öğrenci", value: "Ekonomik & Öğrenci" },
+      { label: "🌅 Romantik & Manzara", value: "Romantik & Manzara" }
+    ]);
+  }
+function parseFreeText(text) {
+    const t = text.toLowerCase();
+    const districts = ["kadıköy", "üsküdar", "beşiktaş", "beyoğlu", "karaköy", "galata", "fatih", "bakırköy", "florya", "sarıyer", "emirgan", "başakşehir", "bahçeşehir", "esenyurt", "beylikdüzü", "maltepe", "kartal", "pendik", "adalar", "şile", "beykoz", "arnavutköy", "avcılar"];
+    let foundDistrict = null;
+    for (const d of districts) {
+      if (t.includes(d)) {
+        if (d === "karaköy" || d === "galata") foundDistrict = "Beyoğlu";
+        else if (d === "florya") foundDistrict = "Bakırköy";
+        else if (d === "emirgan") foundDistrict = "Sarıyer";
+        else foundDistrict = d.charAt(0).toUpperCase() + d.slice(1);
+        break;
+      }
+    }
+    const numMatch = t.match(/(\d{3,4})/);
+    let foundBudget = null;
+    if (numMatch) {
+      const val = parseInt(numMatch[1], 10);
+      if (val <= 450) foundBudget = "ekonomik";
+      else if (val <= 850) foundBudget = "dengeli";
+      else if (val <= 1350) foundBudget = "keyifli";
+      else foundBudget = "vip";
+    }
+    let foundMood = null;
+    if (t.includes("sakin") || t.includes("sahil") || t.includes("deniz")) foundMood = "Sakin & Sahil";
+    else if (t.includes("tarih") || t.includes("müze") || t.includes("kültür")) foundMood = "Kültür & Tarih";
+    else if (t.includes("yemek") || t.includes("lezzet") || t.includes("kahvaltı")) foundMood = "Lezzet & Sokak";
+    else if (t.includes("ucuz") || t.includes("ekonomik") || t.includes("öğrenci")) foundMood = "Ekonomik & Öğrenci";
+    else if (t.includes("romantik") || t.includes("manzara")) foundMood = "Romantik & Manzara";
+
+    return { foundDistrict, foundBudget, foundMood };
+  }
+
+  function buildCustomDistrictRoute(district, mood, budgetTier) {
+    const budgetMap = {
+      ekonomik: { transport: 60, stop1: 0, stop2: 140, stop3: 190 },
+      dengeli: { transport: 70, stop1: 180, stop2: 260, stop3: 110 },
+      keyifli: { transport: 80, stop1: 280, stop2: 420, stop3: 240 },
+      vip: { transport: 100, stop1: 420, stop2: 680, stop3: 350 }
+    };
+    const b = budgetMap[budgetTier] || budgetMap.dengeli;
+    return {
+      district,
+      title: `${district} Özel 2026 Keşif Rotası`,
+      mood: mood || "Sakin & Sahil",
+      budgetTier,
+      note: `${district} ilçesindeki güncel 2026 ulaşım ve yeme-içme ortalamalarına göre hazırlandı.`,
+      stops: [
+        { name: `${district} ulaşım (İstanbulkart gidiş-dönüş)`, cost: b.transport },
+        { name: `${district} meydan / park yürüyüşü & sabah kahvesi`, cost: b.stop1 },
+        { name: `${district} seçili restoranda öğle yemeği`, cost: b.stop2 },
+        { name: `${district} sahil / seyir noktası çay & tatlı molası`, cost: b.stop3 }
+      ]
+    };
+  }
+
+  function generateRoute() {
+    let candidates = ROUTES_2026.slice();
+    if (state.district && state.district !== "Sürpriz") {
+      const byDist = candidates.filter((r) => r.district.toLowerCase() === state.district.toLowerCase());
+      if (byDist.length > 0) candidates = byDist;
+      else return buildCustomDistrictRoute(state.district, state.mood, state.budget || "dengeli");
+    }
+    if (state.budget) {
+      const byBudget = candidates.filter((r) => r.budgetTier === state.budget);
+      if (byBudget.length > 0) candidates = byBudget;
+    }
+    if (state.mood) {
+      const byMood = candidates.filter((r) => r.mood === state.mood);
+      if (byMood.length > 0) candidates = byMood;
+    }
+    return candidates[0] || ROUTES_2026[0];
+  }
+
+  function renderFinalRoute() {
+    const route = generateRoute();
+    const total = route.stops.reduce((sum, s) => sum + s.cost, 0);
+
+    const itemsHtml = route.stops
+      .map(
+        (s) => `
+        <div class="gr-route-item">
+          <span>• ${s.name}</span>
+          <span class="gr-route-price">${s.cost === 0 ? "Ücretsiz" : s.cost + " TL"}</span>
+        </div>`
+      )
+      .join("");
+
+    const shareText = `Günün Rotası (2026) - ${route.title}\n` +
+      route.stops.map((s) => `- ${s.name}: ${s.cost === 0 ? "Ücretsiz" : s.cost + " TL"}`).join("\n") +
+      `\nToplam: ${total} TL`;
+
+    const html = `
+      Sana harika bir <strong>${route.district}</strong> rotası çıkardım, toplam <strong>${total} TL</strong> tutuyor! ${route.note}
+      <div class="gr-route-card">
+        ${itemsHtml}
+        <div class="gr-route-total">
+          <span>2026 Tahmini Toplam</span>
+          <span>${total} TL</span>
+        </div>
+        <div class="gr-card-btns">
+          <button type="button" class="gr-card-btn" data-district-go="${route.district}">Sitede Gör</button>
+          <button type="button" class="gr-card-btn secondary" data-copy="${encodeURIComponent(shareText)}">Rotayı Kopyala</button>
+        </div>
+      </div>
+    `;
+
+    const msgEl = addMessage(html, "bot");
+
+    msgEl.querySelector("[data-district-go]").onclick = function () {
+      const targetDist = this.getAttribute("data-district-go");
+      const selects = document.querySelectorAll("select");
+      selects.forEach((sel) => {
+        for (let i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].text.toLowerCase().includes(targetDist.toLowerCase())) {
+            sel.selectedIndex = i;
+            sel.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        }
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    msgEl.querySelector("[data-copy]").onclick = function () {
+      const txt = decodeURIComponent(this.getAttribute("data-copy"));
+      navigator.clipboard.writeText(txt).then(() => {
+        this.textContent = "Kopyalandı ✓";
+        setTimeout(() => (this.textContent = "Rotayı Kopyala"), 2000);
+      });
+    };
+
+    state.step = "done";
+    setChips([
+      { label: "🔄 Başka Rota Öner", value: "restart" },
+      { label: "💸 Daha Ekonomik Olsun", value: "ekonomik" },
+      { label: "🌊 Kadıköy Rotası Çıkar", value: "Kadıköy" }
+    ]);
+  }
+
+  function handleUserChoice(label, value) {
+    addMessage(label, "user");
+    chipBox.innerHTML = "";
+
+    if (value === "restart") {
+      showTypingThen(startConversation);
+      return;
+    }
+
+// Serbest metin analizi
+    const parsed = parseFreeText(label);
+    if (parsed.foundDistrict || parsed.foundBudget || parsed.foundMood) {
+      if (parsed.foundDistrict) state.district = parsed.foundDistrict;
+      if (parsed.foundBudget) state.budget = parsed.foundBudget;
+      if (parsed.foundMood) state.mood = parsed.foundMood;
+      if (state.step === "done" || (parsed.foundDistrict && parsed.foundBudget)) {
+        showTypingThen(renderFinalRoute);
+        return;
+      }
+    }
+
+    if (state.step === "mood") {
+      state.mood = parsed.foundMood || value;
+      state.step = "budget";
+      showTypingThen(() => {
+        addMessage(`Harika seçim! <strong>${state.mood}</strong> moduna uygun durakları filtreledim. Peki bugün kişi başı bütçe aralığın nedir?`, "bot");
+        setChips([
+          { label: "400 TL'ye kadar (Ekonomik)", value: "ekonomik" },
+          { label: "400 – 800 TL (Dengeli)", value: "dengeli" },
+          { label: "800 – 1.300 TL (Keyifli)", value: "keyifli" },
+          { label: "1.300 TL+ (Tam Gün VIP)", value: "vip" }
+        ]);
+      });
+    } else if (state.step === "budget") {
+      state.budget = parsed.foundBudget || value;
+      state.step = "district";
+      const ctx = getSiteContext();
+      const districtChips = [
+        { label: "✨ Fark Etmez (Sürpriz Yap)", value: "Sürpriz" },
+        { label: "Kadıköy", value: "Kadıköy" },
+        { label: "Beşiktaş", value: "Beşiktaş" },
+        { label: "Üsküdar", value: "Üsküdar" },
+        { label: "Beyoğlu (Karaköy)", value: "Beyoğlu" },
+        { label: "Fatih", value: "Fatih" }
+      ];
+      if (ctx.currentDistrict && !districtChips.some((c) => c.value.toLowerCase() === ctx.currentDistrict.toLowerCase())) {
+        districtChips.unshift({ label: `📍 ${ctx.currentDistrict}`, value: ctx.currentDistrict });
+      }
+      showTypingThen(() => {
+        addMessage("Not aldım! Hangi bölgeye gitmek istersin? Listede olmayan bir ilçeyi de yazabilirsin.", "bot");
+        setChips(districtChips);
+      });
+    } else {
+      state.district = parsed.foundDistrict || value;
+      showTypingThen(renderFinalRoute);
+    }
+  }
+
+  launcher.onclick = () => {
+    win.classList.toggle("gr-open");
+    if (win.classList.contains("gr-open") && msgBox.children.length === 0) {
+      startConversation();
+    }
+  };
+  closeBtn.onclick = () => win.classList.remove("gr-open");
+  resetBtn.onclick = startConversation;
+
+  form.onsubmit = (e) => {
+    e.preventDefault();
+    const val = input.value.trim();
+    if (!val) return;
+    input.value = "";
+    handleUserChoice(val, val);
+  };
+})();
+</script>
