@@ -2503,3 +2503,60 @@
   </script>
 </body>
 </html>
+<script>
+(function() {
+  document.title = "Günün Rotası — İstanbul 39 İlçe Gezi ve Rota Planlayıcı";
+
+  function setMeta(name, content) {
+    var tag = document.querySelector('meta[name="' + name + '"]');
+    if (!tag) {
+      tag = document.createElement('meta');
+      tag.setAttribute('name', name);
+      document.head.appendChild(tag);
+    }
+    tag.setAttribute('content', content);
+  }
+
+  setMeta("description", "Günün Rotası ile İstanbul'un 39 ilçesinde adım adım günlük gezi ve buluşma rotanı oluştur. Harita üzerinde kahvaltı, kafe, müze, sahil duraklarını seç; metro, Marmaray, vapur ve taksi ücretlerini anında hesapla.");
+  setMeta("keywords", "günün rotası, istanbul gezi rotası, istanbul rota planlayıcı, istanbul gezilecek yerler, istanbul taksi ücreti hesaplama, istanbul date planı");
+  setMeta("author", "Ersin Yıldırım");
+  setMeta("robots", "index, follow, max-snippet:-1, max-image-preview:large");
+
+  var canonical = document.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.setAttribute('rel', 'canonical');
+    document.head.appendChild(canonical);
+  }
+  canonical.setAttribute('href', 'https://yldrmersin6-stack.github.io/gunun-rotasi/');
+
+  var ldJson = document.createElement('script');
+  ldJson.type = 'application/ld+json';
+  ldJson.text = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Günün Rotası",
+    "alternateName": "Günün Rotası İstanbul",
+    "url": "https://yldrmersin6-stack.github.io/gunun-rotasi/",
+    "description": "İstanbul'un 39 ilçesi için etkileşimli harita, mekan seçimi, toplu taşıma ve taksi ücreti hesaplama ile canlı hava durumu sunan günlük gezi ve rota planlama uygulaması.",
+    "applicationCategory": "TravelApplication",
+    "operatingSystem": "All",
+    "inLanguage": "tr",
+    "author": {
+      "@type": "Person",
+      "name": "Ersin Yıldırım"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "İstanbul",
+      "addressCountry": "TR"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "TRY"
+    }
+  });
+  document.head.appendChild(ldJson);
+})();
+</script>
